@@ -11,5 +11,5 @@ from django.contrib.gis.geos import Point
 class BlockPolygon(models.Model):
     label=models.CharField('冗长名字',max_length=300)
     name=models.CharField('名字',max_length=100)
-    display=models.PolygonField(verbose_name='显示多边形',null=True)
-    bounding=models.PolygonField(verbose_name='探测多边形',null=True)
+    display=models.PolygonField(verbose_name='显示多边形',null=True,blank=True)
+    bounding=models.PolygonField(verbose_name='探测多边形',null=True,blank=True)

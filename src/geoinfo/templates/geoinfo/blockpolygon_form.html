@@ -22,23 +22,30 @@
     //	can_del=
     form_logic={
         el:'#there',
-//			data:{
-//				kw:{
-//					heads:heads,
-//			        row:row,
-//			   		errors:{},
-//				},
-//				menu:menu,
-//				can_add:can_add,
-//				can_del:can_del,
-//				can_log:can_log,
-//			},
+			data:{
+			    show_map:false
+			},
         mixins:[field_fun],
+        mounted:function(){
+            init_map()
+        },
+        methods:{
+            map_ok:function(){
+                drawer.submit()
+                this.show_map=false
+                map.clearMap()
+            },
+            map_cancel:function(){
+                this.show_map=false
+                map.clearMap()
+
+            }
+        }
 
     }
 
     $(function () {
-        new Vue(form_logic)
+        there_com = new Vue(form_logic)
     })
 </script>
 
@@ -65,61 +72,90 @@
         <!--</div>-->
         <!--</div>-->
 
+
         <div class='field-panel'>
 
             <field  v-for='head in kw.heads' :key="head.name" :name='head.name' :kw='kw'></field>
         </div>
 
+
+        <modal :show="show_map">
+            <div style="padding: 1em;">
+                <div style="text-align: right;padding-bottom: 0.5em;">
+                    <button @click="map_ok()">确定</button>
+                    <button @click="map_cancel()">取消</button>
+                </div>
+                <div style="width: 70vw;height: 70vh;position: relative;">
+                    <div id="container"></div>
+                </div>
+            </div>
+
+        </modal>
+
     </div>
 
 
-<div style="width: 70vw;height: 70vh;position: relative;">
-    <div id="container"></div>
-</div>
+
 
 <div><button onclick="fuck()">ssss</button></div>
 
 <script>
-    var editorTool, map = new AMap.Map("container", {
-        resizeEnable: true,
-        center: [116.403322, 39.900255],//地图中心点
-        zoom: 13 //地图显示的缩放级别
-    });
-    var mouseTool = new AMap.MouseTool(map);
 
-    var drawer={
-        callback:function(polygon){
-            console.log(polygon);//获取路径/范围
-        },
-        create_polygon:function(callback){
-            this.callback = callback ||  this.callback
-            mouseTool.polygon();
-        },
-        insert_polygon:function(arr){
-            this._polygon= new AMap.Polygon({
-                map: map,
-                path: arr,
-                strokeColor: "#0000ff",
-                strokeOpacity: 1,
-                strokeWeight: 3,
-                fillColor: "#f5deb3",
-                fillOpacity: 0.35
-            })
-            return this._polygon
-        },
-        edit_polygon:function(polygon){
-            this._polygonEditor= new AMap.PolyEditor(map, polygon);
-            this._polygonEditor.open()
+    function init_map(){
+        window.editorTool,window. map = new AMap.Map("container", {
+            resizeEnable: true,
+            center: [116.403322, 39.900255],//地图中心点
+            zoom: 13 //地图显示的缩放级别
+        });
+        mouseTool = new AMap.MouseTool(map);
+
+        drawer={
+            callback:function(polygon){
+                console.log(polygon);//获取路径/范围
+            },
+            show:function(){
+                there_com.show_map=true
+                setTimeout(function(){
+                    map.setFitView();
+                },100)
+
+            },
+            create_polygon:function(callback){
+
+                this.callback = callback ||  this.callback
+                mouseTool.polygon();
+            },
+            insert_polygon:function(arr){
+                this._polygon= new AMap.Polygon({
+                    map: map,
+                    path: arr,
+                    strokeColor: "#0000ff",
+                    strokeOpacity: 1,
+                    strokeWeight: 3,
+                    fillColor: "#f5deb3",
+                    fillOpacity: 0.35
+                })
+                return this._polygon
+            },
+            edit_polygon:function(polygon){
+                this._polygonEditor= new AMap.PolyEditor(map, polygon);
+                this._polygonEditor.open()
+            },
+            submit:function(){
+                // 需要设置 drawer.onsubmit
+                var polygon_path = this._polygon.getPath()
+                this.onsubmit(polygon_path)
+
+            }
         }
-    }
-    window._on_draw=function(e){
-        console.log(e.obj.getPath());//获取路径/范围
-    }
-    AMap.event.addListener( mouseTool,'draw',function(e){ //添加事件
+
+        AMap.event.addListener( mouseTool,'draw',function(e){ //添加事件
 //        console.log(e.obj.getPath());//获取路径/范围
-        drawer.callback(e.obj.getPath())
-        mouseTool.close( true)
-    });
+            drawer.callback(e.obj.getPath())
+            mouseTool.close( true)
+        });
+    }
+
 </script>
 
 
