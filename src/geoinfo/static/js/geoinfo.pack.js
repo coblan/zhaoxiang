@@ -90,7 +90,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var ploygon_editor = exports.ploygon_editor = {
     props: ['name', 'row', 'kw'],
-    template: '<div>\n            <button @click="create_new()">new</button>\n            <button @click="edit()">edit</button>\n        </div>',
+    template: '<div>\n            <span v-if="row[name]"><i class="fa fa-map-o fa-2x" aria-hidden="true"></i></span>\n            <button @click="create_new()" title="\u65B0\u5EFA"><i class="fa fa-plus-square-o" aria-hidden="true"></i></button>\n            <button @click="edit()" title="\u7F16\u8F91"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>\n            <button @click="copy()">copy</button>\n            <button @click="paste()">paste</button>\n        </div>',
     methods: {
         create_new: function create_new() {
             //map.clearMap()
@@ -119,6 +119,17 @@ var ploygon_editor = exports.ploygon_editor = {
                 });
                 self.row[self.name] = JSON.stringify(point_arr);
             };
+        },
+        copy: function copy() {
+            localStorage.setItem('clip_polygon', this.row[this.name]);
+            alert('复制成功!');
+        },
+        paste: function paste() {
+            var clip_polygon = localStorage.getItem('clip_polygon');
+            if (clip_polygon) {
+                this.row[this.name] = clip_polygon;
+            }
+            alert('粘贴成功!');
         }
     }
 };

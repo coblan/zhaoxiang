@@ -15,8 +15,10 @@ class BlockPolygonTablePage(TablePage):
         exclude=[]
         
         def dict_row(self, inst):
+           
             dc={
-                'display':unicode(inst.display)
+                'display':bool (inst.display),
+                'bounding':bool ( inst.bounding)
             }
             return dc
         
@@ -29,31 +31,51 @@ class BlockPolygonFormPage(FormPage):
             model=BlockPolygon
             exclude=[]
         
-        def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False):
-            dc = self._adapt_polygon(dc)
+        def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False,*args,**kw):
+            if 'display' in dc.keys():
+                dc['display'] = self._adapt_polygon_dict(dc['display'])
+            if 'bounding' in dc.keys():
+                dc['bounding'] = self._adapt_polygon_dict(dc['bounding'])
             super(self.__class__,self).__init__(dc,pk,crt_user,nolimit)
         
-        def _adapt_polygon(self,dc):
-            
-            display= dc.get('display',None)
-            if display:
-                display= json.loads(display)
-                if display[-1] !=display[0]:
-                    display.append(display[0])
-                dc['display']= Polygon(display)            
-            return dc
+        def _adapt_polygon_dict(self,polygon_str):
+            if polygon_str:
+                polygon_arr = json.loads(polygon_str)
+                if polygon_arr[-1] != polygon_arr[0]:
+                    polygon_arr.append(polygon_arr[0])
+                return Polygon(polygon_arr)
+            else:
+                return None
+                    
+            # display= dc.get('display',None)
+            # if display:
+                # display= json.loads(display)
+                # if display[-1] !=display[0]:
+                    # display.append(display[0])
+                # dc['display']= Polygon(display)            
+            # return dc
         
         def get_row(self):
-            display = list(self.instance.display.coords[0])
-            display.pop()
+            display = self._adapt_polygon_obj(self.instance.display)
+            bounding = self._adapt_polygon_obj(self.instance.bounding)
             dc={
-                'display':json.dumps(display )
+                'display':display,
+                'bounding':bounding
             }
             return to_dict(self.instance,filt_attr=dc)
         
+        def _adapt_polygon_obj(self,polygon_obj):
+            if polygon_obj:
+                polygon_arr = list(polygon_obj.coords[0])
+                polygon_arr.pop()
+                return json.dumps(polygon_arr)
+            else:
+                return ''
+        
         def dict_head(self, head):
-            if head['name']=='display':
+            if head['name'] in ['display','bounding']:
                 head['type']='polygon-input'
+            
         
 
         

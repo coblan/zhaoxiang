@@ -1,8 +1,11 @@
 export var ploygon_editor={
     props:['name','row','kw'],
     template: `<div>
-            <button @click="create_new()">new</button>
-            <button @click="edit()">edit</button>
+            <span v-if="row[name]"><i class="fa fa-map-o fa-2x" aria-hidden="true"></i></span>
+            <button @click="create_new()" title="新建"><i class="fa fa-plus-square-o" aria-hidden="true"></i></button>
+            <button @click="edit()" title="编辑"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+            <button @click="copy()">copy</button>
+            <button @click="paste()">paste</button>
         </div>`,
     methods:{
         create_new:function(){
@@ -32,6 +35,17 @@ export var ploygon_editor={
                 })
                 self.row[self.name]=JSON.stringify(point_arr)
             }
+        },
+        copy:function(){
+            localStorage.setItem('clip_polygon',this.row[this.name])
+            alert('复制成功!')
+        },
+        paste:function(){
+            var clip_polygon = localStorage.getItem('clip_polygon')
+            if(clip_polygon){
+                this.row[this.name]=clip_polygon
+            }
+            alert('粘贴成功!')
         }
     }
 }
