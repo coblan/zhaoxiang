@@ -19,9 +19,11 @@ from django.contrib import admin
 # from hello import views as hello_view
 from hello.engin_menu import PcMenu
 from helpers.director import login_url 
+from django.views.generic import RedirectView 
 
 from helpers.director import views as director_views
 from helpers.face import urls as face_urls
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -34,6 +36,7 @@ urlpatterns = [
     url(r'^_face/', include(face_urls)),
     url(r'^_download/(?P<app>\w+)?/?$',director_views.donwload_views,name='download_url'),    
     
+    url(r'^$',RedirectView.as_view(url='/pc/inspector.inspector'))
 ]
 
 
