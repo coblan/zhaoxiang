@@ -13,7 +13,6 @@ class InspectorPage(TablePage):
                 'scope': ','.join([unicode(x) for x in inst.scope.all()])
             }
         
-        
     tableCls=InspectorTable
     
 
@@ -57,6 +56,22 @@ class InspectorGroupFormPage(FormPage):
     fieldsCls=InspectorGroupForm
 
 
+class InspectorMapPage(TablePage):
+    template='inspector/inspector_map.html'
+    class InspectorTable(ModelTable):
+        model=Inspector
+        exclude=[]
+        
+        def dict_row(self, inst):
+            return {
+                'scope': ','.join([unicode(x) for x in inst.scope.all()])
+            }
+        
+    tableCls=InspectorTable
+
+
+
+
 model_dc[Inspector]={'fields':InspectorFormPage.InspectorForm}
 model_dc[InspectorGrop]={'fields':InspectorGroupFormPage.InspectorGroupForm}
 
@@ -65,4 +80,6 @@ page_dc.update({
     'inspector.inspector.edit':InspectorFormPage,
     'inspector.inspectorgroup':InspectorGroupPage,
     'inspector.inspectorgroup.edit':InspectorGroupFormPage,
+    
+    'inspector.inspector_map':InspectorMapPage,
 })

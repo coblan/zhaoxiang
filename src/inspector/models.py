@@ -20,11 +20,15 @@ class Inspector(models.Model):
     PDA=models.CharField('PDA号码',max_length=100,blank=True)
     head=models.CharField('头像',max_length=300,blank=True)
     # group=models.ForeignKey(InspectorGrop,verbose_name='从属组',blank=True,on_delete=None,null=True)
+    
+    last_loc=models.CharField('上次坐标',max_length=100,blank=True)
+    track_time= models.DateTimeField(verbose_name='追踪时间',blank=True,null=True)
+    
     def __unicode__(self):
         return self.name
     
 class InspectorGrop(models.Model):
     name=models.CharField('监督员组',max_length=100,unique=True)
-    inspector=models.ManyToManyField(Inspector,verbose_name='监督员',blank=True,null=True)
+    inspector=models.ManyToManyField(Inspector,verbose_name='监督员',blank=True)
 
 

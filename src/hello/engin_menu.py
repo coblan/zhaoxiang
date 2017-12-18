@@ -9,6 +9,7 @@ class PcMenu(BaseEngine):
     menu=[
         {'label':'监督员','url':page('inspector.inspector'),'icon':fa('fa-user-secret'),
          'submenu':[
+             {'label':'实时点位','url':page('inspector.inspector_map')},
              {'label':'监督员名单','url':page('inspector.inspector')},
              {'label':'监督员分组','url':page('inspector.inspectorgroup')}
              ]},
