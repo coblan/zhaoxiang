@@ -67,6 +67,11 @@ class InspectorMapPage(TablePage):
                 'scope': ','.join([unicode(x) for x in inst.scope.all()])
             }
         
+        def inn_filter(self, query):
+            query = super(self.__class__,self).inn_filter(query)
+            return query.exclude(last_loc='NaN')
+        
+        
     tableCls=InspectorTable
 
 

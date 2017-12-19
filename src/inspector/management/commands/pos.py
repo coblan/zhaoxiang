@@ -3,6 +3,8 @@ from django.core.management.base import BaseCommand
 import requests
 import xmltodict
 from inspector.models import Inspector
+from django.conf import settings
+from .alg.geo import cord2loc
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -40,11 +42,14 @@ class Command(BaseCommand):
             # 'http': 'socks5://0.tcp.ap.ngrok.io:13661',
         # }
         
-        proxies = {
-            'http': 'socks5://121.196.197.113:10810',
-        }
-
-        rt=requests.post(url,headers=headers,data=body,proxies=proxies)
+       
+        
+        proxy = getattr(settings,'DATA_PROXY',None)
+        if proxy:
+            proxies = proxy           
+            rt=requests.post(url,headers=headers,data=body,proxies=proxies)
+        else:
+            rt=requests.post(url,headers=headers,data=body)
         
         dc=xmltodict.parse(rt.content)
         
@@ -67,7 +72,12 @@ class Command(BaseCommand):
                 inspector = Inspector.objects.get(code=item.get('KEEPERSN'))
                 track_time= item.get('TRACKTIME')
                 inspector.track_time=track_time.replace('/','-')
-                inspector.last_loc = '%s,%s'%(item.get('LASTX'),item.get('LASTY'))
+                
+                x,y= item.get('LASTX'),item.get('LASTY')
+                if x !='0' and y!='0':
+                    inspector.last_loc = '%s,%s'%(cord2loc(float(x), -float(y)))
+                else:
+                    inspector.last_loc = 'NaN'
                 inspector.save()
             except Inspector.DoesNotExist:
                 pass

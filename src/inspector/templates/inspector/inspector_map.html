@@ -3,6 +3,10 @@
 {% load jsonify %}
 
 {% block page_content %}
+
+<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+<script src="http://webapi.amap.com/maps?v=1.3&key=您申请的key值&plugin=AMap.PolyEditor,AMap.CircleEditor,AMap.MouseTool"></script>
+
 <script src='{% static "js/table.pack.js?t=" %}{{ js_stamp.table_pack_js }}'></script>
 <script type="text/javascript">
 
@@ -36,12 +40,26 @@
 //		        ex:ex,
         },
         mixins:[table_fun],
+        mounted:function(){
+            init_map()
+            this.update_view()
+        },
         watch:{
             'row_sort.sort_str':function (v) {
                 this.search_args._sort=v
                 this.search()
-            }
+            },
         },
+        methods:{
+            update_view:function(){
+                ex.each(this.rows,function(row){
+                    var pair= row.last_loc.split(',')
+                    var lon = pair[0]
+                    var lat = pair[1]
+                    addMarker(parseFloat(lon),parseFloat(lat))
+                })
+            }
+        }
 
     }
     $(function () {
@@ -67,78 +85,44 @@
             {% endblock %}
         </com-table-btn>
 
-        <!--<div class='btn-group' style='float: right;' v-if="!search_args._pop">-->
-        <!--<a type="button" class="btn btn-success btn-sm" :href='add_new()' v-if='can_add' role="button">创建</a>-->
-        <!--<button type="button" class="btn btn-danger btn-sm" @click='del_item()' v-if='can_del'>删除</button>-->
-        <!--</div>-->
 
     </div>
 
-    <com-table class='table fake-suit' :has_check="!search_args._pop" :map="map"
-               :row_sort="row_sort" :heads="heads" :rows="rows" v-model="selected"></com-table>
-
-    <!--<table class='table fake-suit'>-->
-    <!--<thead>-->
-    <!--<tr >-->
-    <!--<th style='width:50px' v-if='!search_args._pop'>-->
-    <!--<input type="checkbox" name="test" value=""/>-->
-    <!--</th>-->
-    <!--<th v-for='head in heads' :class='["td_"+head.name,{"selected":is_sorted(row_sort.sort_str ,head.name )}]'>-->
-    <!--<span v-if='ex.isin(head.name,row_sort.sortable)' v-text='head.label' class='clickable' -->
-    <!--@click='row_sort.sort_str = toggle( row_sort.sort_str,head.name)'></span>-->
-    <!--<span v-else v-text='head.label'></span>-->
-    <!--<sort-mark class='sort-mark' v-model='row_sort.sort_str' :name='head.name'></sort-mark>-->
-    <!--</th>-->
-    <!--</tr>-->
-    <!--</thead>-->
-    <!--<tbody>-->
-    <!--<tr v-for='row in rows'>-->
-    <!--<td v-if='!search_args._pop'>-->
-    <!--<input type="checkbox" name="test" :value="row.pk" v-model='selected'/>-->
-    <!--</td>-->
-    <!--<td v-for='head in heads' :class='"td_"+head.name'>-->
-    <!--<a v-if='search_args._pop && head.name=="name"' href=";" @click="rt_win(row)" v-text="row['name']"></a>-->
-    <!--<span v-else v-html='map(head.name,row)'></span>-->
-    <!--</td>-->
-    <!--</tr>-->
-    <!--</tbody>-->
-    <!--</table>-->
-
-
-    <paginator :nums='row_pages.options' :crt='row_pages.crt_page' @goto_page='goto_page($event)'></paginator>
-
+    <!--<com-table class='table fake-suit' :has_check="!search_args._pop" :map="map"-->
+               <!--:row_sort="row_sort" :heads="heads" :rows="rows" v-model="selected"></com-table>-->
+    <!--<paginator :nums='row_pages.options' :crt='row_pages.crt_page' @goto_page='goto_page($event)'></paginator>-->
 
 </div>
+
+<div style="position: relative;height: 70vh;">
+    <div id="container"></div>
+</div>
+
 <style type="text/css" media="screen" id="test">
-    /*.button-group{*/
-    /*position: relative;*/
-    /*display: inline-block;*/
-    /*}*/
-    /*.form-control{*/
-    /*display: inline-block;*/
-    /*margin-left:10px;*/
-    /*width:auto;*/
-    /*/!*height:30px;*!/*/
-    /*}*/
-    /*.sort-mark{*/
-    /*float: right;*/
-    /*}*/
-    /*.selected{*/
-    /*background-color: #DDD;*/
-    /*}*/
-    /*.clickable{*/
-    /*cursor: pointer;*/
-    /*font-size:120%;*/
-    /*color: #0099CC;*/
-    /*}*/
-    /*.table tbody tr:nth-child(2n+1){*/
-    /*background-color: #F5F5F5;*/
-    /*}*/
-    /*.table tbody tr:nth-child(2n){*/
-    /*background-color: #F1F1F1;*/
-    /*}*/
 
 </style>
+<script>
+
+    function init_map(){
+        window.marker, window.map = new AMap.Map("container", {
+            resizeEnable: true,
+            center: [121.178631,31.167736],
+            zoom: 13
+        });
+    }
+
+
+
+    function addMarker(lon,lat) {
+        marker = new AMap.Marker({
+            icon: "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+            position: [lon,lat]
+        });
+        marker.setMap(map);
+    }
+
+
+</script>
 {% block extra %}
 {% endblock %}
 {% endblock %}

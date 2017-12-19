@@ -10,7 +10,3 @@ DATABASES = {
         'PORT': '5432', 
     },
 }
-
-DATA_PROXY ={
-    'http': 'socks5://localhost:10877',
-} 
