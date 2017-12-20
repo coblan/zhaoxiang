@@ -17,7 +17,7 @@
 
     Vue.component('head-img',{
         props:['row','name'],
-        template:"<div class='head'><img :src='row.head' /></div>"
+        template:"<div class='head'><img v-if='row.head' :src='row.head' /></div>"
     })
 
     Vue.component('com-gen',{

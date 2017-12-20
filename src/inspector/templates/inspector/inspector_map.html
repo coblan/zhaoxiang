@@ -43,6 +43,15 @@
         mounted:function(){
             init_map()
             this.update_view()
+
+            var self=this
+            setInterval(function(){
+                ex.get('',function(resp){
+                    self.rows=resp.rows
+
+                    self.update_view()
+                })
+            },1000*60)
         },
         watch:{
             'row_sort.sort_str':function (v) {
@@ -52,13 +61,17 @@
         },
         methods:{
             update_view:function(){
+
+                for(var k in markers){
+                    markers[k].hide()
+                }
+
                 ex.each(this.rows,function(row){
-                    var pair= row.last_loc.split(',')
-                    var lon = pair[0]
-                    var lat = pair[1]
-                    addMarker(parseFloat(lon),parseFloat(lat))
+                    update_marker(row)
+                    markers[row.code].show()
                 })
-            }
+            },
+
         }
 
     }
@@ -80,10 +93,10 @@
                     :search_tip='search_tip' @submit="search()"></com-filter>
         <div class="flex-grow"></div>
 
-        <com-table-btn v-if="!search_args._pop" :add_new="add_new" :del_item="del_item">
-            {% block extra_btn %}
-            {% endblock %}
-        </com-table-btn>
+        <!--<com-table-btn v-if="!search_args._pop" :add_new="add_new" :del_item="del_item">-->
+            <!--{% block extra_btn %}-->
+            <!--{% endblock %}-->
+        <!--</com-table-btn>-->
 
 
     </div>
@@ -112,13 +125,24 @@
     }
 
 
+    markers={}
+    function update_marker(row) {
+        var pair= row.last_loc.split(',')
+        var lon = pair[0]
+        var lat = pair[1]
+        var content=ex.template("{name}/{code}/{track_time}",row) //ex.template("<div><span>{code}</span></div>",{code:row.code})
+        if(!markers[row.code]){
+            markers[row.code] = new AMap.Marker({
+                icon: "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+                position: [lon,lat],
+                title:content
+            });
+            markers[row.code].setMap(map)
+        }else{
+            markers[row.code].setPosition([lon,lat])
+            markers[row.code].setTitle(content)
+        }
 
-    function addMarker(lon,lat) {
-        marker = new AMap.Marker({
-            icon: "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
-            position: [lon,lat]
-        });
-        marker.setMap(map);
     }
 
 
