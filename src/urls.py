@@ -17,10 +17,11 @@ from django.conf.urls import url,include
 from django.contrib import admin
 
 # from hello import views as hello_view
-from hello.engin_menu import PcMenu
-from helpers.director import login_url 
+
 from django.views.generic import RedirectView 
 
+from hello.engin_menu import PcMenu
+from helpers.director import login_url 
 from helpers.director import views as director_views
 from helpers.face import urls as face_urls
 
