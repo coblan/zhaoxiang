@@ -6,6 +6,7 @@ from helpers.director.engine import BaseEngine,page,fa,page_dc
 
 class PcMenu(BaseEngine):
     url_name='zhaoxiang'
+    brand='Z.X.Z'
     menu=[
         {'label':'监督员','url':page('inspector.inspector'),'icon':fa('fa-user-secret'),
          'submenu':[
