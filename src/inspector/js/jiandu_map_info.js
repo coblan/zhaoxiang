@@ -12,9 +12,10 @@ export class ManMapDialog{
         var infoWindow = new this.InfoWin({
             //模板, underscore
             infoTitle: `<div style="text-align: center">${man.name}(${man.code})</div>` ,
-            infoBody:`<div class="man-dialog">
+            infoBody:`<div class="man-dialog" id="${man.code}">
                 <div class="head"><img src="${man.head}" alt=""/></div>
                 <div><span>PDA:</span><span>${man.PDA}</span></div>
+                <div><span>今日上报：</span><span class="case_num"></span></div>
             </div>`,
 
 
@@ -22,5 +23,10 @@ export class ManMapDialog{
             offset: new AMap.Pixel(0, -31)
         });
         infoWindow.open(map, pos);
+        
+        setTimeout(function(){
+            $(`#${man.code} .case_num`).text('100')
+        },10)
+
     }
 }
