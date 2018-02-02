@@ -12,5 +12,5 @@ DATABASES = {
 }
 
 DATA_PROXY ={
-    'http': 'socks5://localhost:10877',
+    'http': 'socks5://localhost:10899',
 } 

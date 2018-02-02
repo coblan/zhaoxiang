@@ -30,5 +30,11 @@ class Inspector(models.Model):
 class InspectorGrop(models.Model):
     name=models.CharField('监督员组',max_length=100,unique=True)
     inspector=models.ManyToManyField(Inspector,verbose_name='监督员',blank=True)
+    
+
+class InspectorCase(models.Model):
+    code = models.CharField('编号',max_length=100,unique=True)
+    page = models.TextField('案子页面',blank=True)
+    update_time = models.DateTimeField('更新时间',auto_now=True)
 
 

@@ -25,6 +25,7 @@ from helpers.director import login_url
 from helpers.director import views as director_views
 from helpers.face import urls as face_urls
 
+from inspector.views import inspector_case
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -37,7 +38,9 @@ urlpatterns = [
     url(r'^_face/', include(face_urls)),
     url(r'^_download/(?P<app>\w+)?/?$',director_views.donwload_views,name='download_url'),    
     
-    url(r'^$',RedirectView.as_view(url='/pc/inspector.inspector'))
+    url(r'^$',RedirectView.as_view(url='/pc/inspector.inspector')),
+    
+    url('^inspector_case/(?P<code>\w+)/?$',inspector_case)
 ]
 
 

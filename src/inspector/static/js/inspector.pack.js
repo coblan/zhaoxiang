@@ -108,7 +108,7 @@ var ManMapDialog = exports.ManMapDialog = function () {
             var infoWindow = new this.InfoWin({
                 //模板, underscore
                 infoTitle: '<div style="text-align: center">' + man.name + '(' + man.code + ')</div>',
-                infoBody: '<div class="man-dialog" id="' + man.code + '">\n                <div class="head"><img src="' + man.head + '" alt=""/></div>\n                <div><span>PDA:</span><span>' + man.PDA + '</span></div>\n                <div><span>\u4ECA\u65E5\u4E0A\u62A5\uFF1A</span><span class="case_num"></span></div>\n            </div>',
+                infoBody: '<div class="man-dialog" id="' + man.code + '">\n                <div class="head"><img src="' + man.head + '" alt=""/></div>\n                <div><span>PDA:</span><span>' + man.PDA + '</span></div>\n                <div><a href="/inspector_case/' + man.code + '" target="_blank"><span>\u4ECA\u65E5\u4E0A\u62A5\uFF1A</span><span class="case_num"></span></div></a>\n            </div>',
 
                 //基点指向marker的头部位置
                 offset: new AMap.Pixel(0, -31)
@@ -116,7 +116,10 @@ var ManMapDialog = exports.ManMapDialog = function () {
             infoWindow.open(map, pos);
 
             setTimeout(function () {
-                $('#' + man.code + ' .case_num').text('100');
+                var post_url = [{ fun: 'get_case_number', code: man.code }];
+                ex.post('/_ajax/inspector', JSON.stringify(post_url), function (resp) {
+                    $('#' + man.code + ' .case_num').text(resp.get_case_number);
+                });
             }, 10);
         }
     }]);
