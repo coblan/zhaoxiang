@@ -36,3 +36,6 @@ nosetests.xml
 /log
 /run
 .idea
+*.wpr
+*.wpu
+wingdbstub.py

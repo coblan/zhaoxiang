@@ -60,11 +60,13 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */
+/* 0 */,
+/* 1 */,
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -136,29 +138,30 @@ var popup_page = exports.popup_page = {
 };
 
 /***/ }),
-/* 1 */
+/* 3 */,
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _base = __webpack_require__(2);
+var _base = __webpack_require__(5);
 
 var base = _interopRequireWildcard(_base);
 
-var _f = __webpack_require__(3);
+var _f = __webpack_require__(6);
 
 var f7 = _interopRequireWildcard(_f);
 
-var _filter_win = __webpack_require__(4);
+var _filter_win = __webpack_require__(7);
 
 var filter_win = _interopRequireWildcard(_filter_win);
 
-var _table_time_group = __webpack_require__(5);
+var _table_time_group = __webpack_require__(8);
 
-var _popup = __webpack_require__(0);
+var _popup = __webpack_require__(2);
 
-var _try = __webpack_require__(6);
+var _try = __webpack_require__(9);
 
 var try01 = _interopRequireWildcard(_try);
 
@@ -179,7 +182,7 @@ window.ff = f7.ff;
 //})
 
 /***/ }),
-/* 2 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -216,7 +219,7 @@ function bye() {
 }
 
 /***/ }),
-/* 3 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -307,8 +310,10 @@ var ff = exports.ff = {
         });
     }
 
-    // ��ҳ�治��framework7��iframe��ʱ���Զ��л�Ϊ�����ĺ��������磬��������ĳ��ҳ��ʱ��
-};if (!parent.myApp) {
+};
+
+// ��ҳ�治��framework7��iframe��ʱ���Զ��л�Ϊ�����ĺ��������磬��������ĳ��ҳ��ʱ��
+if (!parent.myApp) {
     exports.ff = ff = {
         app: {
             actions: function actions() {}
@@ -500,7 +505,7 @@ var F7Manager = exports.F7Manager = function () {
 }();
 
 /***/ }),
-/* 4 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -511,7 +516,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.open = open;
 
-var _popup = __webpack_require__(0);
+var _popup = __webpack_require__(2);
 
 function open(callback) {
     var timestamp = Date.now();
@@ -563,7 +568,7 @@ function open(callback) {
 }
 
 /***/ }),
-/* 5 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -619,7 +624,7 @@ var table_time_group = exports.table_time_group = {
 };
 
 /***/ }),
-/* 6 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
