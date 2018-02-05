@@ -8,7 +8,7 @@ from helpers.director.kv import set_value
 from bs4 import BeautifulSoup
 import json
 from django.utils.timezone import datetime
-import wingdbstub
+# import wingdbstub
 class Command(BaseCommand):
     def handle(self, *args, **options):
         self.proxies = getattr(settings,'DATA_PROXY',{})
