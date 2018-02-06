@@ -1,4 +1,7 @@
 # encoding:utf-8
+"""
+这个代码不用了，现在用manage.py case 命令定时去三高获取数据
+"""
 from __future__ import unicode_literals
 
 import requests
