@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'helpers.director',
     
     'geoinfo',
-    'inspector'
+    'inspector',
+    'key_region'
 ]
 
 MIDDLEWARE_CLASSES = [

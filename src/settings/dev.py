@@ -14,3 +14,6 @@ DATABASES = {
 DATA_PROXY ={
     'http': 'socks5://localhost:10899',
 } 
+
+
+XUNCHA_HOST = "http://localhost:8001"

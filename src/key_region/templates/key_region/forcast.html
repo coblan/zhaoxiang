@@ -1,0 +1,146 @@
+{% extends "director/index.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+<script src='{% static "js/table.pack.js?t=" %}{{ js_stamp.table_pack_js }}'></script>
+<script src='{% static "js/geoinfo.pack.js?t=" %}{{ js_stamp.geoinfo_pack_js }}'></script>
+
+<!--<script src="https://webapi.amap.com/maps?v=1.4.4&key=您申请的key值&plugin=AMap.PolyEditor,AMap.CircleEditor,AMap.MouseTool"></script>-->
+<!--<script src="https://cache.amap.com/lbs/static/addToolbar.js"></script>-->
+<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+<script type="text/javascript"
+        src="http://webapi.amap.com/maps?v=1.4.4&key=您申请的key值"></script>
+<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+
+<script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+
+<script type="text/javascript">
+
+    //	row_filters=
+    //	placeholder =
+    //	row_sort=
+    //	heads=
+    //	rows=
+    //	row_pages =
+
+    //	can_add=
+    //	can_del=
+    //	search_args=ex.parseSearch()
+    //	search字段从 search_args._q 来取值
+
+    circles = {{circles | jsonify }}
+    table_logic={
+        el:'#there',
+        data:{
+            circles:circles,
+        },
+//        mixins:[table_fun],
+//        watch:{
+//            'row_sort.sort_str':function (v) {
+//                this.search_args._sort=v
+//                this.search()
+//            }
+//        },
+        mounted:function(){
+
+        },
+        methods:{
+            on_map_loaded:function(com_map){
+                var self=this
+
+                window.map=com_map.map
+
+                AMapUI.loadUI(['overlay/SimpleMarker'], function(SimpleMarker) {
+
+                    ex.each(this.circles,function(circle_item){
+
+                        var circle = new AMap.Circle({
+                            center: circle_item.center,// 圆心位置
+                            radius: circle_item.radius, //半径
+                            strokeColor: "#833", //线颜色
+                            strokeOpacity: 0.5, //线透明度
+                            strokeWeight: 1, //线粗细度
+                            fillColor: "#ee1100", //填充颜色
+                            fillOpacity: 0.1//填充透明度
+                        });
+                        circle.setMap(com_map.map);
+
+                        new SimpleMarker({
+                            containerClassNames: 'my-marker',
+                            //普通文本
+                            iconLabel: '40%',
+                            iconStyle: 'blue',
+                            padding:'2px',
+                            map: com_map.map,
+                            position: circle_item.center,
+                        });
+                    })
+
+                    com_map.map.setMapStyle('amap://styles/light')
+                    com_map.map.setFitView()
+
+                })
+
+
+            }
+        }
+
+
+    }
+    $(function () {
+        table=new Vue(table_logic)
+    })
+
+</script>
+<style>
+    .my-marker{
+        color: white;
+        /*font-size: 16px;*/
+    }
+</style>
+{% block extra_head %}
+{% endblock %}
+
+<div id='there' style="height: 100%;" class="flex-v">
+    <!--<path-nav :menu='menu'></path-nav>-->
+
+    <!--没用到filtter暂时屏蔽他-->
+
+    <!--<div class='btn-panel flex flex-sb' style="padding-left:20px; ">-->
+
+    <!--<div v-if="row_filters.length==0" class="flex-grow"></div>-->
+
+    <!--<com-filter class="flex" :heads="row_filters" :search="search_args"-->
+    <!--&lt;!&ndash;:search_tip='search_tip' @submit="search()"></com-filter>&ndash;&gt;-->
+
+
+    <!--<div class="flex-grow"></div>-->
+    <!-- -->
+    <!--</div>-->
+
+    <!--<com-table class='table fake-suit' :has_check="!search_args._pop" :map="map"-->
+    <!--:row_sort="row_sort" :heads="heads" :rows="rows" v-model="selected"></com-table>-->
+
+
+
+    <!--<paginator :nums='row_pages.options' :crt='row_pages.crt_page' @goto_page='goto_page($event)'></paginator>-->
+
+    <div class="flex flex-grow" >
+        <div class="flex-grow" style="position: relative;">
+            <com-map ref="map_panel" @loaded="on_map_loaded($event)"></com-map>
+            <!--<div style="position: absolute;right: 2em;top:2em;">-->
+                <!--<button @click="toggle_fullscreen()" type="button" class="btn btn-primary">全屏切换</button>-->
+            <!--</div>-->
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+{% block extra %}
+{% endblock %}
+{% endblock %}
