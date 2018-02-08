@@ -12,5 +12,5 @@ DATABASES = {
 }
 
 
-
+XUNCHA_HOST = "http://10.235.80.249:8199"
 

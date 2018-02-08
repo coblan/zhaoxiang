@@ -17,6 +17,7 @@ class Forcast(object):
             poly_cods =poly_dc['polygon']
             poly = dict2poly(poly_cods)
             circle = polygon2circle(poly)
+            circle['probability']=poly_dc['probability']
             out.append(circle)
         return {
             'circles':out

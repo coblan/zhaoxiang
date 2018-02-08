@@ -8,12 +8,12 @@
 
 <!--<script src="https://webapi.amap.com/maps?v=1.4.4&key=您申请的key值&plugin=AMap.PolyEditor,AMap.CircleEditor,AMap.MouseTool"></script>-->
 <!--<script src="https://cache.amap.com/lbs/static/addToolbar.js"></script>-->
-<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
-<script type="text/javascript"
-        src="http://webapi.amap.com/maps?v=1.4.4&key=您申请的key值"></script>
-<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+<!--<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>-->
+<!--<script type="text/javascript"-->
+        <!--src="http://webapi.amap.com/maps?v=1.4.4&key=您申请的key值"></script>-->
+<!--<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>-->
 
-<script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+<!--<script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>-->
 
 <script type="text/javascript">
 
@@ -51,37 +51,39 @@
 
                 window.map=com_map.map
 
-                AMapUI.loadUI(['overlay/SimpleMarker'], function(SimpleMarker) {
+                ex.load_js('https://webapi.amap.com/ui/1.0/main.js?v=1.0.11',function(){
 
-                    ex.each(this.circles,function(circle_item){
+                    AMapUI.loadUI(['overlay/SimpleMarker'], function(SimpleMarker) {
 
-                        var circle = new AMap.Circle({
-                            center: circle_item.center,// 圆心位置
-                            radius: circle_item.radius, //半径
-                            strokeColor: "#833", //线颜色
-                            strokeOpacity: 0.5, //线透明度
-                            strokeWeight: 1, //线粗细度
-                            fillColor: "#ee1100", //填充颜色
-                            fillOpacity: 0.1//填充透明度
-                        });
-                        circle.setMap(com_map.map);
+                        ex.each(this.circles,function(circle_item){
 
-                        new SimpleMarker({
-                            containerClassNames: 'my-marker',
-                            //普通文本
-                            iconLabel: '40%',
-                            iconStyle: 'blue',
-                            padding:'2px',
-                            map: com_map.map,
-                            position: circle_item.center,
-                        });
+                            var circle = new AMap.Circle({
+                                center: circle_item.center,// 圆心位置
+                                radius: circle_item.radius, //半径
+                                strokeColor: "#833", //线颜色
+                                strokeOpacity: 0.5, //线透明度
+                                strokeWeight: 1, //线粗细度
+                                fillColor: "#ee1100", //填充颜色
+                                fillOpacity: 0.1//填充透明度
+                            });
+                            circle.setMap(com_map.map);
+
+                            new SimpleMarker({
+                                containerClassNames: 'my-marker',
+                                //普通文本
+                                iconLabel: circle_item.probability,
+                                iconStyle: 'blue',
+                                padding:'2px',
+                                map: com_map.map,
+                                position: circle_item.center,
+                            });
+                        })
+
+                        com_map.map.setMapStyle('amap://styles/light')
+                        com_map.map.setFitView()
+
                     })
-
-                    com_map.map.setMapStyle('amap://styles/light')
-                    com_map.map.setFitView()
-
                 })
-
 
             }
         }
