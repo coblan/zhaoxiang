@@ -16,7 +16,7 @@ class PcMenu(BaseEngine):
              {'label':'监督员分组','url':page('inspector.inspectorgroup')}
              ]},
         {'label':'GIS区域','url':page('geoinfo.blockpolygon'),'icon':fa('fa-map-o')},
-        {'label':'重点区域','icon':fa('fa-user-secret'),
+        {'label':'重点区域','icon':fa('fa-flag'),
              'submenu':[
                  {'label':'重点巡查区域','url':page('key_region.forcast')},
                  ]},        

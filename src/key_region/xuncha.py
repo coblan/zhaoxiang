@@ -40,7 +40,7 @@ class XunCha(object):
         
         # 总体基数
         base = 0.8
-        
+        # 判断当前检查区域，还没有被检查的概率
         if last_time > last_day_morning:
             last_pro=0.02
         elif last_time > last_day_mid:
@@ -52,7 +52,13 @@ class XunCha(object):
         
         last['probability']='%d%%'%round(100* base * last_pro)
         left = 1-last_pro
-        data[1]['probability'] ='%d%%'%round(100* base * left*0.9)
-        data[2]['probability'] ='%d%%'%round(100* base * left*0.1)
+
+        if data[1]['polygon'] == data[2]['polygon']:
+            # 两个相同区域，去掉最后一个
+            data[1]['probability'] ='%d%%'%round(100* base * left)
+            data.pop() 
+        else:
+            data[1]['probability'] ='%d%%'%round(100* base * left*0.9)
+            data[2]['probability'] ='%d%%'%round(100* base * left*0.1)            
         return data
         
