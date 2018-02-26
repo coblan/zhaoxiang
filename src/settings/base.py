@@ -39,10 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'hello',
     'helpers.director',
-    
+    'geoscope',
     'geoinfo',
     'inspector',
-    'key_region'
+    'key_region',
+    'dianzi_weilan'
 ]
 
 MIDDLEWARE_CLASSES = [
