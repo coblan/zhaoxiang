@@ -8,10 +8,10 @@ class InspectorPage(TablePage):
         model=Inspector
         exclude=[]
         
-        def dict_row(self, inst):
-            return {
-                'scope': ','.join([unicode(x) for x in inst.scope.all()])
-            }
+        # def dict_row(self, inst):
+            # return {
+                # 'scope': ','.join([unicode(x) for x in inst.scope.all()])
+            # }
         
     tableCls=InspectorTable
     
@@ -62,10 +62,10 @@ class InspectorMapPage(TablePage):
         model=Inspector
         exclude=[]
         
-        def dict_row(self, inst):
-            return {
-                'scope': ','.join([unicode(x) for x in inst.scope.all()])
-            }
+        # def dict_row(self, inst):
+            # return {
+                # 'scope': ','.join([unicode(x) for x in inst.scope.all()])
+            # }
         
         def inn_filter(self, query):
             query = super(self.__class__,self).inn_filter(query)
