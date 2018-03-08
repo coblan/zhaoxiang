@@ -5,6 +5,7 @@ from helpers.director.shortcut import page_dc,regist_director,TablePage,FormPage
 from geoscope.admin import BlockGroupTablePage,BlockGroupFormPage
 from geoscope.models import BlockGroup,BlockPolygon
 from .models import InspectorGroupAndWeilanRel
+from inspector.models import InspectorGrop
 # Register your models here.
 class Weilan(BlockGroupTablePage):
     def __init__(self,*args,**kw):
@@ -21,10 +22,17 @@ class GroupWeilanRel(TablePage):
     class tableCls(ModelTable):
         model=InspectorGroupAndWeilanRel
         exclude=[]
+        def get_heads(self):
+            heads = ModelTable.get_heads(self)
+            heads.append({'name':'block_img','label':'围栏截图'})
+            return heads
+        
         def dict_row(self, inst):
+            
             return {
-                'blocks':';'.join([x.name for x in  inst.blocks.all()]),
-                'group':inst.group.name,
+                'block': inst.block.name if inst.block else "",
+                'groups':';'.join([x.name for x in  inst.groups.all()]),
+                'block_img':"<a href='%s' target='_blank'><img src='%s' style='height:200px;'></a>"%(inst.block.shot,inst.block.shot) if inst.block else ""
             }
 
 class GroupWeilanRelFormPage(FormPage):
@@ -34,9 +42,16 @@ class GroupWeilanRelFormPage(FormPage):
             exclude=[]
         def dict_options(self):
             blocks = BlockPolygon.objects.filter(blockgroup__belong='weilan').distinct()
+            groups = InspectorGrop.objects.all()
             return {
-                'blocks':[{'value':x.pk,'label':x.name} for x in blocks]
+                'block':[{'value':x.pk,'label':x.name} for x in blocks],
+                'groups':[{'value':x.pk,'label':x.name} for x in groups]
             }
+        
+            # blocks = BlockPolygon.objects.filter(blockgroup__belong='weilan').distinct()
+            # return {
+                # 'blocks':[{'value':x.pk,'label':x.name} for x in blocks]
+            # }
         
 model_dc[InspectorGroupAndWeilanRel]={'fields':GroupWeilanRelFormPage.fieldsCls}
 page_dc.update({

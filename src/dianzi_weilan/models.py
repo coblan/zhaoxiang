@@ -6,5 +6,6 @@ from inspector.models import InspectorGrop
 from geoscope.models import BlockPolygon
 # Create your models here.
 class InspectorGroupAndWeilanRel(models.Model):
-    group = models.OneToOneField(InspectorGrop,verbose_name='监督员组')
-    blocks = models.ManyToManyField(BlockPolygon,verbose_name='相关区域')
+    block = models.OneToOneField(BlockPolygon,verbose_name='围栏名称',null=True,blank=True)
+    groups = models.ManyToManyField(InspectorGrop ,verbose_name='应用对象',null=True,blank=True)
+     
