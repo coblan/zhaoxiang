@@ -4,7 +4,7 @@ from django.contrib import admin
 from helpers.director.shortcut import page_dc,regist_director,TablePage,FormPage,ModelTable,ModelFields,model_dc
 from geoscope.admin import BlockGroupTablePage,BlockGroupFormPage
 from geoscope.models import BlockGroup,BlockPolygon
-from .models import InspectorGroupAndWeilanRel
+from .models import InspectorGroupAndWeilanRel,OutBlockWarning
 from inspector.models import InspectorGrop
 # Register your models here.
 class Weilan(BlockGroupTablePage):
@@ -52,12 +52,22 @@ class GroupWeilanRelFormPage(FormPage):
             # return {
                 # 'blocks':[{'value':x.pk,'label':x.name} for x in blocks]
             # }
+
+class OutBlockPage(TablePage):
+    class tableCls(ModelTable):
+        model=OutBlockWarning
+        exclude=[]
         
+    
+
+
 model_dc[InspectorGroupAndWeilanRel]={'fields':GroupWeilanRelFormPage.fieldsCls}
 page_dc.update({
     'dianzi_weilan.blockgroup':Weilan,
     'dianzi_weilan.blockgroup.edit':WeilanForm,
     'dianzi_weilan.groupweilanrel':GroupWeilanRel,
     'dianzi_weilan.groupweilanrel.edit':GroupWeilanRelFormPage,
+    
+    'dianzi_weilan.warning':OutBlockPage,
 })
 # page_dc.update(group_weilan_rel)

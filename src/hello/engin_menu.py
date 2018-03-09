@@ -19,9 +19,9 @@ class PcMenu(BaseEngine):
         {'label':'区域编辑','url':page('geoscope.blockgroup'),'icon':fa('fa-map-o')},
         {'label':'电子围栏','icon':fa('fa-flag'),
              'submenu':[
-                     {'label':'围栏区域','url':page('dianzi_weilan.blockgroup')},
+                    {'label':'围栏告警','url':page('dianzi_weilan.warning')},
+                    {'label':'围栏区域','url':page('dianzi_weilan.blockgroup')},
                     {'label':'围栏信息','url':page('dianzi_weilan.groupweilanrel')},
-                     
                     ]},           
         {'label':'重点区域','icon':fa('fa-flag'),
              'submenu':[
