@@ -53,21 +53,53 @@ class GroupWeilanRelFormPage(FormPage):
                 # 'blocks':[{'value':x.pk,'label':x.name} for x in blocks]
             # }
 
-class OutBlockPage(TablePage):
+class OutBlockWaringPage(TablePage):
     class tableCls(ModelTable):
         model=OutBlockWarning
-        exclude=[]
+        exclude=['id']
+        def dict_row(self, inst):
+            return {
+                'inspector': unicode(inst.inspector) if inst.inspector else "",
+                'code':inst.inspector.code if inst.inspector else "",
+                'manager':unicode(inst.manager) if inst.manager else "",
+                'proc_status': inst.proc_status == 'processed',
+                'proc_detail':'<span class="ellipsis" style="max-width:100px">%s</span>'%inst.proc_detail
+            }
+        #def dict_head(self, head):
+            #if head['name']=='proc_status':
+                #head['type']='bool'
+            #return head
+        def get_heads(self):
+            heads = ModelTable.get_heads(self)
+            for index,head in enumerate(heads):
+                if head['name']=='inspector':
+                    heads.insert(index+1, {
+                        'name':'code',
+                        'label':'编码'
+                    })
+                    break
+            return heads
+
+class OutBlockWarningFormPage(FormPage):
+    class fieldCls(ModelFields):
+        readonly=['manager','proc_time','inspector','create_time']
+        class Meta:
+            model=OutBlockWarning
+            exclude=[]
+        def save_form(self):
+            ModelFields.save_form(self)
+            self.instance.manager=self.crt_user
+            self.instance.save()
         
-    
-
-
 model_dc[InspectorGroupAndWeilanRel]={'fields':GroupWeilanRelFormPage.fieldsCls}
+model_dc[OutBlockWarning]={'fields':OutBlockWarningFormPage.fieldCls}
 page_dc.update({
     'dianzi_weilan.blockgroup':Weilan,
     'dianzi_weilan.blockgroup.edit':WeilanForm,
     'dianzi_weilan.groupweilanrel':GroupWeilanRel,
     'dianzi_weilan.groupweilanrel.edit':GroupWeilanRelFormPage,
     
-    'dianzi_weilan.warning':OutBlockPage,
+    'dianzi_weilan.warning':OutBlockWaringPage,
+    'dianzi_weilan.warning.edit':OutBlockWarningFormPage
 })
 # page_dc.update(group_weilan_rel)

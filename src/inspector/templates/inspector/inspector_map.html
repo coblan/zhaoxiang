@@ -51,11 +51,16 @@
             this.update_view()
 
             var self=this
-            setInterval(function(){
-                ex.get('',function(resp){
+            var count=0
+            var inter_id = setInterval(function(){
+                $.get('',function(resp){
                     self.rows=resp.rows
-
                     self.update_view()
+                }).fail(function(){
+                    count+=1
+                    if(count>1){
+                        clearInterval(inter_id)
+                    }
                 })
             },1000*60)
         },

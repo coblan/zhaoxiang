@@ -1,38 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
+
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-/******/
+
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
+/******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/ 		}
+
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-/******/
+
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-/******/
+
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
-/******/
+
+
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-/******/
+
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
+
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -43,7 +46,7 @@
 /******/ 			});
 /******/ 		}
 /******/ 	};
-/******/
+
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -52,19 +55,20 @@
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-/******/
+
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
+
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/
+
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 13);
+/******/ 	return __webpack_require__(__webpack_require__.s = 79);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ 0:
 /***/ (function(module, exports) {
 
 /*
@@ -120,7 +124,8 @@ module.exports = function() {
 
 
 /***/ }),
-/* 1 */
+
+/***/ 1:
 /***/ (function(module, exports) {
 
 /*
@@ -136,7 +141,7 @@ var stylesInDom = {},
 		};
 	},
 	isOldIE = memoize(function() {
-		return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
+		return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
 	}),
 	getHeadElement = memoize(function () {
 		return document.head || document.getElementsByTagName("head")[0];
@@ -372,167 +377,8 @@ function updateLink(linkElement, obj) {
 
 
 /***/ }),
-/* 2 */,
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
 
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(15);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./multi_picture.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./multi_picture.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */,
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _multi_picture = __webpack_require__(14);
-
-var _file_uploader = __webpack_require__(16);
-
-// 这个文件夹里面的所有代码暂时不用了。
-// 留下 com-multi-picture 好像是因为 color的feature时，用到了这个组件。
-// com_file_uploader 包含了图片上传的所有功能，已经移到了director/inputs目录下
-// 自己项目里面，其实可以把uis这个目录删除了。因为uis应该移到direcor(PC)或者f7(手机)目录下去
-
-
-Vue.component('com-multi-picture', _multi_picture.com_multi_picture);
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-__webpack_require__(3);
-
-var com_multi_picture = exports.com_multi_picture = {
-    props: ['to', 'value'],
-    data: function data() {
-        return {
-            picstr: this.value,
-            pictures: this.value ? this.value.split(';') : [],
-            crt_pic: ''
-        };
-    },
-    template: '<div class="com_multi_picture">\n\n    <input class="pic-input" type="file" @change="upload_pictures(event)" accept="image/*" multiple="multiple">\n\n     <ul class="sortable">\n        <li  v-for="pic in pictures" class="item" >\n            <img :src="pic" alt=""/>\n            <!--<span class="remove-btn" title="remove image" @click="remove(pic)">-->\n                <!--<i class="fa fa-window-close" aria-hidden="true"></i>-->\n            <!--</span>-->\n\n        </li>\n    </ul>\n\n    </div>',
-    mounted: function mounted() {
-        var self = this;
-        ex.load_js("/static/lib/sortable.min.js", function () {
-            new Sortable($(self.$el).find('.sortable')[0], {
-                onSort: function onSort( /**Event*/evt) {
-                    self.ajust_order();
-                }
-            });
-        });
-    },
-    computed: {
-        res_url: function res_url() {
-            return this.to ? this.to : "/res/upload";
-        }
-
-    },
-    watch: {
-        value: function value(new_val, old_val) {
-            if (this.picstr != new_val) {
-                this.picstr = new_val;
-                this.pictures = this.value ? this.value.split(';') : [];
-            }
-            if (!this.picstr) {
-                $(this.$el).find('.pic-input').val("");
-            }
-        }
-    },
-    methods: {
-        enter: function enter(pic) {
-            this.crt_pic = pic;
-        },
-        out: function out() {
-            this.crt_pic = '';
-        },
-        upload_pictures: function upload_pictures(event) {
-            var self = this;
-            var file_list = event.target.files;
-            if (file_list.length == 0) {
-                return;
-            }
-            var upload_url = this.res_url;
-            fl.uploads(file_list, upload_url, function (resp) {
-                if (resp) {
-                    var val = resp.join(';');
-                    self.$emit('input', val);
-                }
-            });
-        },
-        ajust_order: function ajust_order() {
-            var list = $(this.$el).find('ul.sortable img');
-            var url_list = [];
-            for (var i = 0; i < list.length; i++) {
-                var ele = list[i];
-                url_list.push($(ele).attr('src'));
-            }
-            var val = url_list.join(';');
-            this.picstr = val;
-            this.$emit('input', val);
-        }
-        //remove:function(pic){
-        //    var pics =this.picstr.split(';')
-        //    ex.remove(pics,function(item){return pic==item})
-        //    var val= pics.join(';')
-        //    this.$emit('input',val)
-        //}
-    }
-
-};
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".com_multi_picture .item img {\n  max-width: 300px; }\n\n.com_multi_picture .sortable {\n  display: flex;\n  flex-wrap: wrap; }\n  .com_multi_picture .sortable li {\n    display: block;\n    margin: 0.5em;\n    padding: 0.3em;\n    border: 1px solid #cbcbcb;\n    background-color: #f6f6f6;\n    position: relative; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 16 */
+/***/ 19:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -671,5 +517,154 @@ var com_file_uploader = exports.com_file_uploader = {
     }
 };
 
+/***/ }),
+
+/***/ 20:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+__webpack_require__(3);
+
+var com_multi_picture = exports.com_multi_picture = {
+    props: ['to', 'value'],
+    data: function data() {
+        return {
+            picstr: this.value,
+            pictures: this.value ? this.value.split(';') : [],
+            crt_pic: ''
+        };
+    },
+    template: '<div class="com_multi_picture">\n\n    <input class="pic-input" type="file" @change="upload_pictures(event)" accept="image/*" multiple="multiple">\n\n     <ul class="sortable">\n        <li  v-for="pic in pictures" class="item" >\n            <img :src="pic" alt=""/>\n            <!--<span class="remove-btn" title="remove image" @click="remove(pic)">-->\n                <!--<i class="fa fa-window-close" aria-hidden="true"></i>-->\n            <!--</span>-->\n\n        </li>\n    </ul>\n\n    </div>',
+    mounted: function mounted() {
+        var self = this;
+        ex.load_js("/static/lib/sortable.min.js", function () {
+            new Sortable($(self.$el).find('.sortable')[0], {
+                onSort: function onSort( /**Event*/evt) {
+                    self.ajust_order();
+                }
+            });
+        });
+    },
+    computed: {
+        res_url: function res_url() {
+            return this.to ? this.to : "/res/upload";
+        }
+
+    },
+    watch: {
+        value: function value(new_val, old_val) {
+            if (this.picstr != new_val) {
+                this.picstr = new_val;
+                this.pictures = this.value ? this.value.split(';') : [];
+            }
+            if (!this.picstr) {
+                $(this.$el).find('.pic-input').val("");
+            }
+        }
+    },
+    methods: {
+        enter: function enter(pic) {
+            this.crt_pic = pic;
+        },
+        out: function out() {
+            this.crt_pic = '';
+        },
+        upload_pictures: function upload_pictures(event) {
+            var self = this;
+            var file_list = event.target.files;
+            if (file_list.length == 0) {
+                return;
+            }
+            var upload_url = this.res_url;
+            fl.uploads(file_list, upload_url, function (resp) {
+                if (resp) {
+                    var val = resp.join(';');
+                    self.$emit('input', val);
+                }
+            });
+        },
+        ajust_order: function ajust_order() {
+            var list = $(this.$el).find('ul.sortable img');
+            var url_list = [];
+            for (var i = 0; i < list.length; i++) {
+                var ele = list[i];
+                url_list.push($(ele).attr('src'));
+            }
+            var val = url_list.join(';');
+            this.picstr = val;
+            this.$emit('input', val);
+        }
+    }
+
+};
+
+/***/ }),
+
+/***/ 3:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(61);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!./../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!./../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./multi_picture.scss", function() {
+			var newContent = require("!!./../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!./../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./multi_picture.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 61:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".com_multi_picture .item img {\n  max-width: 300px; }\n\n.com_multi_picture .sortable {\n  display: flex;\n  flex-wrap: wrap; }\n  .com_multi_picture .sortable li {\n    display: block;\n    margin: 0.5em;\n    padding: 0.3em;\n    border: 1px solid #cbcbcb;\n    background-color: #f6f6f6;\n    position: relative; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 79:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _multi_picture = __webpack_require__(20);
+
+var _file_uploader = __webpack_require__(19);
+
+// 这个文件夹里面的所有代码暂时不用了。
+// 留下 com-multi-picture 好像是因为 color的feature时，用到了这个组件。
+// com_file_uploader 包含了图片上传的所有功能，已经移到了director/inputs目录下
+// 自己项目里面，其实可以把uis这个目录删除了。因为uis应该移到direcor(PC)或者f7(手机)目录下去
+
+
+Vue.component('com-multi-picture', _multi_picture.com_multi_picture);
+
 /***/ })
-/******/ ]);
+
+/******/ });

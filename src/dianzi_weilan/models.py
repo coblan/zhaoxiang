@@ -18,9 +18,9 @@ PROC_STATUS=(
 class OutBlockWarning(models.Model):
     inspector = models.ForeignKey(Inspector,verbose_name = '监察员')
     create_time = models.DateTimeField(verbose_name='告警时间',auto_now_add=True)
-    block = models.ForeignKey(BlockPolygon,verbose_name = '告警区域')
-    manager=models.ForeignKey(User,verbose_name='处理人员')
+    #block = models.ForeignKey(BlockPolygon,verbose_name = '告警区域')
+    manager=models.ForeignKey(User,verbose_name='处理人员',blank=True,null=True)
     proc_time = models.DateTimeField(verbose_name='处理时间', auto_now=True)
-    proc_status = models.CharField('处理状态',max_length=30,choices=PROC_STATUS)
-    proc_detail = models.TextField('处理结果')
+    proc_status = models.CharField('处理状态',max_length=30,choices=PROC_STATUS,default='unprocess')
+    proc_detail = models.TextField('处理结果',blank=True)
     

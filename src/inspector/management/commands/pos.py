@@ -7,6 +7,9 @@ from django.conf import settings
 from .alg.geo import cord2loc
 
 class Command(BaseCommand):
+    """
+    获取赵巷所有监督员的位置
+    """
     def handle(self, *args, **options):
         dc = self.get_pos()
         rows = self.parse_rt(dc)
