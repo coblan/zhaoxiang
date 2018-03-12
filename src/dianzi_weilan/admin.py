@@ -6,6 +6,7 @@ from geoscope.admin import BlockGroupTablePage,BlockGroupFormPage
 from geoscope.models import BlockGroup,BlockPolygon
 from .models import InspectorGroupAndWeilanRel,OutBlockWarning
 from inspector.models import InspectorGrop
+from geoscope.polygon import poly2dict
 # Register your models here.
 class Weilan(BlockGroupTablePage):
     def __init__(self,*args,**kw):
@@ -19,20 +20,21 @@ class WeilanForm(BlockGroupFormPage):
 
 # group_weilan_rel  = regist_director(name='dianzi_weilan.groupweilanrel',src_model=InspectorGroupAndWeilanRel)
 class GroupWeilanRel(TablePage):
+    template='dianzi_weilan/weilan.html'
     class tableCls(ModelTable):
         model=InspectorGroupAndWeilanRel
-        exclude=[]
-        def get_heads(self):
-            heads = ModelTable.get_heads(self)
-            heads.append({'name':'block_img','label':'围栏截图'})
-            return heads
+        exclude=['id']
+        #def get_heads(self):
+            #heads = ModelTable.get_heads(self)
+            #heads.append({'name':'block_img','label':'围栏截图'})
+            #return heads
         
-        def dict_row(self, inst):
-            
+        def dict_row(self, inst): 
             return {
                 'block': inst.block.name if inst.block else "",
                 'groups':';'.join([x.name for x in  inst.groups.all()]),
-                'block_img':"<a href='%s' target='_blank'><img src='%s' style='height:200px;'></a>"%(inst.block.shot,inst.block.shot) if inst.block else ""
+                'polygon': poly2dict( inst.block.bounding )
+                #'block_img':"<a href='%s' target='_blank'><img src='%s' style='height:200px;'></a>"%(inst.block.shot,inst.block.shot) if inst.block else ""
             }
 
 class GroupWeilanRelFormPage(FormPage):
