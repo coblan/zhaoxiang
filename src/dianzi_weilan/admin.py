@@ -33,7 +33,7 @@ class GroupWeilanRel(TablePage):
             return {
                 'block': inst.block.name if inst.block else "",
                 'groups':';'.join([x.name for x in  inst.groups.all()]),
-                'polygon': poly2dict( inst.block.bounding )
+                'polygon': poly2dict( inst.block.bounding ) if inst.block.bounding else []
                 #'block_img':"<a href='%s' target='_blank'><img src='%s' style='height:200px;'></a>"%(inst.block.shot,inst.block.shot) if inst.block else ""
             }
 

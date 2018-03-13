@@ -78,16 +78,16 @@ var _polygon_multi_com = __webpack_require__(2);
 
 var _map_com = __webpack_require__(3);
 
-var _fullscreen = __webpack_require__(11);
+var _fullscreen = __webpack_require__(4);
 
 var dispatch = _interopRequireWildcard(_fullscreen);
 
-var _shot = __webpack_require__(6);
+var _shot = __webpack_require__(5);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //import  {dispatch_panel} from './dispatch_panel_com.js'
-__webpack_require__(7);
+__webpack_require__(6);
 
 Vue.component('polygon-input', polygon_com.ploygon_editor);
 Vue.component('polygon-multi-btn-panel', _polygon_multi_com.polygon_multi_btn_panel);
@@ -486,15 +486,15 @@ var map_com = exports.map_com = {
             poly.setMap(this.map);
         },
         highlight_polygon: function highlight_polygon(poly, color) {
-            color = color || 'red';
+            color = color || 'white';
             poly.setOptions({
-                //fillColor:color,
+                fillColor: color,
                 strokeWeight: 3,
                 strokeColor: "red"
             });
         },
         remove_highlight_polygon: function remove_highlight_polygon(poly, color) {
-            color = color || '#f5deb3';
+            color = color || '#777';
             poly.setOptions({
                 strokeWeight: 1,
                 strokeColor: "#000000",
@@ -506,9 +506,40 @@ var map_com = exports.map_com = {
 };
 
 /***/ }),
-/* 4 */,
-/* 5 */,
-/* 6 */
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.fullscreen = fullscreen;
+function fullscreen() {
+    $('#menu').hide();
+    $('.map-btn-panel').hide();
+    $('#head').hide();
+    $('.breadcrumb').hide();
+    $('#footer').hide();
+    $('.btn-panel').hide();
+    $('.tabs-bar').hide();
+}
+function exit_fullscreen() {
+    $('#menu').show();
+    $('.map-btn-panel').show();
+    $('#head').show();
+    $('.breadcrumb').show();
+    $('#footer').show();
+    $('.btn-panel').show();
+    $('.tabs-bar').show();
+}
+
+window.fullscreen = fullscreen;
+window.exit_fullscreen = exit_fullscreen;
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -569,16 +600,16 @@ function shot(ele, callback) {
 window.shot = shot;
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(8);
+var content = __webpack_require__(7);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(10)(content, {});
+var update = __webpack_require__(9)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -595,10 +626,10 @@ if(false) {
 }
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(9)();
+exports = module.exports = __webpack_require__(8)();
 // imports
 
 
@@ -609,7 +640,7 @@ exports.push([module.i, ".map-btn-panel {\n  width: 20em;\n  margin: 0.5em;\n  b
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports) {
 
 /*
@@ -665,7 +696,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports) {
 
 /*
@@ -915,39 +946,6 @@ function updateLink(linkElement, obj) {
 		URL.revokeObjectURL(oldSrc);
 }
 
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.fullscreen = fullscreen;
-function fullscreen() {
-    $('#menu').hide();
-    $('.map-btn-panel').hide();
-    $('#head').hide();
-    $('.breadcrumb').hide();
-    $('#footer').hide();
-    $('.btn-panel').hide();
-    $('.tabs-bar').hide();
-}
-function exit_fullscreen() {
-    $('#menu').show();
-    $('.map-btn-panel').show();
-    $('#head').show();
-    $('.breadcrumb').show();
-    $('#footer').show();
-    $('.btn-panel').show();
-    $('.tabs-bar').show();
-}
-
-window.fullscreen = fullscreen;
-window.exit_fullscreen = exit_fullscreen;
 
 /***/ })
 /******/ ]);
