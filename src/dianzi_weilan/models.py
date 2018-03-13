@@ -9,6 +9,9 @@ from geoscope.models import BlockPolygon
 class InspectorGroupAndWeilanRel(models.Model):
     block = models.OneToOneField(BlockPolygon,verbose_name='围栏名称',null=True,blank=True)
     groups = models.ManyToManyField(InspectorGrop ,verbose_name='应用对象',null=True,blank=True)
+    
+    def __unicode__(self):
+        return unicode( self.block ) or '未命名围栏'
 
 PROC_STATUS=(
     ('processed','已处理'),

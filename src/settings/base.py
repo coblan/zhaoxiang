@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'geoinfo',
     'inspector',
     'key_region',
-    'dianzi_weilan'
+    'dianzi_weilan',
+    'case_cmp',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -62,7 +63,7 @@ ROOT_URLCONF = 'urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

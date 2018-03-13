@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+{% load static %}
+{% load jsonify %}
+<head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <script src="{% static 'lib/jquery3.2.1.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/font-awesome4.7/font-awesome4.7.min.css' %}">
+    <script src="{% static 'lib/vue2.3.2.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'lib/bootstrap.min.css' %}">
+    <script src="{% static 'lib/bootstrap.min.js' %}"></script>
+    <script src="{% static 'lib/moment2.17.1.min.js' %}"></script>
+
+    <script src='{% static "js/i18n.js?t=" %}{{ js_stamp.i18n_js }}'></script>
+    <script src='{% static "js/exfun.pack.js?t=" %}{{ js_stamp.exfun_js }}'></script>
+    <!--<script src='{% static "js/uis.pack.js?t=" %}{{ js_stamp.uis_pack_js }}'></script>-->
+    <!--<script src='{% static "js/fields.pack.js?t=" %}{{ js_stamp.fields_pack_js }}'></script>-->
+
+    <script src='{% static "js/director.pack.js?t=" %}{{ js_stamp.director_pack_js }}'></script>
+
+    {% for js in ex_js %}
+    <script src='{{js}}'></script>
+    {% endfor%}
+
+    <title></title>
+</head>
+
+{% include 'director/reverse.html' %}
+
+<script type="text/javascript">
+    Vue.config.devtools = true
+    menu= {{menu| jsonify}}
+
+    var search_args = ex.parseSearch()
+    $(function () {
+
+        new Vue({
+            el:'#head',
+            data:{
+                search_args:search_args
+            }
+        })
+
+        frame=new Vue({
+            el:'#menu',
+            data:{
+                menu:menu,
+                search_args:search_args
+            }
+        })
+
+        new Vue({
+            el:'#footer',
+            data:{
+                search_args:search_args
+            }
+        })
+
+//	    	for(var i=0;i<100;i++){
+//		    	if($('body').height()<$(window).height()-10){
+//			    	$('#wrap').css('min-height',($('#wrap').height()+10)+'px')
+//		    	}else{
+//			    	break;
+//		    	}
+//	    	}
+    })
+
+
+    function get_active_menu_list(menu){
+        var ls=[]
+        ex.each(menu,function(act){
+            if(act.selected){
+                ls.push(act)
+                if(act.submenu){
+                    ex.each(act.submenu,function(sub_act){
+                        if(sub_act.active){
+                            ls.push(sub_act)
+                        }
+                    })
+                }
+            }
+        })
+        return ls
+    }
+
+
+
+    $(function(){
+        // 注意哦，menu本身不具备active属性，是由menu组件来识别active属性后，再添加到menu数据上
+        act_menu_list= get_active_menu_list(menu)
+
+        if(!document.title){
+            if( page_label !=''){
+                document.title = page_label + '| {{brand}}'
+            }else if(act_menu_list.length>0){
+                document.title = act_menu_list[act_menu_list.length-1].label + '| {{brand}}'
+            }
+        }
+
+        var mom=moment()
+        $('.head-bar .date').html( mom.format('YYYY年M月D号 第w周 星期E'))
+
+        if(!search_args._pop){
+            $('.head-bar.hide').removeClass('hide')
+        }
+    })
+
+//    setInterval(function(){
+//        var post_data=[{fun:'get_weilan_warning',stamp:'sss'}]
+//        $.post('/_ajax/dianzi_weilan',JSON.stringify(post_data),function(resp){
+//            if(resp.get_weilan_warning){
+//                console.log('has')
+//            }
+//
+//        })
+//
+//    },1000*60*2)
+//
+//    function get_weilan_warning() {
+//        setTimeout(function() {
+//            var post_data=[{fun:'get_weilan_warning',stamp:'sss'}]
+//            $.get("/path/to/server", function(data, status) {
+//                $.post('/_ajax/dianzi_weilan',JSON.stringify(post_data),function(resp){
+//                    if(resp.get_weilan_warning){
+//                        console.log('has')
+//                    }
+//                    // 发起下一次请求
+//                    get_weilan_warning();
+//                })
+//            });
+//        }, 1000*60*2);
+//    }
+
+
+    function poll(func,delay){
+        function poll_fun(){
+            func(function(next){
+                if(next){
+                    setTimeout(function(){
+                        poll_fun()
+                    },delay)
+                }
+            })
+        }
+        poll_fun()
+    }
+
+    poll(function(poll_next){
+        var post_data=[{fun:'get_weilan_warning',stamp:'sss'}]
+        $.post('/_ajax/dianzi_weilan',JSON.stringify(post_data),function(resp){
+            if(resp.get_weilan_warning){
+                var notification = new Notification('有新的围栏警告', {
+                    body: '有新的围栏警告。'
+                });
+            }
+            // 发起下一次请求
+            poll_next(true)
+        })
+    },1000*60)
+
+
+</script>
+
+<style>
+    .hide{
+        display: none;
+    }
+</style>
+<body >
+<div class="flex">
+    <div class="flex-v page-wrap">
+        <div id='head' class="head-bar hide" v-if="!search_args._pop">
+            <div class="head-item brand">
+                <b>{{brand}}</b>
+            </div>
+
+            <div class="head-item" style="padding: 0.5em 1em 0.3em 1em;">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+                <span class="date"></span>
+            </div>
+            <div class='crt_user'>
+                {% if user.is_authenticated %}
+			    <span>欢迎 &nbsp
+			    {% if user.first_name %}
+			    	{{ user.first_name}}
+			    {% else %}
+			    	{{ user.username}}
+			    {% endif %}
+			    </span>&nbsp/&nbsp
+                <a href="/accounts/logout/?next=/">退出</a>
+                {% else %}
+                <a href="/accounts/login/?next=/">登陆</a>
+                <a href="/accounts/regist/">注册</a>
+                {% endif %}
+            </div>
+
+        </div>
+        <div id='wrap' class="flex-grow flex">
+            <div id='menu' v-if="!search_args._pop">
+                <expand_menu :menu='menu'></expand_menu>
+            </div>
+            <div id='content' class="flex-grow">
+                {% block page_content %}
+
+                {% endblock %}
+            </div>
+        </div>
+
+        <div id='footer' v-if="!search_args._pop">
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<script type="text/javascript">
+    Vue.component('path-nav',{
+        template:'#path-nav',
+        props:['menu'],
+        methods:{
+            get_active_links:function () {
+                var ls=[]
+                ex.each(this.menu,function(act){
+                    if(act.selected){
+                        ls.push(act)
+                        if(act.submenu){
+                            ex.each(act.submenu,function(sub_act){
+                                if(sub_act.active){
+                                    ls.push(sub_act)
+                                }
+                            })
+                        }
+                    }
+                })
+                return ls
+            }
+        }
+    })
+</script>
+<template id='path-nav'>
+    <ol class="breadcrumb">
+        <li v-for='act in get_active_links()'><span v-text='act.label'></span></li>
+        <slot></slot>
+    </ol>
+</template>
+<style type="text/css" media="screen" id="test">
+
+    body{
+        background-color: #EEEEEE;
+    }
+    .page-wrap{
+        min-width: 100vw;
+
+        min-height: 100vh;
+    }
+    ._expand_menu{
+        width:200px;
+    }
+    #head{
+        overflow: hidden;
+        background-color: #2C3542;
+        min-height:40px;
+        color: #C5C5C5;
+    }
+    #head .crt_user{
+        float: right;
+        padding: 0.4em 3em 0.3em 1em;
+    }
+
+    #wrap{
+        position: relative;
+
+    }
+    #menu{
+        background-color: #2C3542;
+    }
+
+    #content{
+        /*margin-left: 210px;*/
+        padding: 20px;
+    }
+    #footer{
+        background-color: #2C3542;
+        min-height:30px;
+        /*height: 400px;*/
+
+    }
+
+    .btn-panel{
+        /*background-color: white;
+        background-color: #e5e5e5;
+        background-image: linear-gradient(to bottom, #f3f3f3, #e5e5e5);
+        border: 1px solid #CDCDCD;
+        border-radius:5px;*/
+        padding: 10px;
+        margin: 3px 0px 10px 0px;
+    }
+    .btn-group{
+        display: inline-block;
+        margin-left:10px;
+    }
+    .field input[type='text'],.field input[type="number"]{
+        max-width:300px;
+    }
+    .field select.form-control{
+        max-width:300px;
+    }
+</style>
+</body>
+</html>

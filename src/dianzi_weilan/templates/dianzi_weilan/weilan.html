@@ -17,6 +17,11 @@
     //	can_del=
     //	search_args=ex.parseSearch()
     //	search字段从 search_args._q 来取值
+    ex.each(heads,function(head){
+        if(head.name=='block'){
+            head.type='com-weilan'
+        }
+    })
     table_logic={
         el:'#there',
         data:{
@@ -46,10 +51,20 @@
             var map_com = this.$refs.map_com
             map_com.on_init(function(){
                 ex.each(rows,function(row){
-                    map_com.insert_polygon(row.polygon)
+                    row.js_poly = map_com.insert_polygon(row.polygon)
                 })
                 map_com.map.setFitView();
             })
+        },
+        methods:{
+            hight_region:function(row){
+                var map_com = this.$refs.map_com
+                if(this._old_row && this._old_row.js_poly){
+                    map_com.remove_highlight_polygon(this._old_row.js_poly)
+                }
+                this._old_row=row
+                map_com.highlight_polygon(row.js_poly,'white')
+            }
         }
 
     }
@@ -89,7 +104,7 @@
     </div>
 
     <div class="flex flex-grow">
-        <div>
+        <div style="margin: 1em 2em;min-width: 30em;">
             <com-table class='table fake-suit' :has_check="!search_args._pop" :map="map"
                        :row_sort="row_sort" :heads="heads" :rows="rows" v-model="selected"></com-table>
 
@@ -99,14 +114,19 @@
             <com-map ref="map_com"></com-map>
         </div>
     </div>
-
-
-
-
-
-
 </div>
 
+<script>
+    Vue.component('com-weilan',{
+        props:['name','row'],
+        template:'<a href="#" @click="on_click()" v-text="row[name]"></a>',
+        methods:{
+            on_click:function(){
+                this.$root.hight_region(this.row)
+            }
+        }
+    })
+</script>
 {% block extra %}
 {% endblock %}
 {% endblock %}

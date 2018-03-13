@@ -69,15 +69,15 @@ export var map_com = {
             poly.setMap(this.map)
         },
         highlight_polygon:function(poly,color){
-            color = color || 'red'
+            color = color || 'white'
             poly.setOptions({
-                //fillColor:color,
+                fillColor:color,
                 strokeWeight:3,
                 strokeColor: "red",
             })
         },
         remove_highlight_polygon:function(poly,color){
-            color = color || '#f5deb3'
+            color = color || '#777'
             poly.setOptions({
                 strokeWeight:1,
                 strokeColor: "#000000",
