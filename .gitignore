@@ -38,4 +38,3 @@ nosetests.xml
 .idea
 *.wpr
 *.wpu
-wingdbstub.py

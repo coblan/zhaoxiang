@@ -6,6 +6,12 @@ from .models import OutBlockWarning
 from django.utils.timezone import datetime,make_aware
 
 def check_inspector(inspector):
+    """
+    python manage.py check_inspector_pos 命令调用该函数
+    
+    该函数作用是检查inspector是否在自己所属的电子围栏类，如果不在，则make warning
+    inspector的电子围栏来自于所属的group
+    """
     if inspector.last_loc and inspector.last_loc !='NaN':
         x,y=inspector.last_loc.split(',')
         pos = Point(float(x),float(y))
