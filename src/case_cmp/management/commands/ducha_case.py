@@ -25,6 +25,7 @@ class Command(BaseCommand):
             obj.litclass=row[5]
             obj.addr=row[8]
             
+            obj.KEY=row[-2]
             dc = row[-1]
             #obj.coord='%s,%s'%(dc.get('x'),dc.get('y'))
             loc_x,loc_y = cord2loc(float( dc.get('x') ),float( dc.get('y') ))
@@ -33,6 +34,8 @@ class Command(BaseCommand):
             obj.pic= pic
             audio = [x['src'] for x in json.loads(dc.get('audio'))]
             obj.audio= audio
+            
+            
             obj.save()
             
             print(obj.taskid,obj.subtime)

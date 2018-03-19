@@ -16,7 +16,11 @@ class DuchaCase(models.Model):
     addr=models.CharField('地址',max_length=500,blank=True)
     pic=JsonField('图片',blank=True)
     audio=JsonField('音频',blank=True)
+    KEY=models.CharField('KEY',max_length=30,blank=True)
     loc = models.PointField(verbose_name='经纬度',blank=True,null=True)
+    
+    def __unicode__(self):
+        return self.taskid
     
 
 class JianduCase(models.Model):

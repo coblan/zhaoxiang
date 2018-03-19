@@ -34,5 +34,5 @@ class Command(BaseCommand):
             obj.org_code = json.dumps(row)
             obj.save()
             
-            print(row.taskid,row.subtime)
+            print(obj.taskid,obj.subtime)
 
