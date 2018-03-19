@@ -18,11 +18,12 @@ class Command(BaseCommand):
         spd = DuchaCaseSpider()
         for row in spd.get_data():
             taskid=row[1]
+            
             obj , _ = DuchaCase.objects.get_or_create(taskid=taskid)
             obj.subtime=row[7]
             obj.bigclass = row[4]
             obj.litclass=row[5]
-            obj.addr=row[6]
+            obj.addr=row[8]
             
             dc = row[-1]
             #obj.coord='%s,%s'%(dc.get('x'),dc.get('y'))
@@ -33,6 +34,8 @@ class Command(BaseCommand):
             audio = [x['src'] for x in json.loads(dc.get('audio'))]
             obj.audio= audio
             obj.save()
+            
+            print(obj.taskid,obj.subtime)
             
             
             
