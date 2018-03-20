@@ -9,7 +9,7 @@ class DuchaCaseSpider(object):
     def __init__(self):
         self.proxies = getattr(settings,'DATA_PROXY',{})
 
-    def get_data(self,mintime='2010'):
+    def get_data(self):
         """
         @mintime:2018-02-03 06:02
         
@@ -43,8 +43,8 @@ class DuchaCaseSpider(object):
             content = self.get_page(crt_index)
             rows,total = self.parse_page(content)
             for row in rows:
-                if row[7] < mintime:
-                    raise StopIteration
+                #if row[7] < mintime:
+                    #raise StopIteration
                 key = row[-1]
                 # 抓取督查按键详细页面，获取坐标，图片列表等。
                 dc = self.get_deep_info(key)

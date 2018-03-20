@@ -17,3 +17,5 @@ DATA_PROXY ={
 
 
 XUNCHA_HOST = "http://localhost:8001"
+
+DEV_STATUS='dev'

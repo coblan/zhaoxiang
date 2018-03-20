@@ -6,21 +6,36 @@ from django.conf import settings
 from case_cmp.spider.jiandu import JianDuSpider
 from case_cmp.models import JianduCase
 from django.contrib.gis.geos import Polygon,Point
-from inspector.management.commands.alg.geo import cord2loc
+from .alg.geo import cord2loc
 
 import json
 
-import wingdbstub
+if getattr(settings,'DEV_STATUS',None)=='dev':
+    import wingdbstub
 
 class Command(BaseCommand):
     """
     检查监督员的位置，判断其是否出界
     """
+    def add_arguments(self, parser):
+        parser.add_argument('mintime', nargs='?',)
+        
     def handle(self, *args, **options):
+        mintime = options.get('mintime')
+        if not mintime:
+            last_case = JianduCase.objects.order_by('-subtime').first()
+            if last_case:
+                mintime=last_case.subtime
+            else:
+                mintime='all'
+        
         spd = JianDuSpider()
         for row in spd.get_data():
+            subtime = row[4]
+            if mintime !='all' and subtime <mintime:
+                return
+            
             taskid=row[2]
-        
             obj , _ = JianduCase.objects.get_or_create(taskid=taskid)
             obj.subtime=row[4]
             obj.bigclass = row[6]

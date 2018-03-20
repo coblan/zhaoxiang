@@ -17,7 +17,7 @@ class PcMenu(BaseEngine):
              ]},
         # {'label':'GIS区域','url':page('geoinfo.blockpolygon'),'icon':fa('fa-map-o')},
         {'label':'区域编辑','url':page('geoscope.blockgroup'),'icon':fa('fa-map-o')},
-        {'label':'按键对比','url':page('case_cmp.duchacase'),'icon':fa('fa-map-o')},
+        {'label':'案件对比','url':page('case_cmp.duchacase'),'icon':fa('fa-map-o')},
         {'label':'电子围栏','icon':fa('fa-flag'),
              'submenu':[
                     {'label':'围栏告警','url':page('dianzi_weilan.warning')},
