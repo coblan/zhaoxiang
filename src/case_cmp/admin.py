@@ -34,7 +34,7 @@ class CaseCmpFormPage(FormPage):
             loc = row['loc']
             row['loc'] = row['loc'].x, row['loc'].y
             
-            distance = 3200 
+            distance = 500 
             ref_location = loc
             ls = []
             for case in  JianduCase.objects.filter(loc__distance_lte=(ref_location, D(m=distance))):
