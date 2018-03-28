@@ -4,7 +4,7 @@ from django.contrib import admin
 from helpers.director.shortcut import page_dc,regist_director,TablePage,FormPage,ModelTable,ModelFields,model_dc
 from geoscope.admin import BlockGroupTablePage,BlockGroupFormPage
 from geoscope.models import BlockGroup,BlockPolygon
-from .models import InspectorGroupAndWeilanRel,OutBlockWarning
+from .models import InspectorGroupAndWeilanRel,OutBlockWarning,WorkInspector
 from inspector.models import InspectorGrop
 from geoscope.polygon import poly2dict
 # Register your models here.
@@ -92,9 +92,40 @@ class OutBlockWarningFormPage(FormPage):
             ModelFields.save_form(self)
             self.instance.manager=self.crt_user
             self.instance.save()
+
+class WorkinspectorPage(TablePage):
+    class tableCls(ModelTable):
+        model = WorkInspector
+        exclude=[]
         
+        def dict_row(self, inst):
+            return {
+                'inspector':';'.join([unicode(x) for x in inst.inspector.all()])
+            }
+
+class WorkinspectorFormPage(FormPage):
+    template='dianzi_weilan/workinspector_form.html'
+    class fieldsCls(ModelFields):
+        class Meta:
+            model = WorkInspector
+            exclude= []
+    
+    def get_context(self):
+        ctx= FormPage.get_context(self)
+        ls= []
+        for group in InspectorGrop.objects.all():
+            ls.append({
+                'label':group.name,
+                'inspectors':[x.pk for x in group.inspector.all()]
+            })
+        ctx['groups'] = ls
+        return ctx
+        
+
 model_dc[InspectorGroupAndWeilanRel]={'fields':GroupWeilanRelFormPage.fieldsCls}
 model_dc[OutBlockWarning]={'fields':OutBlockWarningFormPage.fieldCls}
+model_dc[WorkInspector]={'fields':WorkinspectorFormPage.fieldsCls}
+
 page_dc.update({
     'dianzi_weilan.blockgroup':Weilan,
     'dianzi_weilan.blockgroup.edit':WeilanForm,
@@ -102,6 +133,9 @@ page_dc.update({
     'dianzi_weilan.groupweilanrel.edit':GroupWeilanRelFormPage,
     
     'dianzi_weilan.warning':OutBlockWaringPage,
-    'dianzi_weilan.warning.edit':OutBlockWarningFormPage
+    'dianzi_weilan.warning.edit':OutBlockWarningFormPage,
+    
+    'dianzi_weilan.workinspector':WorkinspectorPage,
+    'dianzi_weilan.workinspector.edit':WorkinspectorFormPage,
 })
 # page_dc.update(group_weilan_rel)

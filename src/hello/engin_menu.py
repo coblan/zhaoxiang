@@ -23,6 +23,7 @@ class PcMenu(BaseEngine):
                     {'label':'围栏告警','url':page('dianzi_weilan.warning')},
                     {'label':'围栏区域','url':page('dianzi_weilan.blockgroup')},
                     {'label':'围栏信息','url':page('dianzi_weilan.groupweilanrel')},
+                    {'label':'上班排单','url':page('dianzi_weilan.workinspector')}
                     ]},           
         {'label':'重点区域','icon':fa('fa-flag'),
              'submenu':[

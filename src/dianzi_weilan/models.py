@@ -27,3 +27,9 @@ class OutBlockWarning(models.Model):
     proc_status = models.CharField('处理状态',max_length=30,choices=PROC_STATUS,default='unprocess')
     proc_detail = models.TextField('处理结果',blank=True)
     
+
+class WorkInspector(models.Model):
+    date = models.DateField(verbose_name='对应日期',blank=True,null=True)
+    inspector = models.ManyToManyField(Inspector,verbose_name='对应监督员',blank=True)
+    
+    
