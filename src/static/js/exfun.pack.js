@@ -60,26 +60,26 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 74);
+/******/ 	return __webpack_require__(__webpack_require__.s = 76);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 74:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _old = __webpack_require__(75);
+var _old = __webpack_require__(77);
 
-var _network = __webpack_require__(76);
+var _network = __webpack_require__(78);
 
-var _urlparse = __webpack_require__(77);
+var _urlparse = __webpack_require__(79);
 
-var _collection = __webpack_require__(78);
+var _collection = __webpack_require__(80);
 
-var _patch = __webpack_require__(79);
+var _patch = __webpack_require__(81);
 
 var path = _interopRequireWildcard(_patch);
 
@@ -102,7 +102,7 @@ window.ex = ex;
 
 /***/ }),
 
-/***/ 75:
+/***/ 77:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -332,47 +332,47 @@ var old = exports.old = {
         return out_list;
     }
 
-    //function parseSearch(queryString) {
-    //    var queryString = queryString || location.search
-    //    if(queryString.startsWith('?')){
-    //        var queryString=queryString.substring(1)
-    //    }
-    //    var params = {}
-    //    // Split into key/value pairs
-    //    var queries = queryString.split("&");
-    //    // Convert the array of strings into an object
-    //    for (var i = 0; i < queries.length; i++ ) {
-    //        var mt = /([^=]+?)=(.+)/.exec(queries[i])
-    //        params[mt[1]] = mt[2];
-    //    }
-    //    return params;
-    //}
-    //function searchfy(obj,pre){
-    //    var outstr=pre||''
-    //    for(x in obj){
-    //        if(obj[x]){
-    //            outstr+=x.toString()+'='+ obj[x].toString()+'&';
-    //        }
-    //
-    //    }
-    //    if(outstr.endsWith('&')){
-    //        return outstr.slice(0,-1)
-    //    }else{
-    //        return outstr
-    //    }
-    //
-    //}
-    //function update(dst_obj,src_obj) {
-    //    for(x in src_obj){
-    //        dst_obj[x]=src_obj[x]
-    //    }
-    //}
-
 };
+
+//function parseSearch(queryString) {
+//    var queryString = queryString || location.search
+//    if(queryString.startsWith('?')){
+//        var queryString=queryString.substring(1)
+//    }
+//    var params = {}
+//    // Split into key/value pairs
+//    var queries = queryString.split("&");
+//    // Convert the array of strings into an object
+//    for (var i = 0; i < queries.length; i++ ) {
+//        var mt = /([^=]+?)=(.+)/.exec(queries[i])
+//        params[mt[1]] = mt[2];
+//    }
+//    return params;
+//}
+//function searchfy(obj,pre){
+//    var outstr=pre||''
+//    for(x in obj){
+//        if(obj[x]){
+//            outstr+=x.toString()+'='+ obj[x].toString()+'&';
+//        }
+//
+//    }
+//    if(outstr.endsWith('&')){
+//        return outstr.slice(0,-1)
+//    }else{
+//        return outstr
+//    }
+//
+//}
+//function update(dst_obj,src_obj) {
+//    for(x in src_obj){
+//        dst_obj[x]=src_obj[x]
+//    }
+//}
 
 /***/ }),
 
-/***/ 76:
+/***/ 78:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -457,7 +457,7 @@ var network = exports.network = {
 
 /***/ }),
 
-/***/ 77:
+/***/ 79:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -551,6 +551,14 @@ var urlparse = exports.urlparse = {
             relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [, ''])[1],
             segments: a.pathname.replace(/^\//, '').split('/')
         };
+    },
+    cdLast: function cdLast(path) {
+        var mt = /(.*?)\/([^\/]*)\/?$/.exec(path);
+        if (mt) {
+            return mt[1];
+        } else {
+            return '/';
+        }
     }
 };
 
@@ -560,7 +568,7 @@ function para_encode(para_str) {
 
 /***/ }),
 
-/***/ 78:
+/***/ 80:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -761,7 +769,7 @@ var collection = exports.collection = {
 
 /***/ }),
 
-/***/ 79:
+/***/ 81:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
