@@ -28,7 +28,9 @@ class PcMenu(BaseEngine):
         {'label':'重点区域','icon':fa('fa-flag'),
              'submenu':[
                  {'label':'重点巡查区域','url':page('key_region.forcast')},
-                 ]},        
+                 ]},
+        {'label':'参数设置','url':page('kv'),'icon':fa('fa-map-o')},
+        
         
     ]
     

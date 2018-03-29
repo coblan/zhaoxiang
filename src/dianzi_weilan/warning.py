@@ -2,8 +2,11 @@
 from __future__ import unicode_literals
 from inspector.models import Inspector
 from django.contrib.gis.geos import Polygon,Point
-from .models import OutBlockWarning
+from .models import OutBlockWarning,WorkInspector
 from django.utils.timezone import datetime,make_aware
+from helpers.director.kv import get_value
+from django.utils.timezone import datetime,localtime
+
 
 def check_inspector(inspector):
     """
@@ -12,7 +15,25 @@ def check_inspector(inspector):
     该函数作用是检查inspector是否在自己所属的电子围栏类，如果不在，则make warning
     inspector的电子围栏来自于所属的group
     """
-    if inspector.last_loc and inspector.last_loc !='NaN':
+    now = datetime.now()
+    in_worktime=False
+    work_time = get_value('work_time','8:30-12:30;14:00-18:00')
+    ls =work_time.split(';')
+    for span in ls:
+        start,end = span.split('-')
+        start,end = (to_datetime(start),to_datetime(end))
+        if start <= now <=end:
+            in_worktime=True
+    if not in_worktime:
+        return
+    today = now.date()
+    workgroup = WorkInspector.objects.get(date=today)
+    inspector_list = list(workgroup.inspector.all())
+    if inspector not in inspector_list:
+        return
+    if inspector.last_loc =='NaN':
+        make_warning(inspector)
+    else:
         x,y=inspector.last_loc.split(',')
         pos = Point(float(x),float(y))
         if not in_the_block(pos, inspector):
@@ -24,7 +45,8 @@ def in_the_block(pos,inspector):
     for group in inspector.inspectorgrop_set.all():
         for rel in group.inspectorgroupandweilanrel_set.all():
             polygon = rel.block.bounding
-            if polygon.contains(pos):
+            # 经纬度坐标之distance*100大致等于公里数。因为不准确性的存在，warning_distance是按照公里数来判断的。
+            if pos.distance(polygon)*100< float( get_value('warning_distance','0.3') ):
                 return True
             else:
                 out_blocks.append(polygon)
@@ -45,3 +67,9 @@ def has_warning(inspector):
 def make_warning(inspector):
     OutBlockWarning.objects.create(inspector=inspector)
 
+
+
+def to_datetime(time_str):
+    mm = datetime.strptime(time_str,'%H:%M')
+    now = datetime.now()
+    return mm.replace(year=now.year,month=now.month,day=now.day)

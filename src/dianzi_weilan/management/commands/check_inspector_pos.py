@@ -3,7 +3,8 @@ from django.core.management.base import BaseCommand
 from inspector.models import Inspector
 from dianzi_weilan.warning import check_inspector
 from django.conf import settings
-#import wingdbstub
+if getattr(settings,'DEV_STATUS',None)=='dev':
+    import wingdbstub
 
 class Command(BaseCommand):
     """
