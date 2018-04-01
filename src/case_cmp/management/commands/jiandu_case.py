@@ -6,7 +6,7 @@ from django.conf import settings
 from case_cmp.spider.jiandu import JianDuSpider
 from case_cmp.models import JianduCase
 from django.contrib.gis.geos import Polygon,Point
-from .alg.geo import cord2loc
+from .alg.geo2 import cord2loc
 
 import json
 
