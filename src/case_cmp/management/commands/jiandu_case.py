@@ -26,13 +26,14 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         #mintime = options.get('mintime')
         today = datetime.now().strftime('%Y-%m-%d')
-        start = options.get('s') or today
-        mintime = start
+        
+        end= options.get('e') or today
+        mintime = end
         last_case = JianduCase.objects.order_by('-subtime').first()
         if last_case:
             mintime=last_case.subtime
-        end= options.get('e') or mintime[0:10]
         
+        start = options.get('s') or mintime[0:10]
         spd = JianDuSpider(start,end)
         count = 0
         for row in spd.get_data():
