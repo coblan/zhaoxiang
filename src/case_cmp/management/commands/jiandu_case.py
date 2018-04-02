@@ -7,6 +7,7 @@ from case_cmp.spider.jiandu import JianDuSpider
 from case_cmp.models import JianduCase
 from django.contrib.gis.geos import Polygon,Point
 from .alg.geo2 import cord2loc
+from django.utils.timezone import datetime
 import time
 import json
 
@@ -18,28 +19,28 @@ class Command(BaseCommand):
     检查监督员的位置，判断其是否出界
     """
     def add_arguments(self, parser):
-        parser.add_argument('mintime', nargs='?',)
+        #parser.add_argument('mintime', nargs='?',)
+        parser.add_argument('-s', nargs='?')
+        parser.add_argument('-e', nargs='?')
         
     def handle(self, *args, **options):
-        mintime = options.get('mintime')
-        if not mintime:
-            last_case = JianduCase.objects.order_by('-subtime').first()
-            if last_case:
-                mintime=last_case.subtime
-            else:
-                mintime='all'
+        #mintime = options.get('mintime')
+        today = datetime.now().strftime('%Y-%m-%d')
+        start = options.get('s',today)
+        mintime = start
+        last_case = JianduCase.objects.order_by('-subtime').first()
+        if last_case:
+            mintime=last_case.subtime
+        end= options.get('e',mintime)
         
-        spd = JianDuSpider()
+        spd = JianDuSpider(start,end)
         count = 0
         for row in spd.get_data():
             subtime = row[4]
-            if mintime !='all' and subtime <mintime:
-                return
             count +=1
             if count % 50 ==0:
-                print('stop 1.3 second')
-                time.sleep(1.3)
-                
+                print(count)
+  
             taskid=row[2]
             obj , _ = JianduCase.objects.get_or_create(taskid=taskid)
             obj.subtime=row[4]
