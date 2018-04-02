@@ -7,7 +7,7 @@ from case_cmp.spider.jiandu import JianDuSpider
 from case_cmp.models import JianduCase
 from django.contrib.gis.geos import Polygon,Point
 from .alg.geo2 import cord2loc
-
+import time
 import json
 
 if getattr(settings,'DEV_STATUS',None)=='dev':
@@ -36,7 +36,7 @@ class Command(BaseCommand):
             if mintime !='all' and subtime <mintime:
                 return
             count +=1
-            if count % 30 ==0:
+            if count % 50 ==0:
                 print('stop 1.3 second')
                 time.sleep(1.3)
                 
