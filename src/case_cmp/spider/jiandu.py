@@ -62,7 +62,7 @@ class JianDuSpider(object):
                 row.append( self.get_coord(row[2]))
                 yield row
             
-            print('total=%s;crt_page_index=%s'%(crt_index,total))
+            print('total=%s;crt_page_index=%s'%(total,crt_index))
             if (crt_index+1) *10 <total:
                 crt_index +=1
             else:
