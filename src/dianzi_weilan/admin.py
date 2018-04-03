@@ -1,7 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.contrib import admin
-from helpers.director.shortcut import page_dc,regist_director,TablePage,FormPage,ModelTable,ModelFields,model_dc
+from helpers.director.shortcut import page_dc,regist_director,TablePage,FormPage,ModelTable,ModelFields,model_dc,RowSearch,RowFilter
 from geoscope.admin import BlockGroupTablePage,BlockGroupFormPage
 from geoscope.models import BlockGroup,BlockPolygon
 from .models import InspectorGroupAndWeilanRel,OutBlockWarning,WorkInspector
@@ -81,6 +81,15 @@ class OutBlockWaringPage(TablePage):
                     })
                     break
             return heads
+        class search(RowSearch):
+            names=['inspector']
+            def get_query(self,query):
+                if self.q:
+                    return query.filter(inspector__name__icontains=self.q)
+                else:
+                    return query
+        class filters(RowFilter):
+            range_fields=[{'name':'create_time','type':'date'}]
 
 class OutBlockWarningFormPage(FormPage):
     class fieldCls(ModelFields):
