@@ -27,10 +27,15 @@ def check_inspector(inspector):
     if not in_worktime:
         return
     today = now.date()
-    workgroup = WorkInspector.objects.get(date=today)
-    inspector_list = list(workgroup.inspector.all())
-    if inspector not in inspector_list:
-        return
+    
+    try:
+        workgroup = WorkInspector.objects.get(date=today)
+        inspector_list = list(workgroup.inspector.all())
+        if inspector not in inspector_list:
+            return
+    except WorkInspector.DoesNotExist:
+        print('[error]working group of %s is not set'%today)
+    
     if inspector.last_loc =='NaN':
         make_warning(inspector)
     else:

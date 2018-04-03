@@ -14,10 +14,15 @@ class CaseCmpPage(TablePage):
     """
     class tableCls(ModelTable):
         model=DuchaCase
-        exclude=['pic','audio','loc','KEY']
+        exclude=['pic','audio','loc','KEY','id']
     
         class sort(RowSort):
-            names=['subtime']    
+            names=['subtime'] 
+            def get_query(self, query):
+                if self.sort_str:
+                    return RowSort.get_query(self,query)
+                else:
+                    return query.order_by('-subtime')
     
     def get_context(self):
         ctx = TablePage.get_context(self)
