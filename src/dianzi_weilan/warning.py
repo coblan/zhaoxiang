@@ -15,6 +15,9 @@ def check_inspector(inspector):
     该函数作用是检查inspector是否在自己所属的电子围栏类，如果不在，则make warning
     inspector的电子围栏来自于所属的group
     """
+    if has_warning(inspector):
+        return
+    
     now = datetime.now()
     in_worktime=False
     work_time = get_value('work_time','8:30-12:30;14:00-18:00')
@@ -45,8 +48,7 @@ def check_inspector(inspector):
     x,y=inspector.last_loc.split(',')
     pos = Point(float(x),float(y))
     if not in_the_block(pos, inspector):
-        if not has_warning(inspector):
-            make_warning(inspector)
+        make_warning(inspector)
 
 def in_the_block(pos,inspector):
     out_blocks=[]
