@@ -53,7 +53,7 @@
                     var marker = new AMap.Marker({
                         icon: "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
                         position: lcase.loc,
-                        title: ex.template('{bigclass}/{litclass}',lcase),
+                        title: ex.template('{bigclass}/{litclass}/{subtime}',lcase),
                         content:'<div class="blue circle"></div>'
                     });
                     marker.setMap(map_com.map)
@@ -65,8 +65,6 @@
                     });
 
                 })
-
-
                 map_com.map.setFitView()
             })
         }
@@ -78,15 +76,17 @@
     })
 </script>
 <style>
-    .circle{
+
+    .red.circle{
+        background-color: red;
         width: 20px;
         height: 20px;
         border-radius: 10px;
     }
-    .red{
-        background-color: red;
-    }
-    .blue{
+    .blue.circle{
+        width: 12px;
+        height: 12px;
+        border-radius: 6px;
         background-color: blue;
     }
     .dark{
@@ -119,6 +119,7 @@
             <label for="">案件大类:</label><span v-text="row.bigclass"></span><br/>
             <label for="">案件小类:</label><span v-text="row.litclass"></span><br/>
             <label for="">发生地址:</label><span v-text="row.addr"></span><br/>
+            <label for="">发生时间:</label><span v-text="row.subtime"></span><br/>
             <ul style="overflow: scroll;max-height: 70vh;">
                 <li v-for="pic in row.pic"><img :src="pic" alt="" style="max-width: 300px"/></li>
             </ul>
