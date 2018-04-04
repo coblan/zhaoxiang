@@ -8,6 +8,16 @@ class InspectorPage(TablePage):
         model=Inspector
         exclude=[]
         
+        class search(RowSearch):
+            names=['name','code']
+            
+        class filters(RowFilter):
+            names=['gen']
+        
+        class sort(RowSort):
+            names=['name']
+            chinese_words=['name']
+        
         # def dict_row(self, inst):
             # return {
                 # 'scope': ','.join([unicode(x) for x in inst.scope.all()])

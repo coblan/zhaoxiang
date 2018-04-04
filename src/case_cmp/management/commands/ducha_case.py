@@ -5,7 +5,7 @@ from django.conf import settings
 from case_cmp.spider.ducha import DuchaCaseSpider
 from case_cmp.models import DuchaCase
 import json
-from .alg.geo import cord2loc
+from .alg.geo2 import  cord2loc
 from django.contrib.gis.geos import Polygon,Point
 
 if getattr(settings,'DEV_STATUS',None)=='dev':
@@ -47,9 +47,9 @@ class Command(BaseCommand):
             loc_x,loc_y = cord2loc(float( dc.get('x') ),float( dc.get('y') ))
             obj.loc=Point(x=loc_x,y=loc_y)
             pic = [x['src'] for x in json.loads(dc.get('pic'))]
-            obj.pic= pic
+            obj.pic= json.dumps(pic)
             audio = [x['src'] for x in json.loads(dc.get('audio'))]
-            obj.audio= audio
+            obj.audio= json.dumps(audio)
             
             
             obj.save()

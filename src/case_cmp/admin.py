@@ -1,10 +1,11 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.contrib import admin
-from helpers.director.shortcut import page_dc,regist_director,TablePage,FormPage,ModelTable,ModelFields,model_dc
+from helpers.director.shortcut import page_dc,regist_director,TablePage,FormPage,ModelTable,ModelFields,model_dc,RowSort
 from .models import DuchaCase,JianduCase
 from django.contrib.gis.measure import D
 from helpers.director.db_tools import to_dict
+import json
 # Register your models here.
 class CaseCmpPage(TablePage):
     """
@@ -13,7 +14,15 @@ class CaseCmpPage(TablePage):
     """
     class tableCls(ModelTable):
         model=DuchaCase
-        exclude=['pic','audio','loc','KEY']
+        exclude=['pic','audio','loc','KEY','id']
+    
+        class sort(RowSort):
+            names=['subtime'] 
+            def get_query(self, query):
+                if self.sort_str:
+                    return RowSort.get_query(self,query)
+                else:
+                    return query.order_by('-subtime')
     
     def get_context(self):
         ctx = TablePage.get_context(self)
@@ -33,6 +42,8 @@ class CaseCmpFormPage(FormPage):
             row = ModelFields.get_row(self)
             loc = row['loc']
             row['loc'] = row['loc'].x, row['loc'].y
+            row['pic']=json.loads(row['pic'])
+            row['audio']=json.loads(row['audio'])
             
             distance = 500 
             ref_location = loc
@@ -44,6 +55,8 @@ class CaseCmpFormPage(FormPage):
             
             row['near_case']=ls
             return row
+    
+
         
 
 page_dc.update({

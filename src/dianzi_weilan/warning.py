@@ -15,6 +15,9 @@ def check_inspector(inspector):
     该函数作用是检查inspector是否在自己所属的电子围栏类，如果不在，则make warning
     inspector的电子围栏来自于所属的group
     """
+    if has_warning(inspector):
+        return
+    
     now = datetime.now()
     in_worktime=False
     work_time = get_value('work_time','8:30-12:30;14:00-18:00')
@@ -27,18 +30,25 @@ def check_inspector(inspector):
     if not in_worktime:
         return
     today = now.date()
-    workgroup = WorkInspector.objects.get(date=today)
-    inspector_list = list(workgroup.inspector.all())
-    if inspector not in inspector_list:
-        return
-    if inspector.last_loc =='NaN':
+    
+    try:
+        workgroup = WorkInspector.objects.get(date=today)
+        inspector_list = list(workgroup.inspector.all())
+        if inspector not in inspector_list:
+            return
+        if inspector.last_loc =='NaN':
+            make_warning(inspector)        
+    except WorkInspector.DoesNotExist:
+        print('[error]working group of %s is not set'%today)
+        # 没设置上班组时，
+        if inspector.last_loc =='NaN':
+            return      
+    
+    # 正常情况（有坐标，又是上班组）
+    x,y=inspector.last_loc.split(',')
+    pos = Point(float(x),float(y))
+    if not in_the_block(pos, inspector):
         make_warning(inspector)
-    else:
-        x,y=inspector.last_loc.split(',')
-        pos = Point(float(x),float(y))
-        if not in_the_block(pos, inspector):
-            if not has_warning(inspector):
-                make_warning(inspector)
 
 def in_the_block(pos,inspector):
     out_blocks=[]

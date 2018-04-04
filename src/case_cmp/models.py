@@ -14,8 +14,8 @@ class DuchaCase(models.Model):
     bigclass=models.CharField('大类',max_length=30,blank=True)
     litclass=models.CharField('小类',max_length=30,blank=True)
     addr=models.CharField('地址',max_length=500,blank=True)
-    pic=JsonField('图片',blank=True)
-    audio=JsonField('音频',blank=True)
+    pic=models.TextField('图片',blank=True)
+    audio=models.TextField('音频',blank=True)
     KEY=models.CharField('KEY',max_length=30,blank=True)
     loc = models.PointField(verbose_name='经纬度',blank=True,null=True)
     
@@ -30,5 +30,5 @@ class JianduCase(models.Model):
     litclass=models.CharField('小类',max_length=30,blank=True)
     addr=models.CharField('地址',max_length=500,blank=True)
     loc = models.PointField(verbose_name='经纬度',blank=True,null=True)
-    org_code =JsonField('原始抓取数据',blank=True)
+    org_code =models.TextField('原始抓取数据',blank=True)
     
