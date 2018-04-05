@@ -41,7 +41,9 @@ class Command(BaseCommand):
             count +=1
             if count % 50 ==0:
                 print(count)
-  
+            if subtime >= mintime:
+                return
+            
             taskid=row[2]
             obj , _ = JianduCase.objects.get_or_create(taskid=taskid)
             obj.subtime=row[4]

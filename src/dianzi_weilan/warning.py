@@ -40,9 +40,8 @@ def check_inspector(inspector):
             make_warning(inspector)        
     except WorkInspector.DoesNotExist:
         print('[error]working group of %s is not set'%today)
-        # 没设置上班组时，
-        if inspector.last_loc =='NaN':
-            return      
+        # 没设置上班组时，不报警
+        return      
     
     # 正常情况（有坐标，又是上班组）
     x,y=inspector.last_loc.split(',')
