@@ -81,7 +81,7 @@ class Command(BaseCommand):
                 
                 x,y= item.get('LASTX'),item.get('LASTY')
                 if x !='0' and y!='0':
-                    inspector.last_loc = '%s,%s'%(cord2loc(float(x), -float(y)))
+                    inspector.last_loc = '%s,%s'%(cord2loc(float(x), float(y)))
                 else:
                     inspector.last_loc = 'NaN'
                 inspector.save()
