@@ -34,20 +34,32 @@ def check_inspector(inspector):
     try:
         workgroup = WorkInspector.objects.get(date=today)
         inspector_list = list(workgroup.inspector.all())
+        # 不是上班组，不报警
         if inspector not in inspector_list:
             return
-        if inspector.last_loc =='NaN':
-            make_warning(inspector)        
+        # 不在围栏内，不需要报警
+        if not list(block_list(inspector)):
+            return    
     except WorkInspector.DoesNotExist:
         print('[error]working group of %s is not set'%today)
         # 没设置上班组时，不报警
-        return      
+        return 
     
-    # 正常情况（有坐标，又是上班组）
+    # 没有坐标，需要报警
+    if inspector.last_loc =='NaN':
+            make_warning(inspector) 
+            
+    # 不在围栏内，需要报警
     x,y=inspector.last_loc.split(',')
     pos = Point(float(x),float(y))
     if not in_the_block(pos, inspector):
         make_warning(inspector)
+
+def block_list(inspector):
+    for group in inspector.inspectorgrop_set.all():
+        for rel in group.inspectorgroupandweilanrel_set.all():
+            yield rel.block.bounding
+
 
 def in_the_block(pos,inspector):
     out_blocks=[]
