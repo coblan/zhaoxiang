@@ -7,6 +7,7 @@ from geoscope.models import BlockGroup,BlockPolygon
 from .models import InspectorGroupAndWeilanRel,OutBlockWarning,WorkInspector
 from inspector.models import InspectorGrop
 from geoscope.polygon import poly2dict
+from django.utils import timezone
 # Register your models here.
 class Weilan(BlockGroupTablePage):
     def __init__(self,*args,**kw):
@@ -89,6 +90,7 @@ class OutBlockWaringPage(TablePage):
                 else:
                     return query
         class filters(RowFilter):
+            names=['proc_status']
             range_fields=[{'name':'create_time','type':'date'}]
 
 class OutBlockWarningFormPage(FormPage):
@@ -97,6 +99,22 @@ class OutBlockWarningFormPage(FormPage):
         class Meta:
             model=OutBlockWarning
             exclude=[]
+        
+        def get_row(self):
+            row= ModelFields.get_row(self)
+            row['create_time']=timezone.localtime( self.instance.create_time).strftime('%Y-%m-%d %H:%M:%S')
+            return row
+            
+        def get_heads(self):
+            heads = ModelFields.get_heads(self)
+            heads.append({
+                'name':'create_time',
+                'label':'创建时间',
+                'type':'linetext',
+                'readonly':True
+            })
+            return heads
+        
         def save_form(self):
             ModelFields.save_form(self)
             self.instance.manager=self.crt_user

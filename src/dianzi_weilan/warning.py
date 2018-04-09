@@ -47,13 +47,13 @@ def check_inspector(inspector):
     
     # 没有坐标，需要报警
     if inspector.last_loc =='NaN':
-            make_warning(inspector) 
+            make_warning(inspector,'没有坐标值') 
             
     # 不在围栏内，需要报警
     x,y=inspector.last_loc.split(',')
     pos = Point(float(x),float(y))
     if not in_the_block(pos, inspector):
-        make_warning(inspector)
+        make_warning(inspector,'跑出了电子围栏')
 
 def block_list(inspector):
     for group in inspector.inspectorgrop_set.all():
@@ -85,8 +85,8 @@ def has_warning(inspector):
         return True
     return False
 
-def make_warning(inspector):
-    OutBlockWarning.objects.create(inspector=inspector)
+def make_warning(inspector,reason):
+    OutBlockWarning.objects.create(inspector=inspector,reason=reason)
 
 
 
