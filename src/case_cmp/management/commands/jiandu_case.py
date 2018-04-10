@@ -1,7 +1,7 @@
 # encoding:utf-8
 from django.core.management.base import BaseCommand
 from inspector.models import Inspector
-from dianzi_weilan.warning import check_inspector
+#from dianzi_weilan.warning import check_inspector
 from django.conf import settings
 from case_cmp.spider.jiandu import JianDuSpider
 from case_cmp.models import JianduCase

@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 #from django.db import models
 from django.contrib.gis.db import models
-from helpers.base.jsonfield import JsonField
+#from helpers.base.jsonfield import JsonField
 
 # Create your models here.
 
