@@ -24,7 +24,7 @@ class Command(BaseCommand):
         parser.add_argument('-e', nargs='?')
         
     def handle(self, *args, **options):
-        #mintime = options.get('mintime')
+        
         today = datetime.now().strftime('%Y-%m-%d')
         
         end= options.get('e') or today
@@ -36,6 +36,7 @@ class Command(BaseCommand):
         start = options.get('s') or mintime[0:10]
         spd = JianDuSpider(start,end)
         count = 0
+        print('start get jiandu_case start=%s end=%s'%(start,end))
         for row in spd.get_data():
             subtime = row[4]
             count +=1
