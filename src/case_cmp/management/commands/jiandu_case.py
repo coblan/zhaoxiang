@@ -42,7 +42,7 @@ class Command(BaseCommand):
             count +=1
             if count % 50 ==0:
                 print(count)
-            if subtime >= mintime:
+            if subtime <= mintime:
                 return
             
             taskid=row[2]
