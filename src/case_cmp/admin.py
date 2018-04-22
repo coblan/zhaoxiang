@@ -1,11 +1,12 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.contrib import admin
-from helpers.director.shortcut import page_dc,regist_director,TablePage,FormPage,ModelTable,ModelFields,model_dc,RowSort
+from helpers.director.shortcut import page_dc,regist_director,TablePage,FormPage,ModelTable,ModelFields,model_dc,RowSort,RowFilter
 from .models import DuchaCase,JianduCase
 from django.contrib.gis.measure import D
 from helpers.director.db_tools import to_dict
 import json
+from django.utils  import timezone
 # Register your models here.
 class CaseCmpPage(TablePage):
     """
@@ -15,6 +16,14 @@ class CaseCmpPage(TablePage):
     class tableCls(ModelTable):
         model=DuchaCase
         exclude=['pic','audio','loc','KEY','id']
+        
+        def inn_filter(self, query):
+            today =timezone.now()
+            sp = timezone.timedelta(days=7)
+            ago7=today-sp
+            ago7_str = ago7.strftime('%Y-%m-%d')
+            #query.filter(subtime__lte=)
+            return query.filter(subtime__gte = ago7_str)
     
         class sort(RowSort):
             names=['subtime'] 
@@ -23,6 +32,9 @@ class CaseCmpPage(TablePage):
                     return RowSort.get_query(self,query)
                 else:
                     return query.order_by('-subtime')
+        
+        #class filters(RowFilter):
+            #range_fields=[ {'name':'subtime','type':'date'}]
     
     def get_context(self):
         ctx = TablePage.get_context(self)
