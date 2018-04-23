@@ -1,7 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.contrib import admin
-from helpers.director.shortcut import page_dc,regist_director,TablePage,FormPage,ModelTable,ModelFields,model_dc,RowSearch,RowFilter
+from helpers.director.shortcut import page_dc,TablePage,FieldsPage,ModelTable,ModelFields,model_dc,RowSearch,RowFilter
 from geoscope.admin import BlockGroupTablePage,BlockGroupFormPage
 from geoscope.models import BlockGroup,BlockPolygon
 from .models import InspectorGroupAndWeilanRel,OutBlockWarning,WorkInspector
@@ -38,7 +38,7 @@ class GroupWeilanRel(TablePage):
                 #'block_img':"<a href='%s' target='_blank'><img src='%s' style='height:200px;'></a>"%(inst.block.shot,inst.block.shot) if inst.block else ""
             }
 
-class GroupWeilanRelFormPage(FormPage):
+class GroupWeilanRelFormPage(FieldsPage):
     class fieldsCls(ModelFields):
         class Meta:
             model=InspectorGroupAndWeilanRel
@@ -93,7 +93,7 @@ class OutBlockWaringPage(TablePage):
             names=['proc_status']
             range_fields=[{'name':'create_time','type':'date'}]
 
-class OutBlockWarningFormPage(FormPage):
+class OutBlockWarningFormPage(FieldsPage):
     class fieldCls(ModelFields):
         readonly=['manager','proc_time','inspector','create_time']
         class Meta:
@@ -130,7 +130,7 @@ class WorkinspectorPage(TablePage):
                 'inspector':';'.join([unicode(x) for x in inst.inspector.all()])
             }
 
-class WorkinspectorFormPage(FormPage):
+class WorkinspectorFormPage(FieldsPage):
     template='dianzi_weilan/workinspector_form.html'
     class fieldsCls(ModelFields):
         class Meta:
@@ -138,7 +138,7 @@ class WorkinspectorFormPage(FormPage):
             exclude= []
     
     def get_context(self):
-        ctx= FormPage.get_context(self)
+        ctx= FieldsPage.get_context(self)
         ls= []
         for group in InspectorGrop.objects.all():
             ls.append({

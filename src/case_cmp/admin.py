@@ -1,10 +1,10 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.contrib import admin
-from helpers.director.shortcut import page_dc,regist_director,TablePage,FormPage,ModelTable,ModelFields,model_dc,RowSort
+from helpers.director.shortcut import page_dc,TablePage,FieldsPage,ModelTable,ModelFields,model_dc,RowSort
 from .models import DuchaCase,JianduCase
 from django.contrib.gis.measure import D
-from helpers.director.db_tools import to_dict
+from helpers.director.model_func.dictfy import to_dict
 import json
 # Register your models here.
 class CaseCmpPage(TablePage):
@@ -31,7 +31,7 @@ class CaseCmpPage(TablePage):
            }
         return ctx
 
-class CaseCmpFormPage(FormPage):
+class CaseCmpFormPage(FieldsPage):
     template='case_cmp/casecmp_form.html'
     class fieldsCls(ModelFields):
         class Meta:

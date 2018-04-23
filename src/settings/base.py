@@ -37,8 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hello',
+    
     'helpers.director',
+    'helpers.case.jb_admin',
+    'helpers.authuser',
+    
+    'hello',
     'geoscope',
     'geoinfo',
     'inspector',

@@ -2,7 +2,9 @@
 
 from __future__ import unicode_literals
 
-from helpers.director.engine import BaseEngine,page,fa,page_dc
+from helpers.director.shortcut import page_dc
+from helpers.director.engine import BaseEngine,page,fa
+
 from helpers.maintenance.update_static_timestamp import js_stamp
 
 class PcMenu(BaseEngine):

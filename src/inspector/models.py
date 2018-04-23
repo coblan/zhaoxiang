@@ -13,7 +13,7 @@ GEN=(
 
 
 class Inspector(models.Model):
-    name=models.CharField('姓名',max_length=50)
+    name=models.CharField('姓名',max_length=50,blank=False)
     code=models.CharField('编号',max_length=50,blank=True)
     gen=models.CharField('性别',max_length=30,choices=GEN,blank=True)
     # scope=models.ManyToManyField(BlockPolygon,verbose_name='工作区域',blank=True)
@@ -28,7 +28,7 @@ class Inspector(models.Model):
         return self.name
     
 class InspectorGrop(models.Model):
-    name=models.CharField('监督员组',max_length=100,unique=True)
+    name=models.CharField('监督员组',max_length=100,unique=True,blank=False)
     inspector=models.ManyToManyField(Inspector,verbose_name='监督员',blank=True)
     
     def __unicode__(self):

@@ -21,22 +21,25 @@ from django.contrib import admin
 from django.views.generic import RedirectView 
 
 from hello.engin_menu import PcMenu
-from helpers.director import login_url 
+#from helpers.director import login_url 
 from helpers.director import views as director_views
 from helpers.face import urls as face_urls
-
+from helpers.authuser import urls as authuser_urls
 from inspector.views import inspector_case
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^accounts/',include(login_url)),
+    #url(r'^accounts/',include(login_url)),
+    url(r'^accounts/',include(authuser_urls)),
     
     url(r'^pc/([\w\.]+)/?$',PcMenu.as_view(),name=PcMenu.url_name),
     
-    url(r'^_ajax/(?P<app>\w+)?/?$',director_views.ajax_views,name='ajax_url'),
-    url(r'^_ajax/?$',director_views.ajax_views), 
-    url(r'^_face/', include(face_urls)),
-    url(r'^_download/(?P<app>\w+)?/?$',director_views.donwload_views,name='download_url'),    
+    #url(r'^_ajax/(?P<app>\w+)?/?$',director_views.ajax_views,name='ajax_url'),
+    #url(r'^_ajax/?$',director_views.ajax_views), 
+    #url(r'^_face/', include(face_urls)),
+    #url(r'^_download/(?P<app>\w+)?/?$',director_views.donwload_views,name='download_url'),    
+    
+    url(r'^d/',include('helpers.director.urls'),name='director'),
     
     url(r'^$',RedirectView.as_view(url='/pc/inspector.inspector')),
     
