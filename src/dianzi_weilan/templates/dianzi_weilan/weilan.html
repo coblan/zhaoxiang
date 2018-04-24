@@ -8,27 +8,30 @@
 
     ex.each(heads,function(head){
         if(head.name=='block'){
-            head.type='com-weilan'
+            head.editor='com-weilan'
         }
     })
+
     this_logic={
-        watch:{
-            'row_sort.sort_str':function (v) {
-                this.search_args._sort=v
-                this.search()
-            }
-        },
+//        watch:{
+//            'row_sort.sort_str':function (v) {
+//                this.search_args._sort=v
+//                this.search()
+//            }
+//        },
         mounted:function(){
             var map_com = this.$refs.map_com
+            var self=this
             map_com.on_init(function(){
-                ex.each(rows,function(row){
+                ex.each(self.rows,function(row){
                     row.js_poly = map_com.insert_polygon(row.polygon)
                 })
                 map_com.map.setFitView();
             })
         },
         methods:{
-            hight_region:function(row){
+            hight_region:function(td_row){
+                var row = ex.findone(this.rows,{pk:td_row.pk})
                 var map_com = this.$refs.map_com
                 if(this._old_row && this._old_row.js_poly){
                     map_com.remove_highlight_polygon(this._old_row.js_poly)
@@ -36,40 +39,103 @@
                 this._old_row=row
                 map_com.highlight_polygon(row.js_poly,'white')
             },
-            map:function(row,name){
-                return row[name]
-            }
+//            map:function(row,name){
+//                return row[name]
+//            },
+//            update_or_insert:function(new_row,old_row){
+////                mix_table_data.methods.update_or_insert.call(this,new_row,old_row)
+////                if(old_row && ! old_row.pk) {
+////                    var map_com = this.$refs.map_com
+////                    new_row.js_poly = map_com.insert_polygon(new_row.polygon)
+////                }
+//
+//                if(old_row && ! old_row.pk) {
+//                    var map_com = this.$refs.map_com
+////                    new_row.js_poly = map_com.insert_polygon(new_row.polygon)
+//                    this.rows.splice(0, 0, new_row)
+//                }else{
+//                    var table_row = ex.findone(this.rows,{pk:new_row.pk})
+//                    ex.assign(table_row,new_row)
+//                }
+//
+//            },
         }
 
     }
-    table_logic.mixins = [mix_table_data,this_logic]
+    table_logic.mixins = [mix_table_data,mix_v_table_adapter,this_logic]
 </script>
 
 <script>
     Vue.component('com-weilan',{
-        props:['name','row'],
-        template:'<a href="#" @click="on_click()" v-text="row[name]"></a>',
+//        props:['name','row'],
+        props:['rowData','field','index'],
+        template:'<span class="clickable"  @click="on_click()" v-text="rowData[field]"></span>',
         methods:{
             on_click:function(){
-                this.$root.hight_region(this.row)
+                this.$root.hight_region(this.rowData)
             }
         }
     })
 </script>
 {% endblock %}
 
-{% block table-content %}
+{% block tab-content %}
 <div class="flex flex-grow">
-    <div style="margin: 1em 2em;min-width: 30em;">
-        <com-table class='table fake-suit' :has_check="!search_args._pop" :map="map"
-                   :row_sort="row_sort" :heads="heads" :rows="rows" v-model="selected"></com-table>
-
-        <paginator :nums='row_pages.options' :crt='row_pages.crt_page' @goto_page='goto_page($event)'></paginator>
+    <div id="main-page" class="rows-block" v-show="tabgroup.crt =='main'" style="width: 460px">
+        <div class='flex' v-if="row_filters.length > 0" style="min-height: 3em;">
+            <com-filter class="flex" :heads="row_filters" :search_args="search_args"
+                        @submit="search()"></com-filter>
+            <div class="flex-grow"></div>
+        </div>
+        <div class="box box-success">
+            <div class="table-wraper">
+                {% block table-content %}
+                <v-table ref="vtable" is-horizontal-resize
+                         is-vertical-resize
+                         :vertical-resize-offset="80"
+                         :title-row-height="30"
+                         :row-height="24"
+                         odd-bg-color="#f0f6f8"
+                         column-width-drag
+                         @on-custom-comp="on_td_event($event)"
+                         style="width: 100%;"
+                         :columns="columns"
+                         :table-data="rows"
+                         @sort-change="sortChange"
+                         :select-group-change="on_select_group_change"
+                         :select-all="on_select_group_change"
+                         row-hover-color="#eee"
+                         row-click-color="#edf7ff">
+                </v-table>
+                {% endblock %}
+            </div>
+            <div style="margin-top: 10px;">
+                <v-pagination @page-change="get_page($event)"
+                              :total="row_pages.total"
+                              size="small"
+                              :page-size="row_pages.perpage"
+                              @page-size-change="on_perpage_change($event)"
+                              :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']">
+                </v-pagination>
+            </div>
+        </div>
     </div>
     <div class="flex-grow" style="position: relative;">
         <com-map ref="map_com"></com-map>
     </div>
 </div>
+
+
+
+<!--<div class="flex flex-grow">-->
+    <!--<div style="margin: 1em 2em;min-width: 30em;">-->
+        <!--<com-table class='table fake-suit' :has_check="!search_args._pop" :map="map"-->
+                   <!--:row_sort="row_sort" :heads="heads" :rows="rows" v-model="selected"></com-table>-->
+
+        <!--<paginator :nums='row_pages.options' :crt='row_pages.crt_page' @goto_page='goto_page($event)'></paginator>-->
+    <!--</div>-->
+
+<!--</div>-->
 {% endblock %}
 
 

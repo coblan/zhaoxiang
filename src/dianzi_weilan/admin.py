@@ -48,13 +48,18 @@ class GroupWeilanRelFormPage(FieldsPage):
             groups = InspectorGrop.objects.all()
             return {
                 'block':[{'value':x.pk,'label':x.name} for x in blocks],
-                'groups':[{'value':x.pk,'label':x.name} for x in groups]
+                'groups':[{'value':x.pk,'label':x.name} for x in groups],
             }
         
             # blocks = BlockPolygon.objects.filter(blockgroup__belong='weilan').distinct()
             # return {
                 # 'blocks':[{'value':x.pk,'label':x.name} for x in blocks]
             # }
+        
+        def dict_row(self, inst):
+            return {
+                'polygon': poly2dict( inst.block.bounding ) if inst.block else []
+            }
 
 class OutBlockWaringPage(TablePage):
     template='jb_admin/table.html'

@@ -66,7 +66,7 @@ class BlockPolygonFormPage(FieldsPage):
             bounding = poly2dict(self.instance.bounding) #  self._adapt_polygon_obj(self.instance.bounding)
             dc={
                 # 'display':display,
-                'bounding':bounding
+                'bounding':bounding,
             }
             return to_dict(self.instance,filt_attr=dc)
         
