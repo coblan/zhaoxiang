@@ -22,6 +22,7 @@ class WeilanForm(BlockGroupFormPage):
 # group_weilan_rel  = regist_director(name='dianzi_weilan.groupweilanrel',src_model=InspectorGroupAndWeilanRel)
 class GroupWeilanRel(TablePage):
     template='dianzi_weilan/weilan.html'
+    #template='jb_admin/table.html'
     class tableCls(ModelTable):
         model=InspectorGroupAndWeilanRel
         exclude=['id']
@@ -134,10 +135,10 @@ class WorkinspectorPage(TablePage):
         exclude=[]
         pop_edit_field='date'
         
-        def dict_row(self, inst):
-            return {
-                'inspector':';'.join([unicode(x) for x in inst.inspector.all()])
-            }
+        #def dict_row(self, inst):
+            #return {
+                #'inspector':';'.join([unicode(x) for x in inst.inspector.all()])
+            #}
 
 class WorkinspectorFormPage(FieldsPage):
     template='dianzi_weilan/workinspector_form.html'

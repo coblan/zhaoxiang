@@ -19,12 +19,18 @@
 //                this.search()
 //            }
 //        },
+        data:{
+
+            js_poly:{}
+
+        },
         mounted:function(){
             var map_com = this.$refs.map_com
             var self=this
             map_com.on_init(function(){
                 ex.each(self.rows,function(row){
-                    row.js_poly = map_com.insert_polygon(row.polygon)
+                    self.js_poly[row.pk] = map_com.insert_polygon(row.polygon)
+//                    row.js_poly =
                 })
                 map_com.map.setFitView();
             })
@@ -33,22 +39,23 @@
             hight_region:function(td_row){
                 var row = ex.findone(this.rows,{pk:td_row.pk})
                 var map_com = this.$refs.map_com
-                if(this._old_row && this._old_row.js_poly){
-                    map_com.remove_highlight_polygon(this._old_row.js_poly)
+                if(this._old_row && this.js_poly[ this._old_row.pk]){
+                    map_com.remove_highlight_polygon(this.js_poly[this._old_row.pk] )
                 }
                 this._old_row=row
-                map_com.highlight_polygon(row.js_poly,'white')
+                map_com.highlight_polygon(this.js_poly[row.pk] ,'white')
             },
 //            map:function(row,name){
 //                return row[name]
 //            },
-//            update_or_insert:function(new_row,old_row){
-////                mix_table_data.methods.update_or_insert.call(this,new_row,old_row)
-////                if(old_row && ! old_row.pk) {
-////                    var map_com = this.$refs.map_com
-////                    new_row.js_poly = map_com.insert_polygon(new_row.polygon)
-////                }
-//
+            update_or_insert:function(new_row,old_row){
+                mix_table_data.methods.update_or_insert.call(this,new_row,old_row)
+                if(old_row && ! old_row.pk) {
+                    var map_com = this.$refs.map_com
+                    this.js_poly[new_row.pk] = map_com.insert_polygon(new_row.polygon)
+//                    new_row.js_poly =
+                }
+
 //                if(old_row && ! old_row.pk) {
 //                    var map_com = this.$refs.map_com
 ////                    new_row.js_poly = map_com.insert_polygon(new_row.polygon)
@@ -57,8 +64,8 @@
 //                    var table_row = ex.findone(this.rows,{pk:new_row.pk})
 //                    ex.assign(table_row,new_row)
 //                }
-//
-//            },
+
+            },
         }
 
     }
