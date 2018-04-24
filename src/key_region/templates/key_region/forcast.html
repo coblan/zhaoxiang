@@ -1,8 +1,8 @@
-{% extends "director/index.html" %}
+{% extends "jb_admin/table.html" %}
 {% load static %}
 {% load jsonify %}
 
-{% block page_content %}
+{% block extra_head %}
 <script src='{% static "js/table.pack.js?t=" %}{{ js_stamp.table_pack_js }}'></script>
 <script src='{% static "js/geoinfo.pack.js?t=" %}{{ js_stamp.geoinfo_pack_js }}'></script>
 
@@ -30,8 +30,7 @@
     //	search字段从 search_args._q 来取值
 
     circles = {{circles | jsonify }}
-    table_logic={
-        el:'#there',
+    this_logic={
         data:{
             circles:circles,
         },
@@ -42,9 +41,6 @@
 //                this.search()
 //            }
 //        },
-        mounted:function(){
-
-        },
         methods:{
             on_map_loaded:function(com_map){
                 var self=this
@@ -90,9 +86,7 @@
 
 
     }
-    $(function () {
-        table=new Vue(table_logic)
-    })
+table_logic.mixins=[mix_table_data,this_logic]
 
 </script>
 <style>
@@ -101,48 +95,15 @@
         /*font-size: 16px;*/
     }
 </style>
-{% block extra_head %}
 {% endblock %}
 
-<div id='there' style="height: 100%;" class="flex-v">
-    <!--<path-nav :menu='menu'></path-nav>-->
-
-    <!--没用到filtter暂时屏蔽他-->
-
-    <!--<div class='btn-panel flex flex-sb' style="padding-left:20px; ">-->
-
-    <!--<div v-if="row_filters.length==0" class="flex-grow"></div>-->
-
-    <!--<com-filter class="flex" :heads="row_filters" :search="search_args"-->
-    <!--&lt;!&ndash;:search_tip='search_tip' @submit="search()"></com-filter>&ndash;&gt;-->
-
-
-    <!--<div class="flex-grow"></div>-->
-    <!-- -->
-    <!--</div>-->
-
-    <!--<com-table class='table fake-suit' :has_check="!search_args._pop" :map="map"-->
-    <!--:row_sort="row_sort" :heads="heads" :rows="rows" v-model="selected"></com-table>-->
-
-
-
-    <!--<paginator :nums='row_pages.options' :crt='row_pages.crt_page' @goto_page='goto_page($event)'></paginator>-->
-
+{% table-content %}
     <div class="flex flex-grow" >
         <div class="flex-grow" style="position: relative;">
             <com-map ref="map_panel" @loaded="on_map_loaded($event)"></com-map>
-            <!--<div style="position: absolute;right: 2em;top:2em;">-->
-                <!--<button @click="toggle_fullscreen()" type="button" class="btn btn-primary">全屏切换</button>-->
-            <!--</div>-->
 
         </div>
 
     </div>
 
-
-
-</div>
-
-{% block extra %}
-{% endblock %}
 {% endblock %}

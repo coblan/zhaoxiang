@@ -57,16 +57,18 @@ class GroupWeilanRelFormPage(FieldsPage):
             # }
 
 class OutBlockWaringPage(TablePage):
+    template='jb_admin/table.html'
     class tableCls(ModelTable):
         model=OutBlockWarning
         exclude=['id']
+        pop_edit_field='inspector'
         def dict_row(self, inst):
             return {
-                'inspector': unicode(inst.inspector) if inst.inspector else "",
+                #'inspector': unicode(inst.inspector) if inst.inspector else "",
                 'code':inst.inspector.code if inst.inspector else "",
                 'manager':unicode(inst.manager) if inst.manager else "",
                 'proc_status': inst.proc_status == 'processed',
-                'proc_detail':'<span class="ellipsis" style="max-width:100px">%s</span>'%inst.proc_detail
+                #'proc_detail':'<span class="ellipsis" style="max-width:100px">%s</span>'%inst.proc_detail
             }
         #def dict_head(self, head):
             #if head['name']=='proc_status':
@@ -121,9 +123,11 @@ class OutBlockWarningFormPage(FieldsPage):
             self.instance.save()
 
 class WorkinspectorPage(TablePage):
+    template='jb_admin/table.html'
     class tableCls(ModelTable):
         model = WorkInspector
         exclude=[]
+        pop_edit_field='date'
         
         def dict_row(self, inst):
             return {

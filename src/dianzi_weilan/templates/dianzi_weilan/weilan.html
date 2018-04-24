@@ -1,46 +1,17 @@
-{% extends "director/index.html" %}
+{% extends "jb_admin/table.html" %}
 {% load static %}
 {% load jsonify %}
 
-{% block page_content %}
-<script src='{% static "js/geoscope.pack.js?t=" %}{{ js_stamp.geoscope_pack_js }}'></script>
+{% block extra_head %}
+<script src='{% static "js/geoscope.pack.js" %}?t={{ js_stamp.geoscope_pack_js }}'></script>
 <script type="text/javascript">
 
-    //	row_filters=
-    //	placeholder =
-    //	row_sort=
-    //	heads=
-    //	rows=
-    //	row_pages =
-
-    //	can_add=
-    //	can_del=
-    //	search_args=ex.parseSearch()
-    //	search字段从 search_args._q 来取值
     ex.each(heads,function(head){
         if(head.name=='block'){
             head.type='com-weilan'
         }
     })
-    table_logic={
-        el:'#there',
-        data:{
-//		        heads:heads,
-//		        rows:rows,
-//		        row_filters:row_filters,
-//		        row_sort:row_sort,
-//		        row_pages:row_pages,
-//		        placeholder:placeholder,
-//		        selected:[],
-//		        del_info:[],
-//		        menu:menu,
-//		        can_add:can_add,
-//		        can_del:can_del,
-//		        model:model,
-//		        search_args:search_args,
-//		        ex:ex,
-        },
-        mixins:[table_fun],
+    this_logic={
         watch:{
             'row_sort.sort_str':function (v) {
                 this.search_args._sort=v
@@ -64,57 +35,15 @@
                 }
                 this._old_row=row
                 map_com.highlight_polygon(row.js_poly,'white')
+            },
+            map:function(row,name){
+                return row[name]
             }
         }
 
     }
-    $(function () {
-        table=new Vue(table_logic)
-    })
-
+    table_logic.mixins = [mix_table_data,this_logic]
 </script>
-
-{% block extra_head %}
-{% endblock %}
-
-<div id='there' style="height: 100%;" class="flex-v">
-
-    <ol v-if="page_label" class="breadcrumb">
-        <b v-text="page_label"></b>
-    </ol>
-    <path-nav v-else :menu='menu'></path-nav>
-
-    <div class='btn-panel flex flex-sb' style="padding-left:20px; ">
-
-        <!--<div v-if="row_filters.length==0" class="flex-grow"></div>-->
-        <com-filter class="flex" :heads="row_filters" :search="search_args"
-                    :search_tip='search_tip' @submit="search()"></com-filter>
-        <div class="flex-grow"></div>
-
-        <com-table-btn v-if="!search_args._pop" :add_new="add_new" :del_item="del_item" :table_bus="this">
-            {% block extra_btn %}
-            {% endblock %}
-        </com-table-btn>
-
-        <!--<div class='btn-group' style='float: right;' v-if="!search_args._pop">-->
-        <!--<a type="button" class="btn btn-success btn-sm" :href='add_new()' v-if='can_add' role="button">创建</a>-->
-        <!--<button type="button" class="btn btn-danger btn-sm" @click='del_item()' v-if='can_del'>删除</button>-->
-        <!--</div>-->
-
-    </div>
-
-    <div class="flex flex-grow">
-        <div style="margin: 1em 2em;min-width: 30em;">
-            <com-table class='table fake-suit' :has_check="!search_args._pop" :map="map"
-                       :row_sort="row_sort" :heads="heads" :rows="rows" v-model="selected"></com-table>
-
-            <paginator :nums='row_pages.options' :crt='row_pages.crt_page' @goto_page='goto_page($event)'></paginator>
-        </div>
-        <div class="flex-grow" style="position: relative;">
-            <com-map ref="map_com"></com-map>
-        </div>
-    </div>
-</div>
 
 <script>
     Vue.component('com-weilan',{
@@ -127,6 +56,59 @@
         }
     })
 </script>
-{% block extra %}
 {% endblock %}
+
+{% block table-content %}
+<div class="flex flex-grow">
+    <div style="margin: 1em 2em;min-width: 30em;">
+        <com-table class='table fake-suit' :has_check="!search_args._pop" :map="map"
+                   :row_sort="row_sort" :heads="heads" :rows="rows" v-model="selected"></com-table>
+
+        <paginator :nums='row_pages.options' :crt='row_pages.crt_page' @goto_page='goto_page($event)'></paginator>
+    </div>
+    <div class="flex-grow" style="position: relative;">
+        <com-map ref="map_com"></com-map>
+    </div>
+</div>
 {% endblock %}
+
+
+
+<!--<div id='there' style="height: 100%;" class="flex-v">-->
+
+    <!--&lt;!&ndash;<ol v-if="page_label" class="breadcrumb">&ndash;&gt;-->
+        <!--&lt;!&ndash;<b v-text="page_label"></b>&ndash;&gt;-->
+    <!--&lt;!&ndash;</ol>&ndash;&gt;-->
+    <!--&lt;!&ndash;<path-nav v-else :menu='menu'></path-nav>&ndash;&gt;-->
+
+    <!--<div class='btn-panel flex flex-sb' style="padding-left:20px; ">-->
+
+        <!--&lt;!&ndash;<div v-if="row_filters.length==0" class="flex-grow"></div>&ndash;&gt;-->
+        <!--<com-filter class="flex" :heads="row_filters" :search="search_args"-->
+                    <!--:search_tip='search_tip' @submit="search()"></com-filter>-->
+        <!--<div class="flex-grow"></div>-->
+
+        <!--<com-table-btn v-if="!search_args._pop" :add_new="add_new" :del_item="del_item" :table_bus="this">-->
+            <!--{% block extra_btn %}-->
+            <!--{% endblock %}-->
+        <!--</com-table-btn>-->
+
+        <!--&lt;!&ndash;<div class='btn-group' style='float: right;' v-if="!search_args._pop">&ndash;&gt;-->
+        <!--&lt;!&ndash;<a type="button" class="btn btn-success btn-sm" :href='add_new()' v-if='can_add' role="button">创建</a>&ndash;&gt;-->
+        <!--&lt;!&ndash;<button type="button" class="btn btn-danger btn-sm" @click='del_item()' v-if='can_del'>删除</button>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+    <!--</div>-->
+
+    <!--<div class="flex flex-grow">-->
+        <!--<div style="margin: 1em 2em;min-width: 30em;">-->
+            <!--<com-table class='table fake-suit' :has_check="!search_args._pop" :map="map"-->
+                       <!--:row_sort="row_sort" :heads="heads" :rows="rows" v-model="selected"></com-table>-->
+
+            <!--<paginator :nums='row_pages.options' :crt='row_pages.crt_page' @goto_page='goto_page($event)'></paginator>-->
+        <!--</div>-->
+        <!--<div class="flex-grow" style="position: relative;">-->
+            <!--<com-map ref="map_com"></com-map>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->

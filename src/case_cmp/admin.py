@@ -12,9 +12,11 @@ class CaseCmpPage(TablePage):
     ���ݿⰴ�վ�������
     https://stackoverflow.com/questions/19703975/django-sort-by-distance
     """
+    template='jb_admin/table.html'
     class tableCls(ModelTable):
         model=DuchaCase
         exclude=['pic','audio','loc','KEY','id']
+        pop_edit_field='taskid'
     
         class sort(RowSort):
             names=['subtime'] 
@@ -56,8 +58,7 @@ class CaseCmpFormPage(FieldsPage):
             row['near_case']=ls
             return row
     
-
-        
+model_dc[DuchaCase]={'fields':CaseCmpFormPage.fieldsCls}
 
 page_dc.update({
     'case_cmp.duchacase':CaseCmpPage,
