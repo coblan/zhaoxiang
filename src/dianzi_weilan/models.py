@@ -26,7 +26,7 @@ class OutBlockWarning(models.Model):
     proc_time = models.DateTimeField(verbose_name='处理时间', auto_now=True)
     proc_status = models.CharField('处理状态',max_length=30,choices=PROC_STATUS,default='unprocess')
     proc_detail = models.TextField('处理结果',blank=True)
-    reason = models.CharField('警告原因',max_length=700)
+    reason = models.CharField('警告原因',max_length=700,blank=True)
     
     def __unicode__(self):
         return "围栏告警 %s"% self.inspector 

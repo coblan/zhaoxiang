@@ -8,8 +8,12 @@ from .models import InspectorGroupAndWeilanRel,OutBlockWarning,WorkInspector
 from inspector.models import InspectorGrop
 from geoscope.polygon import poly2dict
 from django.utils import timezone
+from .models import PROC_STATUS
+from inspector.models import Inspector
+
 # Register your models here.
 class Weilan(BlockGroupTablePage):
+    
     def __init__(self,*args,**kw):
         super(Weilan,self).__init__(*args,**kw)
         self.table.set_belong('weilan')
@@ -23,19 +27,35 @@ class WeilanForm(BlockGroupFormPage):
 class GroupWeilanRel(TablePage):
     template='dianzi_weilan/weilan.html'
     #template='jb_admin/table.html'
+    def get_label(self):
+        return '围栏信息'
+    
     class tableCls(ModelTable):
         model=InspectorGroupAndWeilanRel
         exclude=['id']
-        #def get_heads(self):
-            #heads = ModelTable.get_heads(self)
-            #heads.append({'name':'block_img','label':'围栏截图'})
-            #return heads
+        pop_edit_field='block'
+        def get_heads(self):
+            heads = ModelTable.get_heads(self)
+            heads.append({'name':'hight_region',
+                          'label':'围栏区域',
+                          'editor':'com-table-extraclick',
+                          'extra_label':'查看',
+                          'extra_fun':'hight_region'
+                          })
+            return heads
+        
+        def dict_head(self, head):
+            if head['name']=='groups':
+                head['editor']='com-table-array-mapper'
+                head['options']={g.pk:g.name for g in InspectorGrop.objects.all()}
+            return head
         
         def dict_row(self, inst): 
             return {
-                'block': inst.block.name if inst.block else "",
-                'groups':';'.join([x.name for x in  inst.groups.all()]),
-                'polygon': poly2dict( inst.block.bounding ) if inst.block else []
+                #'block': inst.block.name if inst.block else "",
+                #'groups':';'.join([x.name for x in  inst.groups.all()]),
+                'polygon': poly2dict( inst.block.bounding ) if inst.block else [],
+                #'hight_region':'xx'
                 #'block_img':"<a href='%s' target='_blank'><img src='%s' style='height:200px;'></a>"%(inst.block.shot,inst.block.shot) if inst.block else ""
             }
 
@@ -64,22 +84,36 @@ class GroupWeilanRelFormPage(FieldsPage):
 
 class OutBlockWaringPage(TablePage):
     template='jb_admin/table.html'
+    
+    def get_label(self):
+        return '围栏报警信息'
+    
     class tableCls(ModelTable):
         model=OutBlockWarning
         exclude=['id']
-        pop_edit_field='inspector'
+        #pop_edit_field='inspector'
         def dict_row(self, inst):
             return {
-                #'inspector': unicode(inst.inspector) if inst.inspector else "",
+                '_inspector_label': unicode(inst.inspector) if inst.inspector else "",
                 'code':inst.inspector.code if inst.inspector else "",
-                'manager':unicode(inst.manager) if inst.manager else "",
-                'proc_status': inst.proc_status == 'processed',
+                '_manager_label':unicode(inst.manager) if inst.manager else "",
+                '_proc_status_label': inst.proc_status == 'processed',
                 #'proc_detail':'<span class="ellipsis" style="max-width:100px">%s</span>'%inst.proc_detail
             }
         #def dict_head(self, head):
             #if head['name']=='proc_status':
                 #head['type']='bool'
             #return head
+        def dict_head(self, head):
+            if head['name'] in[ 'inspector','manager','proc_status']:
+                head['editor'] = 'com-table-label-shower'
+            if head['name'] in ['proc_detail']:
+                head['editor'] = 'com-table-linetext'
+            if head['name']=='proc_status':
+                head['editor'] = 'com-table-select'
+                head['options']= [{'value':x[0],'label':x[1]} for x in PROC_STATUS]
+            return head
+        
         def get_heads(self):
             heads = ModelTable.get_heads(self)
             for index,head in enumerate(heads):
@@ -111,6 +145,7 @@ class OutBlockWarningFormPage(FieldsPage):
         def get_row(self):
             row= ModelFields.get_row(self)
             row['create_time']=timezone.localtime( self.instance.create_time).strftime('%Y-%m-%d %H:%M:%S')
+            row['proc_time']=timezone.localtime( self.instance.proc_time).strftime('%Y-%m-%d %H:%M:%S')
             return row
             
         def get_heads(self):
@@ -130,10 +165,20 @@ class OutBlockWarningFormPage(FieldsPage):
 
 class WorkinspectorPage(TablePage):
     template='jb_admin/table.html'
+    
+    def get_label(self):
+        return '上班排单'
+    
     class tableCls(ModelTable):
         model = WorkInspector
         exclude=[]
         pop_edit_field='date'
+        
+        def dict_head(self, head):
+            if head['name']=='inspector':
+                head['editor']='com-table-array-mapper'
+                head['options']={ins.pk:ins.name for ins in Inspector.objects.all()}
+            return head
         
         #def dict_row(self, inst):
             #return {

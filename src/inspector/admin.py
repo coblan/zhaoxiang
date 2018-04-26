@@ -82,11 +82,19 @@ class InspectorForm(ModelFields):
 
 class InspectorGroupPage(TablePage):
     template='jb_admin/table.html'
+    def get_label(self):
+        return '监督员分组'
+    
     class tableCls(ModelTable):
         model=InspectorGrop
         exclude=[]
         pop_edit_field='name'
         
+        def dict_head(self, head):
+            if head['name']=='inspector':
+                head['editor']='com-table-array-mapper'
+                head['options']={opt.pk:opt.name for opt in Inspector.objects.all()}
+            return head
         #def dict_row(self, inst):
             #return {
                 #'inspector':','.join([unicode(x) for x in inst.inspector.all()])

@@ -23,7 +23,7 @@ from django.views.generic import RedirectView
 from hello.engin_menu import PcMenu
 #from helpers.director import login_url 
 from helpers.director import views as director_views
-from helpers.face import urls as face_urls
+#from helpers.face import urls as face_urls
 from helpers.authuser import urls as authuser_urls
 from inspector.views import inspector_case
 

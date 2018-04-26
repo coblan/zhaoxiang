@@ -6,11 +6,11 @@
 <script src='{% static "js/geoscope.pack.js" %}?t={{ js_stamp.geoscope_pack_js }}'></script>
 <script type="text/javascript">
 
-    ex.each(heads,function(head){
-        if(head.name=='block'){
-            head.editor='com-weilan'
-        }
-    })
+//    ex.each(heads,function(head){
+//        if(head.name=='block'){
+//            head.editor='com-weilan'
+//        }
+//    })
 
     this_logic={
 //        watch:{
@@ -34,6 +34,14 @@
                 })
                 map_com.map.setFitView();
             })
+
+            ex.assign(this.op_funs,{
+                hight_region:function(kws){
+                    self.hight_region(kws.row)
+                },
+
+            })
+
         },
         methods:{
             hight_region:function(td_row){

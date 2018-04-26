@@ -9,8 +9,9 @@ from .models import BlockPolygon,BlockGroup
 from django.contrib.gis.geos import Polygon
 import json
 from .polygon import dict2poly,poly2dict
-from helpers.director.container import evalue_container
-from helpers.base.ldatetime import localstr
+from helpers.func.collection.container import evalue_container
+from helpers.func.ldatetime import localstr
+import js_cfg
 
 class BlockPolygonTablePage(TablePage):
     class BlockPolygonTable(ModelTable):

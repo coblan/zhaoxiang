@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 import django.contrib.gis.db.models.fields
 from django.db import migrations, models
-import helpers.base.jsonfield
+import helpers.director.model_func.jsonfield
 
 
 class Migration(migrations.Migration):
@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('litclass', models.CharField(blank=True, max_length=30, verbose_name='\u5c0f\u7c7b')),
                 ('addr', models.CharField(blank=True, max_length=500, verbose_name='\u5730\u5740')),
                 ('loc', django.contrib.gis.db.models.fields.PointField(blank=True, null=True, srid=4326, verbose_name='\u7ecf\u7eac\u5ea6')),
-                ('org_code', helpers.base.jsonfield.JsonField(blank=True, verbose_name='\u539f\u59cb\u6293\u53d6\u6570\u636e')),
+                ('org_code', helpers.director.model_func.jsonfield.JsonField(blank=True, verbose_name='\u539f\u59cb\u6293\u53d6\u6570\u636e')),
             ],
         ),
     ]
