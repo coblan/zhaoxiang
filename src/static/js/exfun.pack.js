@@ -1,38 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
+
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-/******/
+
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
+/******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/ 		}
+
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-/******/
+
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-/******/
+
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
-/******/
+
+
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-/******/
+
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
+
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -43,7 +46,7 @@
 /******/ 			});
 /******/ 		}
 /******/ 	};
-/******/
+
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -52,57 +55,127 @@
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-/******/
+
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
+
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/
+
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 76);
+/******/ 	return __webpack_require__(__webpack_require__.s = 78);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 76:
+/***/ 10:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _old = __webpack_require__(77);
-
-var _network = __webpack_require__(78);
-
-var _urlparse = __webpack_require__(79);
-
-var _collection = __webpack_require__(80);
-
-var _patch = __webpack_require__(81);
-
-var path = _interopRequireWildcard(_patch);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-var ex = {
-    assign: function assign(dst, src) {
-        for (var key in src) {
-            dst[key] = src[key];
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var network = exports.network = {
+    get: function get(url, callback) {
+        //replace $.get
+        var self = this;
+        var wrap_callback = function wrap_callback(resp) {
+            if (resp.msg) {
+                self.show_msg(resp.msg);
+            }
+            if (resp.status && typeof resp.status == 'string' && resp.status != 'success') {
+                hide_upload(300);
+                return;
+            } else {
+                callback(resp);
+            }
+        };
+        return $.get(url, wrap_callback);
+    },
+    post: function post(url, data, callback) {
+        var self = this;
+        var wrap_callback = function wrap_callback(resp) {
+            if (resp.msg) {
+                self.show_msg(resp.msg);
+            }
+            if (resp.status && typeof resp.status == 'string' && resp.status != 'success') {
+                hide_upload(300); // sometime
+                return;
+            } else {
+                callback(resp);
+            }
+        };
+        return $.post(url, data, wrap_callback);
+    },
+    load_js: function load_js(src, success) {
+        success = success || function () {};
+        var name = src; //btoa(src)
+        if (!window['__js_hook_' + name]) {
+            window['__js_hook_' + name] = [];
         }
+        window['__js_hook_' + name].push(success);
+        var hooks = window['__js_hook_' + name];
+        if (window['__js_loaded_' + name]) {
+            while (hooks.length > 0) {
+                hooks.pop()();
+            }
+        }
+        if (!window['__js_' + name]) {
+            window['__js_' + name] = true;
+            var domScript = document.createElement('script');
+            domScript.src = src;
+
+            domScript.onload = domScript.onreadystatechange = function () {
+                if (!this.readyState || 'loaded' === this.readyState || 'complete' === this.readyState) {
+                    window['__js_loaded_' + name] = true;
+                    while (hooks.length > 0) {
+                        hooks.pop()();
+                    }
+                    this.onload = this.onreadystatechange = null;
+                    // 让script元素显示出来
+                    //this.parentNode.removeChild(this);
+                }
+            };
+            document.getElementsByTagName('head')[0].appendChild(domScript);
+        }
+    },
+    load_css: function load_css(src) {
+        var name = btoa(src);
+        if (window['__src_' + name]) {
+            return;
+        }
+        window['__src_' + name] = true;
+        $('head').append('<link rel="stylesheet" href="' + src + '" type="text/css" />');
     }
 };
 
-ex.assign(ex, _old.old);
-ex.assign(ex, _network.network);
-ex.assign(ex, _urlparse.urlparse);
-ex.assign(ex, _collection.collection);
+/***/ }),
 
-window.ex = ex;
+/***/ 11:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var obj_control = exports.obj_control = {
+    isEmpty: function isEmpty(obj) {
+        for (var k in obj) {
+            if (/^[^_]/.exec(k)) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
 
 /***/ }),
 
-/***/ 77:
+/***/ 12:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -372,92 +445,192 @@ var old = exports.old = {
 
 /***/ }),
 
-/***/ 78:
+/***/ 13:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var network = exports.network = {
-    get: function get(url, callback) {
-        //replace $.get
-        var self = this;
-        var wrap_callback = function wrap_callback(resp) {
-            if (resp.msg) {
-                self.show_msg(resp.msg);
-            }
-            if (resp.status && typeof resp.status == 'string' && resp.status != 'success') {
-                hide_upload(300);
-                return;
-            } else {
-                callback(resp);
-            }
-        };
-        return $.get(url, wrap_callback);
-    },
-    post: function post(url, data, callback) {
-        var self = this;
-        var wrap_callback = function wrap_callback(resp) {
-            if (resp.msg) {
-                self.show_msg(resp.msg);
-            }
-            if (resp.status && typeof resp.status == 'string' && resp.status != 'success') {
-                hide_upload(300); // sometime
-                return;
-            } else {
-                callback(resp);
-            }
-        };
-        return $.post(url, data, wrap_callback);
-    },
-    load_js: function load_js(src, success) {
-        success = success || function () {};
-        var name = src; //btoa(src)
-        if (!window['__js_hook_' + name]) {
-            window['__js_hook_' + name] = [];
-        }
-        window['__js_hook_' + name].push(success);
-        var hooks = window['__js_hook_' + name];
-        if (window['__js_loaded_' + name]) {
-            while (hooks.length > 0) {
-                hooks.pop()();
-            }
-        }
-        if (!window['__js_' + name]) {
-            window['__js_' + name] = true;
-            var domScript = document.createElement('script');
-            domScript.src = src;
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-            domScript.onload = domScript.onreadystatechange = function () {
-                if (!this.readyState || 'loaded' === this.readyState || 'complete' === this.readyState) {
-                    window['__js_loaded_' + name] = true;
-                    while (hooks.length > 0) {
-                        hooks.pop()();
-                    }
-                    this.onload = this.onreadystatechange = null;
-                    // 让script元素显示出来
-                    //this.parentNode.removeChild(this);
+/*
+* 以打补丁的方式，区域那些不兼容的部分
+* */
+//  startsWith
+if (!String.prototype.startsWith) {
+    String.prototype.startsWith = function (searchString, position) {
+        position = position || 0;
+        return this.substr(position, searchString.length) === searchString;
+    };
+    String.prototype.endsWith = function (str) {
+        return this.match(str + "$") == str;
+    };
+}
+
+Array.prototype.each = function (fn) {
+    return this.length ? [fn(this.slice(0, 1))].concat(this.slice(1).each(fn)) : [];
+};
+
+/*两种调用方式
+ var template1="我是{0}，今年{1}了";
+ var template2="我是{name}，今年{age}了";
+ var result1=template1.format("loogn",22);
+ var result2=template2.format({name:"loogn",age:22});
+ 两个结果都是"我是loogn，今年22了"
+ */
+String.prototype.format = function (args) {
+    var result = this;
+    if (arguments.length > 0) {
+        if (arguments.length == 1 && (typeof args === "undefined" ? "undefined" : _typeof(args)) == "object") {
+            for (var key in args) {
+                if (args[key] != undefined) {
+                    var reg = new RegExp("({" + key + "})", "g");
+                    result = result.replace(reg, args[key]);
                 }
-            };
-            document.getElementsByTagName('head')[0].appendChild(domScript);
+            }
+        } else {
+            for (var i = 0; i < arguments.length; i++) {
+                if (arguments[i] != undefined) {
+                    //var reg = new RegExp("({[" + i + "]})", "g");//这个在索引大于9时会有问题，谢谢何以笙箫的指出
+                    var reg = new RegExp("({)" + i + "(})", "g");
+                    result = result.replace(reg, arguments[i]);
+                }
+            }
         }
+    }
+    return result;
+};
+
+var Base64 = {
+    // private property
+    _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+
+    // public method for encoding
+    encode: function encode(input) {
+        var output = "";
+        var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+        var i = 0;
+
+        input = Base64._utf8_encode(input);
+
+        while (i < input.length) {
+
+            chr1 = input.charCodeAt(i++);
+            chr2 = input.charCodeAt(i++);
+            chr3 = input.charCodeAt(i++);
+
+            enc1 = chr1 >> 2;
+            enc2 = (chr1 & 3) << 4 | chr2 >> 4;
+            enc3 = (chr2 & 15) << 2 | chr3 >> 6;
+            enc4 = chr3 & 63;
+
+            if (isNaN(chr2)) {
+                enc3 = enc4 = 64;
+            } else if (isNaN(chr3)) {
+                enc4 = 64;
+            }
+
+            output = output + Base64._keyStr.charAt(enc1) + Base64._keyStr.charAt(enc2) + Base64._keyStr.charAt(enc3) + Base64._keyStr.charAt(enc4);
+        }
+
+        return output;
     },
-    load_css: function load_css(src) {
-        var name = btoa(src);
-        if (window['__src_' + name]) {
-            return;
+
+    // public method for decoding
+    decode: function decode(input) {
+        var output = "";
+        var chr1, chr2, chr3;
+        var enc1, enc2, enc3, enc4;
+        var i = 0;
+
+        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+        while (i < input.length) {
+
+            enc1 = Base64._keyStr.indexOf(input.charAt(i++));
+            enc2 = Base64._keyStr.indexOf(input.charAt(i++));
+            enc3 = Base64._keyStr.indexOf(input.charAt(i++));
+            enc4 = Base64._keyStr.indexOf(input.charAt(i++));
+
+            chr1 = enc1 << 2 | enc2 >> 4;
+            chr2 = (enc2 & 15) << 4 | enc3 >> 2;
+            chr3 = (enc3 & 3) << 6 | enc4;
+
+            output = output + String.fromCharCode(chr1);
+
+            if (enc3 != 64) {
+                output = output + String.fromCharCode(chr2);
+            }
+            if (enc4 != 64) {
+                output = output + String.fromCharCode(chr3);
+            }
         }
-        window['__src_' + name] = true;
-        $('head').append('<link rel="stylesheet" href="' + src + '" type="text/css" />');
+
+        output = Base64._utf8_decode(output);
+
+        return output;
+    },
+
+    // private method for UTF-8 encoding
+    _utf8_encode: function _utf8_encode(string) {
+        string = string.replace(/\r\n/g, "\n");
+        var utftext = "";
+
+        for (var n = 0; n < string.length; n++) {
+
+            var c = string.charCodeAt(n);
+
+            if (c < 128) {
+                utftext += String.fromCharCode(c);
+            } else if (c > 127 && c < 2048) {
+                utftext += String.fromCharCode(c >> 6 | 192);
+                utftext += String.fromCharCode(c & 63 | 128);
+            } else {
+                utftext += String.fromCharCode(c >> 12 | 224);
+                utftext += String.fromCharCode(c >> 6 & 63 | 128);
+                utftext += String.fromCharCode(c & 63 | 128);
+            }
+        }
+
+        return utftext;
+    },
+
+    // private method for UTF-8 decoding
+    _utf8_decode: function _utf8_decode(utftext) {
+        var string = "";
+        var i = 0;
+        var c = c1 = c2 = 0;
+
+        while (i < utftext.length) {
+
+            c = utftext.charCodeAt(i);
+
+            if (c < 128) {
+                string += String.fromCharCode(c);
+                i++;
+            } else if (c > 191 && c < 224) {
+                c2 = utftext.charCodeAt(i + 1);
+                string += String.fromCharCode((c & 31) << 6 | c2 & 63);
+                i += 2;
+            } else {
+                c2 = utftext.charCodeAt(i + 1);
+                c3 = utftext.charCodeAt(i + 2);
+                string += String.fromCharCode((c & 15) << 12 | (c2 & 63) << 6 | c3 & 63);
+                i += 3;
+            }
+        }
+        return string;
     }
 };
 
+if (!window.atob) {
+    window.atob = Base64.decode;
+    window.btoa = Base64.encode;
+}
+
 /***/ }),
 
-/***/ 79:
+/***/ 14:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -551,15 +724,8 @@ var urlparse = exports.urlparse = {
             relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [, ''])[1],
             segments: a.pathname.replace(/^\//, '').split('/')
         };
-    },
-    cdLast: function cdLast(path) {
-        var mt = /(.*?)\/([^\/]*)\/?$/.exec(path);
-        if (mt) {
-            return mt[1];
-        } else {
-            return '/';
-        }
     }
+
 };
 
 function para_encode(para_str) {
@@ -568,7 +734,83 @@ function para_encode(para_str) {
 
 /***/ }),
 
-/***/ 80:
+/***/ 15:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var vuetool = exports.vuetool = {
+    vueSuper: function vueSuper(self, kws) {
+        var mixin = kws.mixin;
+        var name = kws.fun;
+        var args = kws.args || [];
+        if (mixin) {
+            var index = self.$options.mixins.indexOf(mixin);
+        } else {
+            var index = self.$options.mixins.length;
+        }
+        for (var i = index - 1; i > -1; i--) {
+            var mix = self.$options.mixins[i];
+            if (mix[name]) {
+                return mix.apply(self, args);
+            }
+        }
+    }
+};
+
+/***/ }),
+
+/***/ 78:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _old = __webpack_require__(12);
+
+var _network = __webpack_require__(10);
+
+var _urlparse = __webpack_require__(14);
+
+var _collection = __webpack_require__(8);
+
+var _patch = __webpack_require__(13);
+
+var path = _interopRequireWildcard(_patch);
+
+var _cookie = __webpack_require__(9);
+
+var _obj = __webpack_require__(11);
+
+var _vuetools = __webpack_require__(15);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var ex = {
+    assign: function assign(dst, src) {
+        for (var key in src) {
+            dst[key] = src[key];
+        }
+    }
+};
+
+ex.assign(ex, _old.old);
+ex.assign(ex, _network.network);
+ex.assign(ex, _urlparse.urlparse);
+ex.assign(ex, _collection.collection);
+ex.assign(ex, _cookie.cookie);
+ex.assign(ex, _obj.obj_control);
+ex.assign(ex, _vuetools.vuetool);
+
+window.ex = ex;
+
+/***/ }),
+
+/***/ 8:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -769,188 +1011,62 @@ var collection = exports.collection = {
 
 /***/ }),
 
-/***/ 81:
+/***/ 9:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 /*
-* 以打补丁的方式，区域那些不兼容的部分
-* */
-//  startsWith
-if (!String.prototype.startsWith) {
-    String.prototype.startsWith = function (searchString, position) {
-        position = position || 0;
-        return this.substr(position, searchString.length) === searchString;
-    };
-    String.prototype.endsWith = function (str) {
-        return this.match(str + "$") == str;
-    };
-}
+setCookie('name', 1111, 5);
+setCookie('name1', 22222, 5);
 
-Array.prototype.each = function (fn) {
-    return this.length ? [fn(this.slice(0, 1))].concat(this.slice(1).each(fn)) : [];
-};
+console.log(getCookie('name'));
+console.log(getAllCookie());
 
-/*两种调用方式
- var template1="我是{0}，今年{1}了";
- var template2="我是{name}，今年{age}了";
- var result1=template1.format("loogn",22);
- var result2=template2.format({name:"loogn",age:22});
- 两个结果都是"我是loogn，今年22了"
- */
-String.prototype.format = function (args) {
-    var result = this;
-    if (arguments.length > 0) {
-        if (arguments.length == 1 && (typeof args === "undefined" ? "undefined" : _typeof(args)) == "object") {
-            for (var key in args) {
-                if (args[key] != undefined) {
-                    var reg = new RegExp("({" + key + "})", "g");
-                    result = result.replace(reg, args[key]);
-                }
-            }
-        } else {
-            for (var i = 0; i < arguments.length; i++) {
-                if (arguments[i] != undefined) {
-                    //var reg = new RegExp("({[" + i + "]})", "g");//这个在索引大于9时会有问题，谢谢何以笙箫的指出
-                    var reg = new RegExp("({)" + i + "(})", "g");
-                    result = result.replace(reg, arguments[i]);
-                }
-            }
+delCookie('name1');
+clearCookie('undefined')    //清除未定义的名的cookie
+*/
+/*set cookie*/
+var cookie = exports.cookie = {
+    setCookie: function setCookie(name, value, Days) {
+        if (Days == null || Days == '') {
+            Days = 300;
         }
-    }
-    return result;
-};
-
-var Base64 = {
-    // private property
-    _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
-
-    // public method for encoding
-    encode: function encode(input) {
-        var output = "";
-        var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
-        var i = 0;
-
-        input = Base64._utf8_encode(input);
-
-        while (i < input.length) {
-
-            chr1 = input.charCodeAt(i++);
-            chr2 = input.charCodeAt(i++);
-            chr3 = input.charCodeAt(i++);
-
-            enc1 = chr1 >> 2;
-            enc2 = (chr1 & 3) << 4 | chr2 >> 4;
-            enc3 = (chr2 & 15) << 2 | chr3 >> 6;
-            enc4 = chr3 & 63;
-
-            if (isNaN(chr2)) {
-                enc3 = enc4 = 64;
-            } else if (isNaN(chr3)) {
-                enc4 = 64;
-            }
-
-            output = output + Base64._keyStr.charAt(enc1) + Base64._keyStr.charAt(enc2) + Base64._keyStr.charAt(enc3) + Base64._keyStr.charAt(enc4);
-        }
-
-        return output;
+        var exp = new Date();
+        exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+        document.cookie = name + "=" + escape(value) + "; path=/;expires=" + exp.toGMTString();
+        //document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
     },
 
-    // public method for decoding
-    decode: function decode(input) {
-        var output = "";
-        var chr1, chr2, chr3;
-        var enc1, enc2, enc3, enc4;
-        var i = 0;
-
-        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-
-        while (i < input.length) {
-
-            enc1 = Base64._keyStr.indexOf(input.charAt(i++));
-            enc2 = Base64._keyStr.indexOf(input.charAt(i++));
-            enc3 = Base64._keyStr.indexOf(input.charAt(i++));
-            enc4 = Base64._keyStr.indexOf(input.charAt(i++));
-
-            chr1 = enc1 << 2 | enc2 >> 4;
-            chr2 = (enc2 & 15) << 4 | enc3 >> 2;
-            chr3 = (enc3 & 3) << 6 | enc4;
-
-            output = output + String.fromCharCode(chr1);
-
-            if (enc3 != 64) {
-                output = output + String.fromCharCode(chr2);
-            }
-            if (enc4 != 64) {
-                output = output + String.fromCharCode(chr3);
-            }
-        }
-
-        output = Base64._utf8_decode(output);
-
-        return output;
+    /*get cookie*/
+    getCookie: function getCookie(name) {
+        var arr,
+            reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg)) return unescape(arr[2]);else return null;
     },
 
-    // private method for UTF-8 encoding
-    _utf8_encode: function _utf8_encode(string) {
-        string = string.replace(/\r\n/g, "\n");
-        var utftext = "";
-
-        for (var n = 0; n < string.length; n++) {
-
-            var c = string.charCodeAt(n);
-
-            if (c < 128) {
-                utftext += String.fromCharCode(c);
-            } else if (c > 127 && c < 2048) {
-                utftext += String.fromCharCode(c >> 6 | 192);
-                utftext += String.fromCharCode(c & 63 | 128);
-            } else {
-                utftext += String.fromCharCode(c >> 12 | 224);
-                utftext += String.fromCharCode(c >> 6 & 63 | 128);
-                utftext += String.fromCharCode(c & 63 | 128);
-            }
-        }
-
-        return utftext;
+    /*get all cookie*/
+    getAllCookie: function getAllCookie() {
+        return document.cookie;
     },
 
-    // private method for UTF-8 decoding
-    _utf8_decode: function _utf8_decode(utftext) {
-        var string = "";
-        var i = 0;
-        var c = c1 = c2 = 0;
+    /* clear cookie*/
+    clearCookie: function clearCookie(name) {
+        setCookie(name, '', -1);
+    },
 
-        while (i < utftext.length) {
-
-            c = utftext.charCodeAt(i);
-
-            if (c < 128) {
-                string += String.fromCharCode(c);
-                i++;
-            } else if (c > 191 && c < 224) {
-                c2 = utftext.charCodeAt(i + 1);
-                string += String.fromCharCode((c & 31) << 6 | c2 & 63);
-                i += 2;
-            } else {
-                c2 = utftext.charCodeAt(i + 1);
-                c3 = utftext.charCodeAt(i + 2);
-                string += String.fromCharCode((c & 15) << 12 | (c2 & 63) << 6 | c3 & 63);
-                i += 3;
-            }
-        }
-        return string;
+    /* del cookie*/
+    delCookie: function delCookie(name) {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval = getCookie(name);
+        if (cval != null) document.cookie = name + "=" + cval + "; path=/;expires=" + exp.toGMTString();
     }
 };
-
-if (!window.atob) {
-    window.atob = Base64.decode;
-    window.btoa = Base64.encode;
-}
 
 /***/ })
 
