@@ -155,7 +155,9 @@ class OutBlockWaringPage(TablePage):
             return heads
         
         def get_operation(self):
-            return []
+            operations = ModelTable.get_operation(self)
+            ops = filter(lambda op:op['name'] in ['save_changed_rows'] ,operations)
+            return ops
         
         class search(RowSearch):
             names=['inspector']
