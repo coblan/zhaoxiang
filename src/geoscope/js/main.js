@@ -9,7 +9,7 @@ import {shot} from './shot.js'
 
 Vue.component('polygon-input',polygon_com.ploygon_editor)
 Vue.component('polygon-multi-btn-panel',polygon_multi_btn_panel)
-Vue.component('com-map',map_com)
+
 //Vue.component('com-dispatch-panel',dispatch_panel)
 
 window.PolygonGroupController=PolygonGroupController

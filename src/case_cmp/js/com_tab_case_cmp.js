@@ -1,3 +1,5 @@
+require('./scss/com_tab_case_cmp.scss')
+
 var com_tab_case_cmp={
     props:['tab_head','par_row'],
     template:`<div class="flex flex-grow">
