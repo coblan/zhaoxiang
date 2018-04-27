@@ -703,11 +703,16 @@ Vue.component('com-table-checkbox', check_box);
 
 var label_shower = {
     props: ['rowData', 'field', 'index'],
-    template: '<span v-text="rowData[label]"></span>',
+    template: '<span v-text="show_text"></span>',
     data: function data() {
         return {
             label: '_' + this.field + '_label'
         };
+    },
+    computed: {
+        show_text: function show_text() {
+            return this.rowData[this.label] || '';
+        }
     }
 };
 
@@ -800,7 +805,7 @@ Vue.component('com-table-picture', picture);
 
 
 var pop_fields = {
-    template: '<span v-text="rowData[field]" @click="edit_me()" class="clickable"></span>',
+    template: '<span v-text="show_text" @click="edit_me()" class="clickable"></span>',
     props: ['rowData', 'field', 'index'],
     created: function created() {
         // find head from parent table
@@ -817,6 +822,15 @@ var pop_fields = {
         if (table_par) {
             var value = this.rowData[this.field];
             this.head = ex.findone(table_par.heads, { name: this.field });
+        }
+    },
+    computed: {
+        show_text: function show_text() {
+            if (this.head.show_label) {
+                return show_label[this.head.show_label.fun](this.rowData, this.head.show_label);
+            } else {
+                return this.rowData[this.field];
+            }
         }
     },
     methods: {
@@ -845,6 +859,13 @@ var pop_fields = {
     }
 };
 Vue.component('com-table-pop-fields', pop_fields);
+
+var show_label = {
+    use_other_field: function use_other_field(row, kws) {
+        var other_field = kws.other_field;
+        return row[other_field];
+    }
+};
 
 var get_row = {
     use_table_row: function use_table_row(callback, row, kws) {

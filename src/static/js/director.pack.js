@@ -1503,8 +1503,8 @@ var field_base = exports.field_base = {
             template: '<div><span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            \t\t\t<datetime  v-model="row[head.name]" :id="\'id_\'+head.name"\n                        \t:placeholder="head.placeholder"></datetime>\n                       </div>'
         },
         richtext: {
-            props: ['name', 'row', 'kw'],
-            template: '<div><span v-if=\'kw.readonly\' v-text=\'row[name]\'></span>\n            \t\t\t<ckeditor  v-model="row[name]" :id="\'id_\'+name"></ckeditor>\n                       </div>'
+            props: ['row', 'head'],
+            template: '<div><span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            \t\t\t<ckeditor  v-model="row[head.name]" :id="\'id_\'+head.name"></ckeditor>\n                       </div>'
         }
 
     }
