@@ -26,7 +26,7 @@ export class ManMapDialog{
 
         setTimeout(function(){
             var post_url=[{fun:'get_case_number',code:man.code}]
-            ex.post('/_ajax/inspector',JSON.stringify(post_url),function(resp){
+            ex.post('/d/ajax/inspector',JSON.stringify(post_url),function(resp){
                 $(`#${man.code} .case_num`).text(resp.get_case_number)
             })
 

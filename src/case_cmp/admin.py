@@ -99,7 +99,7 @@ class CaseCmpFormPage(FieldsPage):
             row['pic']=json.loads(row['pic'])
             row['audio']=json.loads(row['audio'])
             
-            distance = 50
+            distance = 100
             ref_location = loc
             ls = []
             for case in  JianduCase.objects.filter(loc__distance_lte=(ref_location, D(m=distance))):

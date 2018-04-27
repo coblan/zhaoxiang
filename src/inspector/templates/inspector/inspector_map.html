@@ -92,10 +92,12 @@
         var lat = pair[1]
         var content=ex.template("{name}/{code}/{track_time}",row) //ex.template("<div><span>{code}</span></div>",{code:row.code})
         if(!markers[row.code]){
+            var head = row.head || '/static/image/user.jpg'
             markers[row.code] = new AMap.Marker({
                 icon: "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
                 position: [lon,lat],
-                title:content
+                title:content,
+                content:'<div class="marker"><img class="head" src="'+head+'" alt=""></div>'
             });
             var marker = markers[row.code]
             marker.setMap(map)
@@ -118,6 +120,12 @@
     //    }
 
 </script>
+<style>
+    .marker .head{
+        width: 30px;
+        border-radius: 15px;
+    }
+</style>
 {% endblock %}
 
 {% block tab-content %}
