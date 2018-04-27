@@ -225,6 +225,12 @@ function pop_fields_layer(row, heads, ops, pop_id) {
     self.opened_layer_indx = layer.open({
         type: 1,
         area: ['700px', '400px'],
+        title: '详细',
+        resize: true,
+        resizing: function resizing(layero) {
+            var total_height = $('#fields-pop-' + pop_id).parents('.layui-layer').height();
+            $('#fields-pop-' + pop_id).parents('.layui-layer-content').height(total_height - 42);
+        },
         shadeClose: true, //点击遮罩关闭
         content: '<div id="fields-pop-' + pop_id + '" style="height: 100%;">\n                    <com-pop-fields @del_success="on_del()" @sub_success="on_sub_success($event)"\n                    :row="row" :heads="fields_heads" :ops="ops"></com-pop-fields>\n                </div>'
     });
@@ -912,7 +918,7 @@ var after_save = {
 
 var select = {
     props: ['rowData', 'field', 'index'],
-    template: '<div >\n    <select style="width: 100%" @change="on_changed()"  v-model="rowData[field]">\n        <option v-for="op in head.options" :value="op.value" v-text="op.label"></option>\n    </select>\n    </div>',
+    template: '\n    <el-dropdown trigger="click" placement="bottom" @command="handleCommand">\n    <span class="el-dropdown-link clickable" v-text="show_label"></span>\n    <el-dropdown-menu slot="dropdown">\n        <el-dropdown-item v-for="op in head.options" :command="op.value"><span v-text="op.label"></span></el-dropdown-item>\n        <!--<el-dropdown-item>\u72EE\u5B50\u5934</el-dropdown-item>-->\n        <!--<el-dropdown-item>\u87BA\u86F3\u7C89</el-dropdown-item>-->\n        <!--<el-dropdown-item>\u53CC\u76AE\u5976</el-dropdown-item>-->\n        <!--<el-dropdown-item>\u86B5\u4ED4\u714E</el-dropdown-item>-->\n    </el-dropdown-menu>\n    </el-dropdown>\n    ',
     data: function data() {
         return {};
     },
@@ -931,14 +937,71 @@ var select = {
         this.table_par = table_par;
         this.head = ex.findone(this.table_par.heads, { name: this.field });
     },
+    computed: {
+        show_label: function show_label() {
+            var value = this.rowData[this.field];
+            var opt = ex.findone(this.head.options, { value: value });
+            return opt.label;
+        }
+    },
     methods: {
+        handleCommand: function handleCommand(command) {
+            //this.$message('click on item ' + command);
+            this.rowData[this.field] = command;
+            this.on_changed();
+        },
+
+        setSelect: function setSelect(value) {
+            this.rowData[this.field] = value;
+            this.on_changed();
+        },
         on_changed: function on_changed() {
             this.$emit('on-custom-comp', { name: 'row_changed', row: this.rowData });
         }
     }
 };
 
-Vue.component('com-table-select', select);
+Vue.component('com-table-select', function (resolve, reject) {
+    ex.load_css('https://unpkg.com/element-ui/lib/theme-chalk/index.css');
+    ex.load_js('https://unpkg.com/element-ui/lib/index.js', function () {
+        resolve(select);
+    });
+});
+
+//var select = {
+//    props:['rowData','field','index'],
+//    template:`<div >
+//    <select style="width: 100%" @change="on_changed()"  v-model="rowData[field]">
+//        <option v-for="op in head.options" :value="op.value" v-text="op.label"></option>
+//    </select>
+//    </div>`,
+//    data:function(){
+//        return {
+//        }
+//    },
+//    created:function(){
+//        // find head from parent table
+//        var table_par = this.$parent
+//        while (true){
+//            if (table_par.heads){
+//                break
+//            }
+//            table_par = table_par.$parent
+//            if(!table_par){
+//                break
+//            }
+//        }
+//        this.table_par = table_par
+//        this. head  = ex.findone(this.table_par.heads,{name:this.field})
+//    },
+//    methods:{
+//        on_changed:function(){
+//            this.$emit('on-custom-comp',{name:'row_changed',row:this.rowData})
+//        }
+//    }
+//}
+
+//Vue.component('com-table-select',select)
 
 /***/ }),
 /* 16 */
