@@ -16,11 +16,11 @@
     <script src="{% static 'lib/moment2.17.1.min.js' %}"></script>
 
     <script src='{% static "js/i18n.js?t=" %}{{ js_stamp.i18n_js }}'></script>
-    <script src='{% static "js/exfun.pack.js?t=" %}{{ js_stamp.exfun_pack_js }}'></script>
+    <script src='{% static "js/exfun.pack.js" %}?t={{ js_stamp.exfun_pack_js }}'></script>
     <!--<script src='{% static "js/uis.pack.js?t=" %}{{ js_stamp.uis_pack_js }}'></script>-->
     <!--<script src='{% static "js/fields.pack.js?t=" %}{{ js_stamp.fields_pack_js }}'></script>-->
 
-    <script src='{% static "js/director.pack.js?t=" %}{{ js_stamp.director_pack_js }}'></script>
+    <script src='{% static "js/director.pack.js" %}?t={{ js_stamp.director_pack_js }}'></script>
 
     {% for js in ex_js %}
     <script src='{{js}}'></script>
@@ -178,7 +178,7 @@
     crt_pk=9999999
     poll(function(poll_next){
         var post_data=[{fun:'get_warning_last_pk'}]
-        $.post('/_ajax/dianzi_weilan',JSON.stringify(post_data),function(resp){
+        $.post('/d/ajax/dianzi_weilan',JSON.stringify(post_data),function(resp){
             var pk = parseInt(resp.get_warning_last_pk)
             if(crt_pk >= pk){
                 // 证明是第一次
