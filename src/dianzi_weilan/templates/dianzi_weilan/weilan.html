@@ -25,22 +25,28 @@
 
         },
         mounted:function(){
-            var map_com = this.$refs.map_com
             var self=this
-            map_com.on_init(function(){
-                ex.each(self.rows,function(row){
-                    self.js_poly[row.pk] = map_com.insert_polygon(row.polygon)
+            var inter_index = setInterval(function(){
+                console.log('hello')
+                var map_com = self.$refs.map_com
+                if(!map_com)return
+                clearInterval(inter_index)
+                map_com.on_init(function(){
+                    ex.each(self.rows,function(row){
+                        self.js_poly[row.pk] = map_com.insert_polygon(row.polygon)
 //                    row.js_poly =
+                    })
+                    map_com.map.setFitView();
                 })
-                map_com.map.setFitView();
-            })
 
-            ex.assign(this.op_funs,{
-                hight_region:function(kws){
-                    self.hight_region(kws.row)
-                },
+                ex.assign(self.op_funs,{
+                    hight_region:function(kws){
+                        self.hight_region(kws.row)
+                    },
 
-            })
+                })
+            },100)
+
 
         },
         methods:{

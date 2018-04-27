@@ -53,12 +53,11 @@ class CaseCmpPage(TablePage):
         
         def dict_head(self, head):
             dc={
-                'accountid':40,
-                'account':120,
-                'accounttype':60,
-                'username':80,
-                'viplv':40,
-                'createtime':100
+                'taskid':60,
+                'subtime':100,
+                'bigclass':60,
+                'litclass':60,
+                'addr':240,
             }
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])

@@ -7,15 +7,33 @@ from .models import Inspector,InspectorGrop
 # Register your models here.
 
 class InspectorPage(TablePage):
-    template='jb_admin/table.html'
+    #template='jb_admin/table.html'
+    template='jb_admin/table_with_height.html'
     #template='inspector/inspector.html'
     def get_label(self, prefer=None):
         return '监督员名单'
     
     class InspectorTable(ModelTable):
         model=Inspector
-        exclude=[]
+        exclude=['id']
         pop_edit_field='name'
+        
+        def dict_head(self, head):
+            dc={
+                'name':80,
+                'head':160,
+                'gen':80,
+                'code':100,
+                'PDA':80,
+                'last_loc':100,
+                'track_time':160
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])            
+            
+            if head['name']=='head':
+                head['editor']='com-table-picture'
+            return head
         
         class search(RowSearch):
             names=['name','code']
@@ -62,10 +80,11 @@ class InspectorPage(TablePage):
 
 
 class InspectorForm(ModelFields):
+    readonly=['last_loc','track_time']
     class Meta:
         model=Inspector
         exclude=[]
-        
+    
     def get_heads(self):
         heads = super(self.__class__,self).get_heads()
         for head in heads:
@@ -87,14 +106,25 @@ class InspectorGroupPage(TablePage):
     
     class tableCls(ModelTable):
         model=InspectorGrop
-        exclude=[]
+        exclude=['id']
         pop_edit_field='name'
         
         def dict_head(self, head):
+            dc={
+                'name':150,
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])              
+            
             if head['name']=='inspector':
                 head['editor']='com-table-array-mapper'
                 head['options']={opt.pk:opt.name for opt in Inspector.objects.all()}
             return head
+        
+        class search(RowSearch):
+            names=['name']
+        class sort(RowSort):
+            names=['name']
         #def dict_row(self, inst):
             #return {
                 #'inspector':','.join([unicode(x) for x in inst.inspector.all()])

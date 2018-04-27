@@ -39,15 +39,31 @@ class GroupWeilanRel(TablePage):
             heads.append({'name':'hight_region',
                           'label':'围栏区域',
                           'editor':'com-table-extraclick',
-                          'extra_label':'查看',
-                          'extra_fun':'hight_region'
+                          'extra_label':'提示',
+                          'extra_fun':'hight_region',
+                          'width':30,
                           })
             return heads
         
         def dict_head(self, head):
+            
+            dc={
+                'block':60,
+                'groups':100,
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])
+                
+            
             if head['name']=='groups':
                 head['editor']='com-table-array-mapper'
                 head['options']={g.pk:g.name for g in InspectorGrop.objects.all()}
+            if head['name']=='block':
+                head['show_label']={
+                    'fun':'use_other_field',
+                    'other_field':'_block_label'
+                }
+                #head['editor']='com-table-label-shower'
             return head
         
         def dict_row(self, inst): 
@@ -91,6 +107,7 @@ class OutBlockWaringPage(TablePage):
     class tableCls(ModelTable):
         model=OutBlockWarning
         exclude=['id']
+        fields_sort=['inspector','code','proc_status','proc_detail','reason','manager']
         #pop_edit_field='inspector'
         def dict_row(self, inst):
             return {
@@ -105,6 +122,17 @@ class OutBlockWaringPage(TablePage):
                 #head['type']='bool'
             #return head
         def dict_head(self, head):
+            dc={
+                'inspector':60,
+                'proc_status':60,
+                'proc_detail':160,
+                'manager':60,
+                'reason':160,
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])              
+            
+            
             if head['name'] in[ 'inspector','manager','proc_status']:
                 head['editor'] = 'com-table-label-shower'
             if head['name'] in ['proc_detail']:
@@ -120,10 +148,15 @@ class OutBlockWaringPage(TablePage):
                 if head['name']=='inspector':
                     heads.insert(index+1, {
                         'name':'code',
-                        'label':'编码'
+                        'label':'编码',
+                        'width':90
                     })
                     break
             return heads
+        
+        def get_operation(self):
+            return []
+        
         class search(RowSearch):
             names=['inspector']
             def get_query(self,query):
@@ -171,10 +204,18 @@ class WorkinspectorPage(TablePage):
     
     class tableCls(ModelTable):
         model = WorkInspector
-        exclude=[]
+        exclude=['id']
         pop_edit_field='date'
         
         def dict_head(self, head):
+            
+            dc={
+                'date':60,
+                'inspector':400,
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])  
+                
             if head['name']=='inspector':
                 head['editor']='com-table-array-mapper'
                 head['options']={ins.pk:ins.name for ins in Inspector.objects.all()}
