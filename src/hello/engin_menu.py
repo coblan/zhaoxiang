@@ -10,6 +10,7 @@ from helpers.maintenance.update_static_timestamp import js_stamp
 class PcMenu(BaseEngine):
     url_name='zhaoxiang'
     brand='Z.X.Z'
+    mini_brand='ZXZ'
     menu=[
         {'label':'监督员','url':page('inspector.inspector'),'icon':fa('fa-user-secret'),
          'submenu':[

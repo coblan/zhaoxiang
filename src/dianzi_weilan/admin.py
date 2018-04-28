@@ -10,6 +10,7 @@ from geoscope.polygon import poly2dict
 from django.utils import timezone
 from .models import PROC_STATUS
 from inspector.models import Inspector
+from helpers.maintenance.update_static_timestamp import js_stamp
 
 # Register your models here.
 class Weilan(BlockGroupTablePage):
@@ -200,7 +201,7 @@ class OutBlockWarningFormPage(FieldsPage):
 
 class WorkinspectorPage(TablePage):
     template='jb_admin/table.html'
-    
+    extra_js=['/static/js/dianzi_weilan.pack.js?t=%s'%js_stamp.dianzi_weilan_pack_js]
     def get_label(self):
         return '上班排单'
     
@@ -230,6 +231,7 @@ class WorkinspectorPage(TablePage):
 
 class WorkinspectorFormPage(FieldsPage):
     template='dianzi_weilan/workinspector_form.html'
+   
     class fieldsCls(ModelFields):
         class Meta:
             model = WorkInspector
