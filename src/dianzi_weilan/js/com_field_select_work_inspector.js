@@ -1,5 +1,10 @@
 var field_select_work_inspector =  {
     props:['row','head'],
+    data:function(){
+        return {
+            crt_group:null
+        }
+    },
     template:`   <div>
         <ul v-if='head.readonly'><li v-for='value in row[head.name]' v-text='get_label(value)'></li></ul>
         <div v-else>
@@ -10,7 +15,7 @@ var field_select_work_inspector =  {
             </select>
             <button @click="add_group()">添加</button>
             <multi-chosen  v-model='row[head.name]' :id="'id_'+head.name"
-                :choices='head.options'
+                :options='head.options'
                 ref="select">
             </multi-chosen>
         </div>
@@ -25,7 +30,11 @@ var field_select_work_inspector =  {
             if(this.crt_group){
                 var self =this
                 ex.each(self.crt_group.inspectors,function(inspector_pk){
+                    if(!ex.isin(inspector_pk,self.row.inspector)){
+                        self.row.inspector.push(inspector_pk)
+                    }
 
+                    //alert(inspector_pk)
                 })
                 //var tow_col_sel = this.$refs.two_col_sel
                 //ex.each(tow_col_sel.can_select,function(item){

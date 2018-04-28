@@ -222,6 +222,7 @@ class WorkinspectorPage(TablePage):
             if head['name']=='inspector':
                 head['editor']='com-table-array-mapper'
                 head['options']={ins.pk:ins.name for ins in Inspector.objects.all()}
+
             return head
         
         #def dict_row(self, inst):
@@ -236,17 +237,29 @@ class WorkinspectorFormPage(FieldsPage):
         class Meta:
             model = WorkInspector
             exclude= []
+        
+        def dict_head(self, head):
+            if head['name']=='inspector':
+                ls= []
+                for group in InspectorGrop.objects.all():
+                    ls.append({
+                        'label':group.name,
+                        'inspectors':[x.pk for x in group.inspector.all()]
+                    })
+                head['editor'] = 'com-field-select-work-inspector' 
+                head['groups']= ls
+            return head
     
-    def get_context(self):
-        ctx= FieldsPage.get_context(self)
-        ls= []
-        for group in InspectorGrop.objects.all():
-            ls.append({
-                'label':group.name,
-                'inspectors':[x.pk for x in group.inspector.all()]
-            })
-        ctx['groups'] = ls
-        return ctx
+    #def get_context(self):
+        #ctx= FieldsPage.get_context(self)
+        #ls= []
+        #for group in InspectorGrop.objects.all():
+            #ls.append({
+                #'label':group.name,
+                #'inspectors':[x.pk for x in group.inspector.all()]
+            #})
+        #ctx['groups'] = ls
+        #return ctx
         
 
 model_dc[InspectorGroupAndWeilanRel]={'fields':GroupWeilanRelFormPage.fieldsCls}

@@ -75,7 +75,12 @@
 
 var field_select_work_inspector = {
     props: ['row', 'head'],
-    template: '   <div>\n        <ul v-if=\'head.readonly\'><li v-for=\'value in row[head.name]\' v-text=\'get_label(value)\'></li></ul>\n        <div v-else>\n            <span>\u4ECE\u76D1\u7763\u5458\u5206\u7EC4\uFF1A</span>\n            <select v-model="crt_group">\n                <option  :value="null">---</option>\n                <option  v-for="group in head.groups" :value="group" v-text="group.label"></option>\n            </select>\n            <button @click="add_group()">\u6DFB\u52A0</button>\n            <multi-chosen  v-model=\'row[head.name]\' :id="\'id_\'+head.name"\n                :choices=\'head.options\'\n                ref="select">\n            </multi-chosen>\n        </div>\n    </div>',
+    data: function data() {
+        return {
+            crt_group: null
+        };
+    },
+    template: '   <div>\n        <ul v-if=\'head.readonly\'><li v-for=\'value in row[head.name]\' v-text=\'get_label(value)\'></li></ul>\n        <div v-else>\n            <span>\u4ECE\u76D1\u7763\u5458\u5206\u7EC4\uFF1A</span>\n            <select v-model="crt_group">\n                <option  :value="null">---</option>\n                <option  v-for="group in head.groups" :value="group" v-text="group.label"></option>\n            </select>\n            <button @click="add_group()">\u6DFB\u52A0</button>\n            <multi-chosen  v-model=\'row[head.name]\' :id="\'id_\'+head.name"\n                :options=\'head.options\'\n                ref="select">\n            </multi-chosen>\n        </div>\n    </div>',
     computed: {
         label: function label() {
             return this.row['_' + this.head.name + '_label'];
@@ -85,7 +90,13 @@ var field_select_work_inspector = {
         add_group: function add_group() {
             if (this.crt_group) {
                 var self = this;
-                ex.each(self.crt_group.inspectors, function (inspector_pk) {});
+                ex.each(self.crt_group.inspectors, function (inspector_pk) {
+                    if (!ex.isin(inspector_pk, self.row.inspector)) {
+                        self.row.inspector.push(inspector_pk);
+                    }
+
+                    //alert(inspector_pk)
+                });
                 //var tow_col_sel = this.$refs.two_col_sel
                 //ex.each(tow_col_sel.can_select,function(item){
                 //    if(ex.isin(item.value,self.crt_group.inspectors)){
