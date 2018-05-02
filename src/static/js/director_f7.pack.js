@@ -310,10 +310,8 @@ var ff = exports.ff = {
         });
     }
 
-};
-
-// ��ҳ�治��framework7��iframe��ʱ���Զ��л�Ϊ�����ĺ��������磬��������ĳ��ҳ��ʱ��
-if (!parent.myApp) {
+    // ��ҳ�治��framework7��iframe��ʱ���Զ��л�Ϊ�����ĺ��������磬��������ĳ��ҳ��ʱ��
+};if (!parent.myApp) {
     exports.ff = ff = {
         app: {
             actions: function actions() {}

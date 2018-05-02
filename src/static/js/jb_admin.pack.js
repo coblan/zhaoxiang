@@ -1,41 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -46,7 +46,7 @@
 /******/ 			});
 /******/ 		}
 /******/ 	};
-
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -55,15 +55,15 @@
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-
+/******/
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 30);
+/******/ 	return __webpack_require__(__webpack_require__.s = 37);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -139,7 +139,7 @@ var stylesInDom = {},
 		};
 	},
 	isOldIE = memoize(function() {
-		return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+		return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
 	}),
 	getHeadElement = memoize(function () {
 		return document.head || document.getElementsByTagName("head")[0];
@@ -581,6 +581,10 @@ function pop_fields_layer(row, heads, ops, callback) {
                 callback({ name: 'after_save', new_row: event.new_row, old_row: event.old_row });
                 //eventBus.$emit('pop-win-'+pop_id,{name:'after_save',new_row:event.new_row,old_row:event.old_row})
             }
+            //on_del:function(){
+            //    ex.remove(self.rows,row)
+            //    layer.close(self.opened_layer_indx)
+            //},
         }
     });
 }
@@ -760,19 +764,18 @@ var nice_validator = {
             }
         }
     }
-};
 
-//$.validator.config({
-//    rules: {
-//        error_msg: function(ele,param){
-//
-//        }
-//    }
-//}
-//
-//);
+    //$.validator.config({
+    //    rules: {
+    //        error_msg: function(ele,param){
+    //
+    //        }
+    //    }
+    //}
+    //
+    //);
 
-window.mix_nice_validator = nice_validator;
+};window.mix_nice_validator = nice_validator;
 
 /***/ }),
 /* 9 */
@@ -796,10 +799,25 @@ var mix_table_data = {
                 self.changed_rows = [];
             },
             add_new: function add_new(kws) {
+                /*
+                * model_name,
+                * */
                 self.add_new(kws);
             },
             delete: function _delete() {
                 self.del_selected();
+            },
+            selected_set_value: function selected_set_value(kws) {
+                /* kws ={ field,value }
+                * */
+                ex.each(self.selected, function (row) {
+                    row[kws.field] = kws.value;
+                    if (row._hash != ex.hashDict(row)) {
+                        if (!ex.isin(row, self.changed_rows)) {
+                            self.changed_rows.push(row);
+                        }
+                    }
+                });
             }
 
         });
@@ -838,6 +856,7 @@ var mix_table_data = {
                 });
             });
         },
+
         update_or_insert: function update_or_insert(new_row, old_row) {
             if (old_row && !old_row.pk) {
                 this.rows.splice(0, 0, new_row);
@@ -903,6 +922,44 @@ var mix_table_data = {
             });
         }
 
+        //del_item: function () {
+        //    if (this.selected.length == 0) {
+        //        return
+        //    }
+        //    var del_obj = {}
+        //    for (var j = 0; j < this.selected.length; j++) {
+        //        var pk = this.selected[j]
+        //        for (var i = 0; i < this.rows.length; i++) {
+        //            if (this.rows[i].pk.toString() == pk) {
+        //                if (!del_obj[this.rows[i]._class]) {
+        //                    del_obj[this.rows[i]._class] = []
+        //                }
+        //                del_obj[this.rows[i]._class].push(pk)
+        //            }
+        //        }
+        //    }
+        //    var out_str = ''
+        //    for (var key in del_obj) {
+        //        out_str += (key + ':' + del_obj[key].join(':') + ',')
+        //    }
+        //    location = ex.template("{engine_url}/del_rows?rows={rows}&next={next}", {
+        //        engine_url: engine_url,
+        //        rows: encodeURI(out_str),
+        //        next: encodeURIComponent(location.href)
+        //    })
+        //},
+        //goto_page: function (page) {
+        //    this.search_args._page = page
+        //    this.get_data()
+        //},
+        //add_new: function () {
+        //    var url = ex.template('{engine_url}/{page}.edit/?next={next}', {
+        //        engine_url: engine_url,
+        //        page: page_name,
+        //        next: encodeURIComponent(ex.appendSearch(location.pathname, search_args))
+        //    })
+        //    location = url
+        //},
     }
 };
 
@@ -1042,17 +1099,14 @@ Vue.component('com-table-array-mapper', array_mapper);
 "use strict";
 
 
+var _mix_editor = __webpack_require__(28);
+
+__webpack_require__(34);
+
 var check_box = {
     props: ['rowData', 'field', 'index'],
-    template: '<div ><input style="width: 100%" @change="on_changed()" type="checkbox" v-model="rowData[field]"></div>',
-    data: function data() {
-        return {};
-    },
-    methods: {
-        on_changed: function on_changed() {
-            this.$emit('on-custom-comp', { name: 'row_changed', row: this.rowData });
-        }
-    }
+    template: '<div :class="[\'com-table-checkbox\',{\'dirty\':is_dirty}]"><input style="width: 100%" @change="on_changed()" type="checkbox" v-model="rowData[field]"></div>',
+    mixins: [_mix_editor.mix_editor]
 };
 
 Vue.component('com-table-checkbox', check_box);
@@ -1127,20 +1181,71 @@ Vue.component('com-table-label-shower', label_shower);
 "use strict";
 
 
+__webpack_require__(35);
 var line_text = {
     props: ['rowData', 'field', 'index'],
-    template: '<div ><input @change="on_changed()" style="width: 100%" type="text" v-model="rowData[field]"></div>',
+    template: '<div :class="[\'com-table-linetext\',{\'dirty\':is_dirty}]">\n        <span v-if="readonly" v-text="rowData[field]"></span>\n        <input v-else @change="on_changed()" style="width: 100%" type="text" v-model="rowData[field]">\n    </div>',
     data: function data() {
-        return {};
+        return {
+            org_value: this.rowData[this.field]
+        };
+    },
+    created: function created() {
+        // find head from parent table
+        var table_par = this.$parent;
+        while (true) {
+            if (table_par.heads) {
+                break;
+            }
+            table_par = table_par.$parent;
+            if (!table_par) {
+                break;
+            }
+        }
+        this.table_par = table_par;
+        this.head = ex.findone(this.table_par.heads, { name: this.field });
+    },
+    computed: {
+        is_dirty: function is_dirty() {
+            return this.rowData[this.field] != this.org_value;
+        },
+        readonly: function readonly() {
+            if (this.head.readonly) {
+                return _readonly[this.head.readonly.fun](this, this.head.readonly);
+            } else {
+                return false;
+            }
+        }
+    },
+    watch: {
+        'rowData._hash': function rowData_hash() {
+            this.org_value = this.rowData[this.field];
+        }
     },
     methods: {
+        getRowValue: function getRowValue(field) {
+            return this.rowData[field];
+        },
         on_changed: function on_changed() {
-            this.$emit('on-custom-comp', { name: 'row_changed', row: this.rowData });
+            var value = this.rowData[this.field];
+            if (value == this.org_value) {
+                this.$emit('on-custom-comp', { name: 'row_changed_undo_act', row: this.rowData });
+            } else {
+                this.$emit('on-custom-comp', { name: 'row_changed', row: this.rowData });
+            }
         }
     }
 };
 
 Vue.component('com-table-linetext', line_text);
+
+var _readonly = {
+    checkRowValue: function checkRowValue(self, kws) {
+        var field = kws.field;
+        var target_value = kws.target_value;
+        return self.rowData[field] == target_value;
+    }
+};
 
 /***/ }),
 /* 16 */
@@ -1361,11 +1466,14 @@ var after_save = {
 "use strict";
 
 
-__webpack_require__(29);
+var _mix_editor = __webpack_require__(28);
+
+__webpack_require__(36);
+
 
 var select = {
     props: ['rowData', 'field', 'index'],
-    template: '\n    <el-dropdown trigger="click" placement="bottom" @command="handleCommand">\n    <span class="el-dropdown-link clickable" v-text="show_label"></span>\n    <el-dropdown-menu slot="dropdown">\n        <el-dropdown-item v-for="op in head.options"\n        :command="op.value"\n        :class="{\'crt-value\':rowData[field]==op.value}"\n        ><span v-text="op.label"></span></el-dropdown-item>\n        <!--<el-dropdown-item>\u72EE\u5B50\u5934</el-dropdown-item>-->\n        <!--<el-dropdown-item>\u87BA\u86F3\u7C89</el-dropdown-item>-->\n        <!--<el-dropdown-item>\u53CC\u76AE\u5976</el-dropdown-item>-->\n        <!--<el-dropdown-item>\u86B5\u4ED4\u714E</el-dropdown-item>-->\n    </el-dropdown-menu>\n    </el-dropdown>\n    ',
+    template: '<div :class="[\'com-table-select\',{\'dirty\':is_dirty}]">\n            <el-dropdown trigger="click" placement="bottom" @command="handleCommand">\n                <span class="el-dropdown-link clickable" v-html="show_label"></span>\n                <el-dropdown-menu slot="dropdown">\n                    <el-dropdown-item v-for="op in head.options"\n                    :command="op.value"\n                    :class="{\'crt-value\':rowData[field]==op.value}" >\n                    <div v-text="op.label"></div>\n                    </el-dropdown-item>\n                </el-dropdown-menu>\n            </el-dropdown>\n        </div>\n\n    ',
     data: function data() {
         return {};
     },
@@ -1384,11 +1492,12 @@ var select = {
         this.table_par = table_par;
         this.head = ex.findone(this.table_par.heads, { name: this.field });
     },
+    mixins: [_mix_editor.mix_editor],
     computed: {
         show_label: function show_label() {
             var value = this.rowData[this.field];
             var opt = ex.findone(this.head.options, { value: value });
-            return opt.label;
+            return opt.html_label || opt.label;
         }
     },
     methods: {
@@ -1405,10 +1514,10 @@ var select = {
                 this.rowData[this.field] = value;
                 this.on_changed();
             }
-        },
-        on_changed: function on_changed() {
-            this.$emit('on-custom-comp', { name: 'row_changed', row: this.rowData });
         }
+        //on_changed:function(){
+        //    this.$emit('on-custom-comp',{name:'row_changed',row:this.rowData})
+        //}
     }
 };
 
@@ -1616,11 +1725,10 @@ var ajax_fields = {
             }
             this.row = new_row;
         }
-    }
-    // data_getter  回调函数，获取数据,
+        // data_getter  回调函数，获取数据,
 
 
-};
+    } };
 
 Vue.component('com_tab_fields', ajax_fields);
 
@@ -1782,7 +1890,7 @@ var get_data = {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(27);
+var content = __webpack_require__(29);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1791,8 +1899,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!./../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!./../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./fields.scss", function() {
-			var newContent = require("!!./../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!./../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./fields.scss");
+		module.hot.accept("!!../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./fields.scss", function() {
+			var newContent = require("!!../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./fields.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -1803,6 +1911,70 @@ if(false) {
 
 /***/ }),
 /* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(33);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_editor_base.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_editor_base.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var mix_editor = exports.mix_editor = {
+    data: function data() {
+        return {
+            org_value: this.rowData[this.field]
+        };
+    },
+    computed: {
+        is_dirty: function is_dirty() {
+            return this.rowData[this.field] != this.org_value;
+        }
+    },
+    watch: {
+        'rowData._hash': function rowData_hash() {
+            this.org_value = this.rowData[this.field];
+        }
+    },
+    methods: {
+        on_changed: function on_changed() {
+            var value = this.rowData[this.field];
+            if (value == this.org_value) {
+                this.$emit('on-custom-comp', { name: 'row_changed_undo_act', row: this.rowData });
+            } else {
+                this.$emit('on-custom-comp', { name: 'row_changed', row: this.rowData });
+            }
+        }
+    }
+};
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1816,7 +1988,7 @@ exports.push([module.i, ".msg-hide .field .msg {\n  display: none; }\n\n.field .
 
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1824,19 +1996,61 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".el-dropdown-menu__item.crt-value {\n  background-color: #eaf8ff; }\n", ""]);
+exports.push([module.i, ".com-table-checkbox.dirty input {\n  background-color: yellow; }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 29 */
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".com-table-linetext.dirty input {\n  background-color: yellow; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".el-dropdown-menu__item.crt-value {\n  background-color: #eaf8ff; }\n\n.com-table-select.dirty {\n  background-color: yellow; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".dirty {\n  background-color: yellow; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(28);
+var content = __webpack_require__(30);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1845,8 +2059,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!./../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!./../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./select.scss", function() {
-			var newContent = require("!!./../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!./../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./select.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./check_box.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./check_box.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -1856,7 +2070,59 @@ if(false) {
 }
 
 /***/ }),
-/* 30 */
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(31);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./linetext.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./linetext.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(32);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./select.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./select.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1961,6 +2227,7 @@ var btn = _interopRequireWildcard(_btn);
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 __webpack_require__(26);
+__webpack_require__(27);
 
 //table mix
 

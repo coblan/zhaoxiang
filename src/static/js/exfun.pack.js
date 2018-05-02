@@ -1,41 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -46,7 +46,7 @@
 /******/ 			});
 /******/ 		}
 /******/ 	};
-
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -55,20 +55,79 @@
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-
+/******/
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 78);
+/******/ 	return __webpack_require__(__webpack_require__.s = 79);
 /******/ })
 /************************************************************************/
 /******/ ({
 
 /***/ 10:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/*
+setCookie('name', 1111, 5);
+setCookie('name1', 22222, 5);
+
+console.log(getCookie('name'));
+console.log(getAllCookie());
+
+delCookie('name1');
+clearCookie('undefined')    //清除未定义的名的cookie
+*/
+/*set cookie*/
+var cookie = exports.cookie = {
+    setCookie: function setCookie(name, value, Days) {
+        if (Days == null || Days == '') {
+            Days = 300;
+        }
+        var exp = new Date();
+        exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+        document.cookie = name + "=" + escape(value) + "; path=/;expires=" + exp.toGMTString();
+        //document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+    },
+
+    /*get cookie*/
+    getCookie: function getCookie(name) {
+        var arr,
+            reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg)) return unescape(arr[2]);else return null;
+    },
+
+    /*get all cookie*/
+    getAllCookie: function getAllCookie() {
+        return document.cookie;
+    },
+
+    /* clear cookie*/
+    clearCookie: function clearCookie(name) {
+        setCookie(name, '', -1);
+    },
+
+    /* del cookie*/
+    delCookie: function delCookie(name) {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval = getCookie(name);
+        if (cval != null) document.cookie = name + "=" + cval + "; path=/;expires=" + exp.toGMTString();
+    }
+};
+
+/***/ }),
+
+/***/ 11:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -153,7 +212,7 @@ var network = exports.network = {
 
 /***/ }),
 
-/***/ 11:
+/***/ 12:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -175,7 +234,7 @@ var obj_control = exports.obj_control = {
 
 /***/ }),
 
-/***/ 12:
+/***/ 13:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -405,47 +464,47 @@ var old = exports.old = {
         return out_list;
     }
 
-};
+    //function parseSearch(queryString) {
+    //    var queryString = queryString || location.search
+    //    if(queryString.startsWith('?')){
+    //        var queryString=queryString.substring(1)
+    //    }
+    //    var params = {}
+    //    // Split into key/value pairs
+    //    var queries = queryString.split("&");
+    //    // Convert the array of strings into an object
+    //    for (var i = 0; i < queries.length; i++ ) {
+    //        var mt = /([^=]+?)=(.+)/.exec(queries[i])
+    //        params[mt[1]] = mt[2];
+    //    }
+    //    return params;
+    //}
+    //function searchfy(obj,pre){
+    //    var outstr=pre||''
+    //    for(x in obj){
+    //        if(obj[x]){
+    //            outstr+=x.toString()+'='+ obj[x].toString()+'&';
+    //        }
+    //
+    //    }
+    //    if(outstr.endsWith('&')){
+    //        return outstr.slice(0,-1)
+    //    }else{
+    //        return outstr
+    //    }
+    //
+    //}
+    //function update(dst_obj,src_obj) {
+    //    for(x in src_obj){
+    //        dst_obj[x]=src_obj[x]
+    //    }
+    //}
 
-//function parseSearch(queryString) {
-//    var queryString = queryString || location.search
-//    if(queryString.startsWith('?')){
-//        var queryString=queryString.substring(1)
-//    }
-//    var params = {}
-//    // Split into key/value pairs
-//    var queries = queryString.split("&");
-//    // Convert the array of strings into an object
-//    for (var i = 0; i < queries.length; i++ ) {
-//        var mt = /([^=]+?)=(.+)/.exec(queries[i])
-//        params[mt[1]] = mt[2];
-//    }
-//    return params;
-//}
-//function searchfy(obj,pre){
-//    var outstr=pre||''
-//    for(x in obj){
-//        if(obj[x]){
-//            outstr+=x.toString()+'='+ obj[x].toString()+'&';
-//        }
-//
-//    }
-//    if(outstr.endsWith('&')){
-//        return outstr.slice(0,-1)
-//    }else{
-//        return outstr
-//    }
-//
-//}
-//function update(dst_obj,src_obj) {
-//    for(x in src_obj){
-//        dst_obj[x]=src_obj[x]
-//    }
-//}
+};
 
 /***/ }),
 
-/***/ 13:
+/***/ 14:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -630,7 +689,7 @@ if (!window.atob) {
 
 /***/ }),
 
-/***/ 14:
+/***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -734,7 +793,7 @@ function para_encode(para_str) {
 
 /***/ }),
 
-/***/ 15:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -764,29 +823,31 @@ var vuetool = exports.vuetool = {
 
 /***/ }),
 
-/***/ 78:
+/***/ 79:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _old = __webpack_require__(12);
+var _old = __webpack_require__(13);
 
-var _network = __webpack_require__(10);
+var _network = __webpack_require__(11);
 
-var _urlparse = __webpack_require__(14);
+var _urlparse = __webpack_require__(15);
 
-var _collection = __webpack_require__(8);
+var _collection = __webpack_require__(9);
 
-var _patch = __webpack_require__(13);
+var _patch = __webpack_require__(14);
 
 var path = _interopRequireWildcard(_patch);
 
-var _cookie = __webpack_require__(9);
+var _cookie = __webpack_require__(10);
 
-var _obj = __webpack_require__(11);
+var _obj = __webpack_require__(12);
 
-var _vuetools = __webpack_require__(15);
+var _vuetools = __webpack_require__(16);
+
+var _code = __webpack_require__(8);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -796,21 +857,94 @@ var ex = {
             dst[key] = src[key];
         }
     }
-};
 
-ex.assign(ex, _old.old);
+    //import {md5} from  './md5.min'
+
+};ex.assign(ex, _old.old);
 ex.assign(ex, _network.network);
 ex.assign(ex, _urlparse.urlparse);
 ex.assign(ex, _collection.collection);
 ex.assign(ex, _cookie.cookie);
 ex.assign(ex, _obj.obj_control);
 ex.assign(ex, _vuetools.vuetool);
-
+ex.assign(ex, _code.code);
+//ex.md5=md5
 window.ex = ex;
 
 /***/ }),
 
 /***/ 8:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var code = exports.code = {
+    //hashCode:function (str){
+    //    var str =btoa(str)
+    //    var h = 0, off = 0;
+    //    var len = str.length;
+    //    for(var i = 0; i < len; i++){
+    //        h = 31 * h + str.charCodeAt(off++);
+    //    }
+    //    var t=-2147483648*2;
+    //    while(h>2147483647){
+    //        h+=t
+    //    }
+    //    return h;
+    //}
+
+    hashDict: function hashDict(dc) {
+        var ls = [];
+        for (var k in dc) {
+            if (k.startsWith('_')) {
+                continue;
+            }
+            if ($.isFunction(dc[k])) {
+                continue;
+            }
+            ls.push(k);
+        }
+        ls = ls.sort();
+        var lsl = [];
+        for (var i = 0; i < ls.length; i++) {
+            lsl.push(ls[i] + ':' + dc[ls[i]]);
+        }
+        var dc_str = lsl.join(';');
+        return md5(dc_str);
+    }
+    //hashCode: function (input){
+    //    var I64BIT_TABLE =
+    //        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-'.split('');
+    //    var hash = 5381;
+    //    var i = input.length - 1;
+    //
+    //    if(typeof input == 'string'){
+    //        for (; i > -1; i--)
+    //            hash += (hash << 5) + input.charCodeAt(i);
+    //    }
+    //    else{
+    //        for (; i > -1; i--)
+    //            hash += (hash << 5) + input[i];
+    //    }
+    //    var value = hash & 0x7FFFFFFF;
+    //
+    //    var retValue = '';
+    //    do{
+    //        retValue += I64BIT_TABLE[value & 0x3F];
+    //    }
+    //    while(value >>= 6);
+    //
+    //    return retValue;
+    //}
+};
+
+/***/ }),
+
+/***/ 9:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1007,65 +1141,6 @@ var collection = exports.collection = {
         return out_list;
     }
 
-};
-
-/***/ }),
-
-/***/ 9:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-/*
-setCookie('name', 1111, 5);
-setCookie('name1', 22222, 5);
-
-console.log(getCookie('name'));
-console.log(getAllCookie());
-
-delCookie('name1');
-clearCookie('undefined')    //清除未定义的名的cookie
-*/
-/*set cookie*/
-var cookie = exports.cookie = {
-    setCookie: function setCookie(name, value, Days) {
-        if (Days == null || Days == '') {
-            Days = 300;
-        }
-        var exp = new Date();
-        exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
-        document.cookie = name + "=" + escape(value) + "; path=/;expires=" + exp.toGMTString();
-        //document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
-    },
-
-    /*get cookie*/
-    getCookie: function getCookie(name) {
-        var arr,
-            reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-        if (arr = document.cookie.match(reg)) return unescape(arr[2]);else return null;
-    },
-
-    /*get all cookie*/
-    getAllCookie: function getAllCookie() {
-        return document.cookie;
-    },
-
-    /* clear cookie*/
-    clearCookie: function clearCookie(name) {
-        setCookie(name, '', -1);
-    },
-
-    /* del cookie*/
-    delCookie: function delCookie(name) {
-        var exp = new Date();
-        exp.setTime(exp.getTime() - 1);
-        var cval = getCookie(name);
-        if (cval != null) document.cookie = name + "=" + cval + "; path=/;expires=" + exp.toGMTString();
-    }
 };
 
 /***/ })
