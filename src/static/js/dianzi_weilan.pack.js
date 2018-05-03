@@ -1,41 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -46,7 +46,7 @@
 /******/ 			});
 /******/ 		}
 /******/ 	};
-
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -55,13 +55,13 @@
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-
+/******/
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
@@ -80,10 +80,17 @@ var field_select_work_inspector = {
             crt_group: null
         };
     },
-    template: '   <div>\n        <ul v-if=\'head.readonly\'><li v-for=\'value in row[head.name]\' v-text=\'get_label(value)\'></li></ul>\n        <div v-else>\n            <span>\u4ECE\u76D1\u7763\u5458\u5206\u7EC4\uFF1A</span>\n            <select v-model="crt_group">\n                <option  :value="null">---</option>\n                <option  v-for="group in head.groups" :value="group" v-text="group.label"></option>\n            </select>\n            <button @click="add_group()">\u6DFB\u52A0</button>\n            <multi-chosen  v-model=\'row[head.name]\' :id="\'id_\'+head.name"\n                :options=\'head.options\'\n                ref="select">\n            </multi-chosen>\n        </div>\n    </div>',
+    template: '   <div>\n        <ul v-if=\'head.readonly\'><li v-for=\'value in row[head.name]\' v-text=\'get_label(value)\'></li></ul>\n        <div v-else>\n            <div style="width: 300px;padding: 1em 0;">\n                <span>\u4ECE\u76D1\u7763\u5458\u5206\u7EC4\uFF1A</span>\n                <select class="form-control" style="width:200px;display: inline-block;" v-model="crt_group">\n                    <option  :value="null">---</option>\n                    <option  v-for="group in head.groups" :value="group" v-text="group.label"></option>\n                </select>\n                <button @click="add_group()">\u6DFB\u52A0</button>\n            </div>\n\n            <div style="position: relative;width: 600px">\n                <el-transfer\n                v-model="row[head.name]"\n                :titles="[\'\u53EF\u9009\u4EBA\u5458\', \'\u5DF2\u9009\u4EBA\u5458\']"\n                :data="options"></el-transfer>\n            </div>\n\n            <!--<multi-chosen  v-model=\'row[head.name]\' :id="\'id_\'+head.name"-->\n                <!--:options=\'head.options\'-->\n                <!--ref="select">-->\n            <!--</multi-chosen>-->\n        </div>\n    </div>',
     computed: {
         label: function label() {
             return this.row['_' + this.head.name + '_label'];
+        },
+        options: function options() {
+            var op_list = ex.map(this.head.options, function (option) {
+                return { key: option.value, label: option.label };
+            });
+            op_list = ex.sortOrder(op_list, 'label');
+            return op_list;
         }
     },
     methods: {

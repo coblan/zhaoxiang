@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 37);
+/******/ 	return __webpack_require__(__webpack_require__.s = 38);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -381,6 +381,44 @@ function updateLink(linkElement, obj) {
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var mix_editor = exports.mix_editor = {
+    data: function data() {
+        return {
+            org_value: this.rowData[this.field]
+        };
+    },
+    computed: {
+        is_dirty: function is_dirty() {
+            return this.rowData[this.field] != this.org_value;
+        }
+    },
+    watch: {
+        'rowData._hash': function rowData_hash() {
+            this.org_value = this.rowData[this.field];
+        }
+    },
+    methods: {
+        on_changed: function on_changed() {
+            var value = this.rowData[this.field];
+            if (value == this.org_value) {
+                this.$emit('on-custom-comp', { name: 'row_changed_undo_act', row: this.rowData });
+            } else {
+                this.$emit('on-custom-comp', { name: 'row_changed', row: this.rowData });
+            }
+        }
+    }
+};
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 Vue.component('com-pop-fields', {
     props: ['row', 'heads', 'ops'],
     mixins: [mix_fields_data, mix_nice_validator],
@@ -418,7 +456,30 @@ Vue.component('com-pop-fields', {
 });
 
 /***/ }),
-/* 3 */
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var ele_transfer = {
+    props: ['row', 'head'],
+    template: '<div>\n     <el-transfer v-model="value1" :data="trans_data"></el-transfer>\n     </div>',
+    data: function data() {
+        return {
+            value1: []
+        };
+    },
+    computed: {
+        trans_data: function trans_data() {
+            return [{ key: 'xx', label: 'bbbb' }];
+        }
+    }
+};
+Vue.component('com-field-ele-transfer', ele_transfer);
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -503,7 +564,7 @@ Vue.component('com-field-ele-tree-name-layer', function (resolve, reject) {
 });
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -533,7 +594,7 @@ function pop_fields_layer(row, heads, ops, callback) {
 
     self.opened_layer_indx = layer.open({
         type: 1,
-        area: ['700px', '400px'],
+        area: ['800px', '500px'],
         title: '详细',
         resize: true,
         resizing: function resizing(layero) {
@@ -592,7 +653,7 @@ function pop_fields_layer(row, heads, ops, callback) {
 window.pop_fields_layer = pop_fields_layer;
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -611,7 +672,7 @@ var label_shower = {
 Vue.component('com-field-label-shower', label_shower);
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -628,7 +689,7 @@ Vue.component('com-field-op-btn', {
 });
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -668,7 +729,6 @@ var mix_fields_data = {
         },
         dataSaver: function dataSaver(callback) {
             var post_data = [{ fun: 'save_row', row: this.row }];
-            //var url = ex.appendSearch('/d/ajax',this.search_args)
             ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
                 callback(resp.save_row);
             });
@@ -691,20 +751,6 @@ var mix_fields_data = {
                     self.setErrors({});
                 }
             });
-
-            //var post_data=[{fun:'save',row:this.row}]
-            //var url = ex.appendSearch('/d/ajax',self.search_args)
-            //ex.post(url,JSON.stringify(post_data),function (resp) {
-            //    if( resp.save.errors){
-            //        cfg.hide_load()
-            //        self.setErrors(resp.save.errors)
-            //        self.showErrors(resp.save.errors)
-            //    }else{
-            //        cfg.hide_load(2000)
-            //        self.after_save(resp.save.row)
-            //        self.setErrors({})
-            //    }
-            //})
         },
         before_save: function before_save() {
             this.setErrors({});
@@ -718,7 +764,8 @@ var mix_fields_data = {
         showErrors: function showErrors(errors) {
             var str = "";
             for (var k in errors) {
-                str += k + ':' + errors[k] + '<br>';
+                var head = ex.findone(this.heads, { name: k });
+                str += head.label + ':' + errors[k] + '<br>';
             }
             layer.confirm(str, { title: ['错误', 'color:white;background-color:red'] });
         },
@@ -733,7 +780,7 @@ var mix_fields_data = {
 window.mix_fields_data = mix_fields_data;
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -778,7 +825,7 @@ var nice_validator = {
 };window.mix_nice_validator = nice_validator;
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -966,7 +1013,7 @@ var mix_table_data = {
 window.mix_table_data = mix_table_data;
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1049,12 +1096,16 @@ var mix_v_table_adapter = {
 window.mix_v_table_adapter = mix_v_table_adapter;
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
+/*
+将 pk 数组映射为 label字符串
+[1,2,3] -> '小王;小张;小赵'
+* */
 var array_mapper = {
     props: ['rowData', 'field', 'index'],
     template: '<span v-text="show_data"></span>',
@@ -1071,16 +1122,21 @@ var array_mapper = {
             }
         }
         this.table_par = table_par;
+        this.head = ex.findone(this.table_par.heads, { name: this.field });
     },
     computed: {
         show_data: function show_data() {
+            var self = this;
             if (this.table_par) {
-                var value = this.rowData[this.field];
-                var head = ex.findone(this.table_par.heads, { name: this.field });
-                var options = head.options;
+                var values = self.rowData[self.field];
+                var options = ex.map(values, function (value) {
+                    return { value: value, label: self.head.options[value] };
+                });
+                var ordered_values = ex.sortOrder(options, 'label');
                 var str = '';
-                ex.each(value, function (itm) {
-                    str += options[itm];
+                ex.each(ordered_values, function (itm) {
+                    str += itm.label;
+                    //str+= options[itm]
                     str += ';';
                 });
                 return str;
@@ -1093,15 +1149,15 @@ var array_mapper = {
 Vue.component('com-table-array-mapper', array_mapper);
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _mix_editor = __webpack_require__(28);
+var _mix_editor = __webpack_require__(2);
 
-__webpack_require__(34);
+__webpack_require__(35);
 
 var check_box = {
     props: ['rowData', 'field', 'index'],
@@ -1112,7 +1168,7 @@ var check_box = {
 Vue.component('com-table-checkbox', check_box);
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1151,7 +1207,7 @@ var extra_click = {
 Vue.component('com-table-extraclick', extra_click);
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1175,13 +1231,13 @@ var label_shower = {
 Vue.component('com-table-label-shower', label_shower);
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(35);
+__webpack_require__(36);
 var line_text = {
     props: ['rowData', 'field', 'index'],
     template: '<div :class="[\'com-table-linetext\',{\'dirty\':is_dirty}]">\n        <span v-if="readonly" v-text="rowData[field]"></span>\n        <input v-else @change="on_changed()" style="width: 100%" type="text" v-model="rowData[field]">\n    </div>',
@@ -1248,7 +1304,7 @@ var _readonly = {
 };
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1286,7 +1342,7 @@ var mapper = {
 Vue.component('com-table-mapper', mapper);
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1330,7 +1386,7 @@ var operations = {
 Vue.component('com-table-operations', operations);
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1349,7 +1405,7 @@ var picture = {
 Vue.component('com-table-picture', picture);
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1460,15 +1516,15 @@ var after_save = {
 };
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _mix_editor = __webpack_require__(28);
+var _mix_editor = __webpack_require__(2);
 
-__webpack_require__(36);
+__webpack_require__(37);
 
 
 var select = {
@@ -1567,7 +1623,7 @@ Vue.component('com-table-select', select);
 //Vue.component('com-table-select',select)
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1603,7 +1659,7 @@ var switch_to_tab = {
 Vue.component('com-table-switch-to-tab', switch_to_tab);
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1630,7 +1686,7 @@ var delete_op = {
 Vue.component('com-op-delete', delete_op);
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1656,7 +1712,7 @@ var op_a = {
 Vue.component('com-op-a', op_a);
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1756,7 +1812,7 @@ var _after_save = {
 };
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1884,13 +1940,13 @@ var get_data = {
 };
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(29);
+var content = __webpack_require__(30);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1910,13 +1966,13 @@ if(false) {
 }
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(33);
+var content = __webpack_require__(34);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1936,45 +1992,7 @@ if(false) {
 }
 
 /***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var mix_editor = exports.mix_editor = {
-    data: function data() {
-        return {
-            org_value: this.rowData[this.field]
-        };
-    },
-    computed: {
-        is_dirty: function is_dirty() {
-            return this.rowData[this.field] != this.org_value;
-        }
-    },
-    watch: {
-        'rowData._hash': function rowData_hash() {
-            this.org_value = this.rowData[this.field];
-        }
-    },
-    methods: {
-        on_changed: function on_changed() {
-            var value = this.rowData[this.field];
-            if (value == this.org_value) {
-                this.$emit('on-custom-comp', { name: 'row_changed_undo_act', row: this.rowData });
-            } else {
-                this.$emit('on-custom-comp', { name: 'row_changed', row: this.rowData });
-            }
-        }
-    }
-};
-
-/***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1988,7 +2006,7 @@ exports.push([module.i, ".msg-hide .field .msg {\n  display: none; }\n\n.field .
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -2002,7 +2020,7 @@ exports.push([module.i, ".com-table-checkbox.dirty input {\n  background-color: 
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -2016,7 +2034,7 @@ exports.push([module.i, ".com-table-linetext.dirty input {\n  background-color: 
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -2030,7 +2048,7 @@ exports.push([module.i, ".el-dropdown-menu__item.crt-value {\n  background-color
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -2042,32 +2060,6 @@ exports.push([module.i, ".dirty {\n  background-color: yellow; }\n", ""]);
 
 // exports
 
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(30);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./check_box.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./check_box.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
 
 /***/ }),
 /* 35 */
@@ -2085,8 +2077,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./linetext.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./linetext.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./check_box.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./check_box.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -2111,8 +2103,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./select.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./select.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./linetext.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./linetext.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -2125,114 +2117,147 @@ if(false) {
 /* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(33);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./select.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./select.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
-var _mix_table_data = __webpack_require__(9);
+var _mix_table_data = __webpack_require__(11);
 
 var mix_table_data = _interopRequireWildcard(_mix_table_data);
 
-var _mix_v_table_adapter = __webpack_require__(10);
+var _mix_v_table_adapter = __webpack_require__(12);
 
 var mix_v_table_adapter = _interopRequireWildcard(_mix_v_table_adapter);
 
-var _mix_nice_validator = __webpack_require__(8);
+var _mix_nice_validator = __webpack_require__(10);
 
 var mix_nice_validator = _interopRequireWildcard(_mix_nice_validator);
 
-var _mix_fields_data = __webpack_require__(7);
+var _mix_fields_data = __webpack_require__(9);
 
 var mix_fields_data = _interopRequireWildcard(_mix_fields_data);
 
-var _ajax_fields = __webpack_require__(24);
+var _ajax_fields = __webpack_require__(26);
 
 var ajax_fields = _interopRequireWildcard(_ajax_fields);
 
-var _ajax_table = __webpack_require__(25);
+var _ajax_table = __webpack_require__(27);
 
 var ajax_table = _interopRequireWildcard(_ajax_table);
 
-var _com_pop_fields = __webpack_require__(2);
+var _com_pop_fields = __webpack_require__(3);
 
 var com_pop_fields = _interopRequireWildcard(_com_pop_fields);
 
-var _pop_fields_layer = __webpack_require__(4);
+var _pop_fields_layer = __webpack_require__(6);
 
 var pop_fields_layer = _interopRequireWildcard(_pop_fields_layer);
 
-var _ele_tree_name_layer = __webpack_require__(3);
+var _ele_tree_name_layer = __webpack_require__(5);
 
 var ele_tree = _interopRequireWildcard(_ele_tree_name_layer);
 
-var _picture = __webpack_require__(18);
+var _picture = __webpack_require__(20);
 
 var table_picture = _interopRequireWildcard(_picture);
 
-var _label_shower = __webpack_require__(14);
+var _label_shower = __webpack_require__(16);
 
 var table_label_shower = _interopRequireWildcard(_label_shower);
 
-var _mapper = __webpack_require__(16);
+var _mapper = __webpack_require__(18);
 
 var table_mapper = _interopRequireWildcard(_mapper);
 
-var _pop_fields = __webpack_require__(19);
+var _pop_fields = __webpack_require__(21);
 
 var table_pop_fields = _interopRequireWildcard(_pop_fields);
 
-var _linetext = __webpack_require__(15);
+var _linetext = __webpack_require__(17);
 
 var table_linetext = _interopRequireWildcard(_linetext);
 
-var _check_box = __webpack_require__(12);
+var _check_box = __webpack_require__(14);
 
 var table_checkbox = _interopRequireWildcard(_check_box);
 
-var _switch_to_tab = __webpack_require__(21);
+var _switch_to_tab = __webpack_require__(23);
 
 var switch_to_tab = _interopRequireWildcard(_switch_to_tab);
 
-var _select = __webpack_require__(20);
+var _select = __webpack_require__(22);
 
 var select = _interopRequireWildcard(_select);
 
-var _extra_click = __webpack_require__(13);
+var _extra_click = __webpack_require__(15);
 
 var extra_click = _interopRequireWildcard(_extra_click);
 
-var _array_mapper = __webpack_require__(11);
+var _array_mapper = __webpack_require__(13);
 
 var array_mapper = _interopRequireWildcard(_array_mapper);
 
-var _operations = __webpack_require__(17);
+var _operations = __webpack_require__(19);
 
 var operations = _interopRequireWildcard(_operations);
 
-var _label_shower2 = __webpack_require__(5);
+var _label_shower2 = __webpack_require__(7);
 
 var field_label_shower = _interopRequireWildcard(_label_shower2);
 
-var _operator_a = __webpack_require__(23);
+var _ele_transfer = __webpack_require__(4);
+
+var ele_transfer = _interopRequireWildcard(_ele_transfer);
+
+var _operator_a = __webpack_require__(25);
 
 var op_a = _interopRequireWildcard(_operator_a);
 
-var _delete_op = __webpack_require__(22);
+var _delete_op = __webpack_require__(24);
 
 var delete_op = _interopRequireWildcard(_delete_op);
 
-var _btn = __webpack_require__(6);
+var _btn = __webpack_require__(8);
 
 var btn = _interopRequireWildcard(_btn);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(26);
-__webpack_require__(27);
+__webpack_require__(28);
+__webpack_require__(29);
 
 //table mix
 
 
 // table editor
+
+
+// field editor
 
 
 // table operator

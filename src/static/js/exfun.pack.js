@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 79);
+/******/ 	return __webpack_require__(__webpack_require__.s = 80);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -510,6 +510,53 @@ var old = exports.old = {
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.sortOrder = sortOrder;
+function isChinese(temp) {
+    var re = /[^\u4E00-\u9FA5]/;
+    if (re.test(temp[0])) {
+        return false;
+    }
+    return true;
+}
+function compare(temp1, temp2) {
+    if (temp1 < temp2) {
+        return -1;
+    } else if (temp1 == temp2) {
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
+function sortOrder(array, key) {
+
+    return array.slice().sort(function (a, b) {
+        if (key) {
+            var val_a = a[key];
+            var val_b = b[key];
+        } else {
+            var val_a = a;
+            var val_b = b;
+        }
+        if (isChinese(val_a) && isChinese(val_b)) {
+            return val_a.localeCompare(val_b, 'zh');
+        } else {
+            return compare(val_a, val_b);
+        }
+    });
+}
+
+/***/ }),
+
+/***/ 15:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 /*
@@ -689,7 +736,7 @@ if (!window.atob) {
 
 /***/ }),
 
-/***/ 15:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -793,7 +840,7 @@ function para_encode(para_str) {
 
 /***/ }),
 
-/***/ 16:
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -820,56 +867,6 @@ var vuetool = exports.vuetool = {
         }
     }
 };
-
-/***/ }),
-
-/***/ 79:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _old = __webpack_require__(13);
-
-var _network = __webpack_require__(11);
-
-var _urlparse = __webpack_require__(15);
-
-var _collection = __webpack_require__(9);
-
-var _patch = __webpack_require__(14);
-
-var path = _interopRequireWildcard(_patch);
-
-var _cookie = __webpack_require__(10);
-
-var _obj = __webpack_require__(12);
-
-var _vuetools = __webpack_require__(16);
-
-var _code = __webpack_require__(8);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-var ex = {
-    assign: function assign(dst, src) {
-        for (var key in src) {
-            dst[key] = src[key];
-        }
-    }
-
-    //import {md5} from  './md5.min'
-
-};ex.assign(ex, _old.old);
-ex.assign(ex, _network.network);
-ex.assign(ex, _urlparse.urlparse);
-ex.assign(ex, _collection.collection);
-ex.assign(ex, _cookie.cookie);
-ex.assign(ex, _obj.obj_control);
-ex.assign(ex, _vuetools.vuetool);
-ex.assign(ex, _code.code);
-//ex.md5=md5
-window.ex = ex;
 
 /***/ }),
 
@@ -941,6 +938,60 @@ var code = exports.code = {
     //    return retValue;
     //}
 };
+
+/***/ }),
+
+/***/ 80:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _old = __webpack_require__(13);
+
+var _network = __webpack_require__(11);
+
+var _urlparse = __webpack_require__(16);
+
+var _collection = __webpack_require__(9);
+
+var _patch = __webpack_require__(15);
+
+var path = _interopRequireWildcard(_patch);
+
+var _cookie = __webpack_require__(10);
+
+var _obj = __webpack_require__(12);
+
+var _vuetools = __webpack_require__(17);
+
+var _code = __webpack_require__(8);
+
+var _order = __webpack_require__(14);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var ex = {
+    assign: function assign(dst, src) {
+        for (var key in src) {
+            dst[key] = src[key];
+        }
+    }
+
+    //import {md5} from  './md5.min'
+
+};ex.assign(ex, _old.old);
+ex.assign(ex, _network.network);
+ex.assign(ex, _urlparse.urlparse);
+ex.assign(ex, _collection.collection);
+ex.assign(ex, _cookie.cookie);
+ex.assign(ex, _obj.obj_control);
+ex.assign(ex, _vuetools.vuetool);
+ex.assign(ex, _code.code);
+ex.sortOrder = _order.sortOrder;
+
+//ex.md5=md5
+window.ex = ex;
 
 /***/ }),
 

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 80);
+/******/ 	return __webpack_require__(__webpack_require__.s = 81);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -378,7 +378,7 @@ function updateLink(linkElement, obj) {
 
 /***/ }),
 
-/***/ 17:
+/***/ 18:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -519,7 +519,7 @@ var com_file_uploader = exports.com_file_uploader = {
 
 /***/ }),
 
-/***/ 18:
+/***/ 19:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -617,7 +617,7 @@ var com_multi_picture = exports.com_multi_picture = {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(63);
+var content = __webpack_require__(64);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -638,7 +638,7 @@ if(false) {
 
 /***/ }),
 
-/***/ 63:
+/***/ 64:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -653,15 +653,15 @@ exports.push([module.i, ".com_multi_picture .item img {\n  max-width: 300px; }\n
 
 /***/ }),
 
-/***/ 80:
+/***/ 81:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _multi_picture = __webpack_require__(18);
+var _multi_picture = __webpack_require__(19);
 
-var _file_uploader = __webpack_require__(17);
+var _file_uploader = __webpack_require__(18);
 
 // 这个文件夹里面的所有代码暂时不用了。
 // 留下 com-multi-picture 好像是因为 color的feature时，用到了这个组件。
