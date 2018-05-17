@@ -138,9 +138,24 @@ class OutBlockWaringPage(TablePage):
                 head['editor'] = 'com-table-label-shower'
             if head['name'] in ['proc_detail']:
                 head['editor'] = 'com-table-linetext'
+                head['readonly']={
+                    'fun':'checkRowValue',
+                    'field':'proc_status',
+                    'target_value':'processed'
+                    }
             if head['name']=='proc_status':
                 head['editor'] = 'com-table-select'
-                head['options']= [{'value':x[0],'label':x[1]} for x in PROC_STATUS]
+                head['options'] = []
+                for value,label in PROC_STATUS:
+                    dc = {
+                        'value':value,
+                        'label':label
+                    }
+                    if value=='processed':
+                        dc['html_label'] = '<span style="color:green">已处理</span>'
+                    elif value =='unprocess':
+                        dc['html_label'] = '<span style="color:red">未处理</span>'
+                    head['options'].append(dc)
             return head
         
         def get_heads(self):
@@ -158,7 +173,23 @@ class OutBlockWaringPage(TablePage):
         def get_operation(self):
             operations = ModelTable.get_operation(self)
             ops = filter(lambda op:op['name'] in ['save_changed_rows'] ,operations)
-            return ops
+            ls=[{
+                 'fun':'selected_set_value',
+                 'editor':'com-op-a',
+                 'field':'proc_status',
+                 'value':'processed',
+                 'hide':'!has_select',
+                 'label':'已处理'},
+                {
+                 'fun':'selected_set_value',
+                 'editor':'com-op-a',
+                 'field':'proc_status',
+                 'value':'unprocess',
+                 'hide':'!has_select',
+                 'label':'未处理'},                
+                ]
+            ls.extend(ops)
+            return ls
         
         class search(RowSearch):
             names=['inspector']
