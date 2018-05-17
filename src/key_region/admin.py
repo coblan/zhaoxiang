@@ -3,9 +3,9 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 from helpers.director.shortcut import page_dc
-from alg import polygon2circle
-from xuncha import XunCha
-from geoinfo.polygon import dict2poly
+from .alg import polygon2circle
+from .xuncha import XunCha
+from  geoinfo.polygon import dict2poly
 # Register your models here.
 class Forcast(object):
     template='key_region/forcast.html'

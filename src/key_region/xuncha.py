@@ -3,7 +3,8 @@ from __future__ import unicode_literals
 
 import requests
 from django.conf import settings
-import urlparse
+from urllib.parse import urljoin
+
 import json
 from django.utils.timezone import datetime,timedelta
 import math
@@ -23,7 +24,7 @@ class XunCha(object):
         """
         @return:[{polygon:[[1,2],[33,33]],time: "2018-02-08 07:53:21"}]
         """
-        url = urlparse.urljoin(self.xuncha_host,'forcast?jiezheng=14')
+        url = urljoin(self.xuncha_host,'forcast?jiezheng=14')
         rt = requests.get(url)
         return json.loads(rt.content)   
     

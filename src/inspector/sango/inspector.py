@@ -8,7 +8,7 @@ import requests
 from django.conf import settings
 from ..models import InspectorCase
 import re
-import urlparse
+from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
 
@@ -84,10 +84,10 @@ class InspectorCaseConnecter(object):
         host = 'http://10.231.18.25/CITYGRID.QUERY/archivesinfo_flat/SearchResultFlat.aspx?IsQuery=1'
         for script in soup.select('script'):
             if script.get('src'):
-                script.attrs['src']=urlparse.urljoin(host,script.attrs['src'])
+                script.attrs['src']=urljoin(host,script.attrs['src'])
         for link in soup.select('link'):
             if link.get('href'):
-                link.attrs['href'] = urlparse.urljoin(host,link.attrs['href'])
+                link.attrs['href'] = urljoin(host,link.attrs['href'])
         return  unicode(soup)
         
     
