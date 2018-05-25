@@ -2,13 +2,13 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from helpers.director.shortcut import ModelTable,TablePage,page_dc,FieldsPage,ModelFields,model_dc,RowSort,RowFilter,RowSearch,permit_list,has_permit
+from helpers.director.shortcut import ModelTable,TablePage,page_dc,FieldsPage,ModelFields,model_dc,RowSort,RowFilter,RowSearch,permit_list,has_permit,director
 from .models import Inspector,InspectorGrop
 # Register your models here.
 
 class InspectorPage(TablePage):
-    #template='jb_admin/table.html'
-    template='jb_admin/table_with_height.html'
+    template='jb_admin/table.html'
+    #template='jb_admin/table_with_height.html'
     #template='inspector/inspector.html'
     def get_label(self, prefer=None):
         return '监督员名单'
@@ -85,18 +85,23 @@ class InspectorForm(ModelFields):
         model=Inspector
         exclude=[]
     
-    def get_heads(self):
-        heads = super(self.__class__,self).get_heads()
-        for head in heads:
-            if head.get('name') == 'head':
-                head['editor'] = 'picture'
-                #head['type']='picture'
-                #head['config']={
-                #'crop':True,
-                #'aspectRatio': 1,
-                #'size':{'width':250,'height':250}
-            #}
-        return heads        
+    def dict_head(self,head):
+        if head['name'] == 'head':
+            head['editor']='com-field-picture'
+        return head
+    
+    #def get_heads(self):
+        #heads = super(self.__class__,self).get_heads()
+        #for head in heads:
+            #if head.get('name') == 'head':
+                #head['editor'] = 'picture'
+                ##head['type']='picture'
+                ##head['config']={
+                ##'crop':True,
+                ##'aspectRatio': 1,
+                ##'size':{'width':250,'height':250}
+            ##}
+        #return heads        
         
 
 class InspectorGroupPage(TablePage):
@@ -182,7 +187,10 @@ class InspectorMapPage(TablePage):
     tableCls=InspectorTable
 
 
-
+director.update({
+    'inspector':InspectorPage.tableCls,
+    'inspector.edit':InspectorForm
+})
 
 model_dc[Inspector]={'fields':InspectorForm}
 model_dc[InspectorGrop]={'fields':InspectorGroupForm}
