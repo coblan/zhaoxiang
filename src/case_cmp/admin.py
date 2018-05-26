@@ -1,7 +1,8 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.contrib import admin
-from helpers.director.shortcut import page_dc,TablePage,FieldsPage,ModelTable,ModelFields,model_dc,RowSort,model_to_name
+from helpers.director.shortcut import page_dc,TablePage,FieldsPage,ModelTable,ModelFields,model_dc,\
+     RowSort,model_to_name,director
 from .models import DuchaCase,JianduCase
 from django.contrib.gis.measure import D
 from helpers.director.model_func.dictfy import to_dict
@@ -110,6 +111,11 @@ class CaseCmpFormPage(FieldsPage):
             return row
     
 model_dc[DuchaCase]={'fields':CaseCmpFormPage.fieldsCls}
+
+director.update({
+    'case_cmp.duchacase':CaseCmpPage.tableCls,
+    'case_cmp.duchacase.edit':CaseCmpFormPage.fieldsCls,    
+})
 
 page_dc.update({
     'case_cmp.duchacase':CaseCmpPage,
