@@ -386,6 +386,9 @@ window.cfg = {
     showMsg: function showMsg(msg) {
         alert(msg);
     },
+    warning: function warning(msg) {
+        alert(msg);
+    },
     tr: {
         'picture_size_excceed': '图片尺寸不能超过{maxsize}'
     },
@@ -702,10 +705,6 @@ var _expand_menu = __webpack_require__(45);
 
 var f = _interopRequireWildcard(_expand_menu);
 
-var _modal = __webpack_require__(46);
-
-var a = _interopRequireWildcard(_modal);
-
 var _page_tab = __webpack_require__(47);
 
 var page = _interopRequireWildcard(_page_tab);
@@ -713,6 +712,8 @@ var page = _interopRequireWildcard(_page_tab);
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 __webpack_require__(77);
+//import * as a from './modal.js'
+
 __webpack_require__(75);
 __webpack_require__(73);
 __webpack_require__(74);
@@ -973,7 +974,7 @@ var ck_complex = {
 	//height:800,
 };
 
-Vue.component('ckeditor', {
+var ckeditor = {
 	template: '<div class=\'ckeditor\'>\n\t\t    \t<textarea class="form-control" name="ri" ></textarea>\n\t    \t</div>',
 	props: {
 		value: {},
@@ -984,12 +985,18 @@ Vue.component('ckeditor', {
 	},
 	created: function created() {
 		var self = this;
-		if (!window.bus) {
-			window.bus = new Vue();
-		}
-		bus.$on('sync_data', function () {
+		//if(!window.bus){
+		//	window.bus=new Vue()
+		//}
+		eventBus.$on('sync_data', function () {
 			self.$emit('input', self.editor.getData());
 		});
+	},
+	watch: {
+		value: function value(v) {
+			this.editor.setData(this.value);
+			this.editor.checkDirty();
+		}
 	},
 	mounted: function mounted() {
 		var self = this;
@@ -1004,35 +1011,41 @@ Vue.component('ckeditor', {
 		ex.assign(config, self.config);
 		// 4.5.10   4.6.2   ///static/lib/ckeditor4.6.2.js
 		//
-		ex.load_js('https://cdn.bootcss.com/ckeditor/4.6.2/ckeditor.js', function () {
-			//CKEDITOR.timestamp='GABCDFDGff'
-			//self.input.value=self.value
+		//ex.load_js('https://cdn.bootcss.com/ckeditor/4.6.2/ckeditor.js',function(){
+		//CKEDITOR.timestamp='GABCDFDGff'
+		//self.input.value=self.value
 
-			var editor = CKEDITOR.replace(self.input, config);
-			editor.setData(self.value);
-			editor.checkDirty();
-			self.editor = editor;
+		var editor = CKEDITOR.replace(self.input, config);
+		editor.setData(self.value);
+		editor.checkDirty();
+		self.editor = editor;
 
-			//var is_changed=false
-			//editor.on( 'change', function( evt ) {
-			//	// getData() returns CKEditor's HTML content.
-			//	is_changed=true
-			//	//self.$emit('input',editor.getData())
-			//});
-			//
-			//setInterval(function(){
-			//	if(is_changed){
-			//		self.$emit('input',editor.getData())
-			//		is_changed=false
-			//	}
-			//},3000)
-		});
+		//var is_changed=false
+		//editor.on( 'change', function( evt ) {
+		//	// getData() returns CKEditor's HTML content.
+		//	is_changed=true
+		//	//self.$emit('input',editor.getData())
+		//});
+		//
+		//setInterval(function(){
+		//	if(is_changed){
+		//		self.$emit('input',editor.getData())
+		//		is_changed=false
+		//	}
+		//},3000)
+		//})
 	}
 	//events:{
 	//	'sync_data':function () {
 	//		this.model=this.editor.getData()
 	//	}
 	//}
+};
+
+Vue.component('ckeditor', function (resolve, reject) {
+	ex.load_js('https://cdn.bootcss.com/ckeditor/4.6.2/ckeditor.js', function () {
+		resolve(ckeditor);
+	});
 });
 
 var edit_level = {
@@ -1330,7 +1343,7 @@ var field_base = exports.field_base = {
             //        })
             //    }
             //},
-            template: '<div>\n            <span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            <textarea v-else class="form-control input-sm" rows="3" :id="\'id_\'+head.name" v-model="row[head.name]" :placeholder="head.placeholder" :readonly=\'head.readonly\'></textarea>\n            </div>'
+            template: '<div>\n            <span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            <textarea :style="head.style" v-else :maxlength="head.maxlength" class="form-control input-sm" rows="3" :id="\'id_\'+head.name" v-model="row[head.name]" :placeholder="head.placeholder" :readonly=\'head.readonly\'></textarea>\n            </div>'
         },
         color: {
             props: ['name', 'row', 'kw'],
@@ -1376,7 +1389,7 @@ var field_base = exports.field_base = {
             props: ['name', 'row', 'kw'],
             template: '<logo-input :up_url="kw.up_url" :web_url.sync="row[name]" :id="\'id_\'+name"></logo-input>'
         },
-        picture: {
+        'com-field-picture': {
             props: ['row', 'head'],
             template: '<div class="picture">\n            <input class="virtual_input" style="position:absolute;height: 0;width: 0;" type="text"  :name="head.name" v-model="row[head.name]">\n            <img class="img-uploador" v-if=\'head.readonly\' :src=\'row[head.name]\'/>\n\t\t\t<img-uploador @select="on_uploader_click()" v-else :up_url="head.up_url" v-model="row[head.name]" :id="\'id_\'+head.name" :config="head.config"></img-uploador></div>',
             methods: {
@@ -1388,7 +1401,10 @@ var field_base = exports.field_base = {
         sim_select: {
             props: ['row', 'head'],
             data: function data() {
-                var inn_config = {};
+                var inn_config = {
+                    //orgin_order:true,
+                    order: false
+                };
                 if (this.head.config) {
                     ex.assign(inn_config, this.head.config);
                 }
@@ -1414,10 +1430,10 @@ var field_base = exports.field_base = {
                     }
                 },
                 orderBy: function orderBy(array, key) {
-                    if (this.head.orgin_order || this.cfg.orgin_order) {
-                        return array;
-                    } else {
+                    if (this.head.order || this.cfg.order) {
                         return order_by_key(array, key);
+                    } else {
+                        return array;
                     }
                 }
             }
@@ -1510,13 +1526,14 @@ var field_base = exports.field_base = {
             props: ['row', 'head'],
             template: '<div><span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n                                <date v-else v-model="row[head.name]" :id="\'id_\'+head.name"\n                                    :placeholder="head.placeholder"></date>\n                               </div>'
         },
+
         datetime: {
             props: ['row', 'head'],
             template: '<div><span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            \t\t\t<datetime  v-model="row[head.name]" :id="\'id_\'+head.name"\n                        \t:placeholder="head.placeholder"></datetime>\n                       </div>'
         },
         richtext: {
             props: ['row', 'head'],
-            template: '<div><span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            \t\t\t<ckeditor  v-model="row[head.name]" :id="\'id_\'+head.name"></ckeditor>\n                       </div>'
+            template: '<div style="position: relative"><span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            \t\t\t<ckeditor :style="head.style" v-model="row[head.name]" :id="\'id_\'+head.name" :config="head.config"></ckeditor>\n                       </div>'
         }
 
     }
@@ -2700,7 +2717,6 @@ var date_config_set = {
         startView: "months",
         minViewMode: "months",
         autoclose: true
-
     }
 };
 
@@ -2755,8 +2771,14 @@ Vue.component('datetime', {
     //    }
     //},
     //template:'<input type="text" class="form-control">',
-    template: "<span class=\"datetime-picker\">\n                <span class=\"cross\" @click=\"$emit('input','')\">X</span>\n                <input type=\"text\" readonly/>\n                </span>",
-    props: ['value', 'config'],
+    //template:`<span class="datetime-picker">
+    //            <span class="cross" @click="$emit('input','')">X</span>
+    //            <input type="text" readonly/>
+    //            </span>`,
+    template: " <div class=\"input-group datetime-picker\" style=\"width: 12em;\">\n                <input type=\"text\" class=\"form-control input-sm\" readonly :placeholder=\"placeholder\"/>\n                <div class=\"input-group-addon\" >\n                    <i v-if=\"! value\" @click=\"click_input()\" class=\"fa fa-calendar\" aria-hidden=\"true\"></i>\n                    <i v-else @click=\"$emit('input','')\" class=\"fa fa-calendar-times-o\" aria-hidden=\"true\"></i>\n                </div>\n                </div>",
+
+    //props:['value','config'],
+    props: ['value', 'set', 'config', 'placeholder'],
     mounted: function mounted() {
         var self = this;
         var def_conf = {
@@ -2785,7 +2807,11 @@ Vue.component('datetime', {
             }
         });
     },
-
+    methods: {
+        click_input: function click_input() {
+            this.input.focus();
+        }
+    },
     watch: {
         value: function value(n) {
             this.input.val(n);
@@ -2811,13 +2837,15 @@ __webpack_require__(68);
 
 /*
 * config={
-*    accept:""
+*    accept:"xx.jpg",
+*     multiple:true,
+*
 * }
 * */
 
 var field_file_uploader = exports.field_file_uploader = {
-    props: ['name', 'row', 'kw'],
-    template: '<div><com-file-uploader v-model="row[name]" :config="kw.config" :readonly="kw.readonly"></com-file-uploader></div>'
+    props: ['row', 'head'],
+    template: '<div><com-file-uploader v-model="row[head.name]" :config="head.config" :readonly="head.readonly"></com-file-uploader></div>'
 };
 
 var com_file_uploader = exports.com_file_uploader = {
@@ -3178,7 +3206,7 @@ var com_select = {
     template: '<select v-model=\'search_args[head.name]\' class="form-control input-sm" >\n        <option :value="undefined" v-text=\'head.label\'></option>\n        <option :value="null" disabled >---</option>\n        <option v-for=\'option in orderBy( head.options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
     data: function data() {
         var inn_cfg = {
-            sort: true
+            order: false
         };
         ex.assign(inn_cfg, this.config);
         return {
@@ -3192,7 +3220,7 @@ var com_select = {
     },
     methods: {
         orderBy: function orderBy(array, key) {
-            if (!this.cfg.sort) {
+            if (!this.cfg.order) {
                 return array;
             } else {
                 return array.slice().sort(function (a, b) {
@@ -3434,7 +3462,7 @@ __webpack_require__(72); /**
 
 Vue.component('com-filter', {
     props: ['heads', 'search_args'],
-    template: '<div v-if=\'heads.length>0\' class="com-filter flex flex-grow flex-ac">\n                <div v-for="filter in heads" :id="\'filter-\'+filter.name" class="filter-item">\n                    <component @submit="m_submit()" :is="filter.editor" :head="filter" :search_args=\'search_args\' > </component>\n                </div>\n                <button name="go" type="button" class="btn btn-info btn-sm" @click=\'m_submit()\' >\n          <i class="fa fa-search"></i>\n          </button>\n        </div>\n    ',
+    template: '<div v-if=\'heads.length>0\' class="com-filter flex flex-grow flex-ac">\n                <div v-for="filter in heads" :id="\'filter-\'+filter.name" class="filter-item">\n                    <component @submit="m_submit()" :is="filter.editor" :head="filter" :search_args=\'search_args\' > </component>\n                </div>\n                <button name="go" type="button" class="btn btn-success btn-sm" @click=\'m_submit()\' >\n                  <i class="fa fa-search"></i>\n                  <span v-text="search_lable"></span>\n          </button>\n        </div>\n    ',
     created: function created() {
         var self = this;
         ex.each(self.heads, function (filter) {
@@ -3447,6 +3475,11 @@ Vue.component('com-filter', {
                 }
             }
         });
+    },
+    computed: {
+        search_lable: function search_lable() {
+            return cfg.tr.search;
+        }
     },
     methods: {
         m_submit: function m_submit() {
@@ -3630,13 +3663,13 @@ var table_fun = exports.table_fun = {
             }
             var del_obj = {};
             for (var j = 0; j < this.selected.length; j++) {
-                var pk = this.selected[j];
+                var pk = this.selected[j].pk;
                 for (var i = 0; i < this.rows.length; i++) {
                     if (this.rows[i].pk.toString() == pk) {
-                        if (!del_obj[this.rows[i]._class]) {
-                            del_obj[this.rows[i]._class] = [];
+                        if (!del_obj[this.rows[i]._director_name]) {
+                            del_obj[this.rows[i]._director_name] = [];
                         }
-                        del_obj[this.rows[i]._class].push(pk);
+                        del_obj[this.rows[i]._director_name].push(pk);
                     }
                 }
             }
@@ -3771,57 +3804,7 @@ Vue.component('expand_menu', {
 //})
 
 /***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var transfer = {};
-function disable_scroll() {
-	transfer.wsctop = $(window).scrollTop(); //记住滚动条的位置
-	$('body').addClass('modal-show');
-	$('body').css('top', -transfer.wsctop);
-	//        $("body").css({position:'fixed',top:-transfer.wsctop});
-}
-function enable_scroll() {
-	//        $("body").css({position:'static'});
-	$("body").removeClass('modal-show');
-	$(window).scrollTop(transfer.wsctop); //弹框关闭时，启动滚动条，并滚动到原来的位置
-}
-
-if (!window.__modal_mark) {
-	window.__modal_mark = true;
-	document.write('\n\t\t<style>\n\t\t._modal_popup{\n\t\t\tposition: fixed;\n\t\t\ttop: 0;\n\t\t\tleft: 0;\n\t\t\tright: 0;\n\t\t\tbottom: 0;\n\t\t\tbackground: rgba(0, 0, 0, 0.2);\n\t\t\tz-index:1000;\n\t\t}\n\t\t._modal_inn{\n\t\t\t/*background: rgba(88, 88, 88, 0.2);*/\n\t\t\tborder-radius: 5px;\n\t\t\tbackground:white;\n\t\t\tposition: relative;\n\n\t\n\t\t\t/*padding:30px 80px ;*/\n\t\t}\n\t\t._modal_popup>._modal_middle{\n\t\t    position: absolute;\n\t        top: 50%;\n\t        left: 50%;\n\t        transform: translate(-50%, -50%);\n\t        -ms-transform:translate(-50%, -50%); \t/* IE 9 */\n\t\t\t-moz-transform:translate(-50%, -50%); \t/* Firefox */\n\t\t\t-webkit-transform:translate(-50%, -50%); /* Safari \u548C Chrome */\n\t\t\t-o-transform:translate(-50%, -50%); \n\t        /*text-align: center;*/\n\t        /*z-index: 1000;*/\n    \t}\n\t\t</style>');
-}
-Vue.component('modal', {
-	template: '<div class="_modal_popup " v-show="is_show">\n\t<div class="flex flex-vh-center" style="width: 100%;height: 100%;">\n\t\t<div class="_modal_inn" :style=\'inn_style\'>\n\t\t\t<span v-if="with_close_btn" @click="$emit(\'close\')" style="position: absolute;right:5px;top:-2em; color: #ff9b11;">\n\t\t\t\t<i class="fa fa-times fa-2x" aria-hidden="true"></i>\n\t\t\t</span>\n\t\t<div style="overflow:auto;">\n        \t<slot></slot>\n         </div>\n\n\t\t</div>\n\t</div>\n\t</div>',
-
-	methods: function methods() {
-		//var self=this
-		//setTimeout(function(){
-		//	self.$refs.	editor_scroller.refresh()
-		//},500)
-
-	},
-	props: ['inn_style', 'with_close_btn', 'show'],
-	computed: {
-		is_show: function is_show() {
-			if (this.show) {
-				disable_scroll();
-			} else {
-				enable_scroll();
-			}
-			return this.show;
-		}
-		//methods:{
-		//	hide_me:function () {
-		//		this.$dispatch('sd_hide')
-		//	}
-		//}@click='hide_me()'
-	} });
-
-/***/ }),
+/* 46 */,
 /* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3844,7 +3827,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".error {\n  color: red; }\n\n.field-panel {\n  background-color: #F5F5F5;\n  margin: 20px;\n  padding: 20px 30px;\n  position: relative;\n  border: 1px solid #D9D9D9; }\n  .field-panel:after {\n    content: '';\n    display: block;\n    position: absolute;\n    top: 0px;\n    left: 0px;\n    bottom: 0px;\n    width: 180px;\n    border-radius: 6px;\n    background-color: #fff;\n    z-index: 0; }\n  .field-panel .form-group.field {\n    display: flex;\n    align-items: flex-start;\n    margin-bottom: 0; }\n    .field-panel .form-group.field .field_input {\n      flex-grow: 0;\n      padding: 5px 20px;\n      width: 25em; }\n      .field-panel .form-group.field .field_input .ckeditor {\n        padding: 20px; }\n    .field-panel .form-group.field:first-child .control-label {\n      border-top: 5px solid #FFF; }\n    .field-panel .form-group.field .control-label {\n      width: 150px;\n      text-align: right;\n      padding: 5px 30px;\n      z-index: 100;\n      flex-shrink: 0;\n      border-top: 1px solid #EEE; }\n  .field-panel .form-group.field .field_input ._tow-col-sel {\n    /*width:750px;*/ }\n  .field-panel .form-group.field .help_text {\n    padding: 10px;\n    color: #999;\n    font-style: italic;\n    font-size: 0.9em; }\n  .field-panel .field {\n    position: relative; }\n\n._tow-col-sel select {\n  min-height: 7em; }\n\nimg.img-uploador {\n  max-width: 100px;\n  max-height: 100px; }\n\n.req_star {\n  color: red; }\n", ""]);
+exports.push([module.i, ".error {\n  color: red; }\n\n.field-panel {\n  background-color: #F5F5F5;\n  margin: 20px;\n  padding: 20px 30px;\n  position: relative;\n  border: 1px solid #D9D9D9; }\n  .field-panel:after {\n    content: '';\n    display: block;\n    position: absolute;\n    top: 0px;\n    left: 0px;\n    bottom: 0px;\n    width: 180px;\n    border-radius: 6px;\n    background-color: #fff;\n    z-index: 0; }\n  .field-panel .form-group.field {\n    display: flex;\n    align-items: flex-start;\n    margin-bottom: 0; }\n    .field-panel .form-group.field .field_input {\n      flex-grow: 0;\n      padding: 5px 20px; }\n      .field-panel .form-group.field .field_input input {\n        max-width: 25em; }\n      .field-panel .form-group.field .field_input .ckeditor {\n        padding: 20px; }\n    .field-panel .form-group.field:first-child .control-label {\n      border-top: 5px solid #FFF; }\n    .field-panel .form-group.field .control-label {\n      width: 150px;\n      text-align: right;\n      padding: 5px 30px;\n      z-index: 100;\n      flex-shrink: 0;\n      border-top: 1px solid #EEE; }\n  .field-panel .form-group.field .field_input ._tow-col-sel {\n    /*width:750px;*/ }\n  .field-panel .form-group.field .help_text {\n    padding: 10px;\n    color: #999;\n    font-style: italic;\n    font-size: 0.9em; }\n  .field-panel .field {\n    position: relative; }\n\n._tow-col-sel select {\n  min-height: 7em; }\n\nimg.img-uploador {\n  max-width: 100px;\n  max-height: 100px; }\n\n.req_star {\n  color: red; }\n", ""]);
 
 // exports
 

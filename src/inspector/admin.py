@@ -189,7 +189,9 @@ class InspectorMapPage(TablePage):
 
 director.update({
     'inspector':InspectorPage.tableCls,
-    'inspector.edit':InspectorForm
+    'inspector.edit':InspectorForm,
+    'inspectorgroup':InspectorGroupPage.tableCls,
+    'inspectorgroup.edit':InspectorGroupForm
 })
 
 model_dc[Inspector]={'fields':InspectorForm}

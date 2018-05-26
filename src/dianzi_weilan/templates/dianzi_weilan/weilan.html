@@ -83,7 +83,7 @@
         }
 
     }
-    table_logic.mixins = [mix_table_data,mix_v_table_adapter,this_logic]
+    table_logic.mixins = [mix_table_data,mix_ele_table_adapter,this_logic]
 </script>
 
 <script>
@@ -101,47 +101,97 @@
 {% endblock %}
 
 {% block tab-content %}
-<div class="flex flex-grow">
-    <div id="main-page" class="rows-block" v-show="tabgroup.crt =='main'" style="width: 460px">
+<div class="flex-grow" style="position: relative;">
+
+
+    <div id="main-page" class="rows-block flex-v" style="width: 400px;position: absolute;top:0;left:0;bottom: 0;">
+
+
         <div class='flex' v-if="row_filters.length > 0" style="min-height: 3em;">
             <com-filter class="flex" :heads="row_filters" :search_args="search_args"
                         @submit="search()"></com-filter>
             <div class="flex-grow"></div>
         </div>
-        <div class="box box-success">
-            <div class="table-wraper">
-                {% block table-content %}
-                <v-table ref="vtable" is-horizontal-resize
-                         is-vertical-resize
-                         :vertical-resize-offset="80"
-                         :title-row-height="30"
-                         :row-height="24"
-                         odd-bg-color="#f0f6f8"
-                         column-width-drag
-                         @on-custom-comp="on_td_event($event)"
-                         style="width: 100%;"
-                         :columns="columns"
-                         :table-data="rows"
-                         @sort-change="sortChange"
-                         :select-group-change="on_select_group_change"
-                         :select-all="on_select_group_change"
-                         row-hover-color="#eee"
-                         row-click-color="#edf7ff">
-                </v-table>
-                {% endblock %}
-            </div>
-            <div style="margin-top: 10px;">
-                <v-pagination @page-change="get_page($event)"
-                              :total="row_pages.total"
-                              size="small"
-                              :page-size="row_pages.perpage"
-                              @page-size-change="on_perpage_change($event)"
-                              :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']">
-                </v-pagination>
+        <div  v-if="ops.length>0">
+            <div class="oprations" v-show="tabgroup.crt == 'main'" style="padding: 5px">
+                <component v-for="op in ops"
+                           :is="op.editor"
+                           :ref="'op_'+op.name"
+                           :head="op"
+                           :disabled="get_attr(op.disabled)"
+                           v-show="! get_attr(op.hide)"
+                           @operation="on_operation(op)"></component>
             </div>
         </div>
+
+        <div class="table-wraper flex-grow" style="position: relative;">
+            <div style="position: absolute;top:0;left: 0;right:0;bottom: 0;">
+
+                <el-table class="table" ref="e_table"
+                          :data="rows"
+                          border
+                          show-summary
+                          :fit="false"
+                          :stripe="true"
+                          size="mini"
+                          @sort-change="sortChange($event)"
+                          @selection-change="handleSelectionChange"
+                          :summary-method="getSum"
+                          height="100%"
+                          style="width: 100%;">
+                    <el-table-column
+                            type="selection"
+                            width="55">
+                    </el-table-column>
+
+                    <template  v-for="head in heads">
+
+                        <el-table-column v-if="head.editor"
+                                         :show-overflow-tooltip="is_show_tooltip(head) "
+                                         :label="head.label"
+                                         :sortable="is_sort(head)"
+                                         :width="head.width">
+                            <template slot-scope="scope">
+                                <component :is="head.editor"
+                                           @on-custom-comp="on_td_event($event)"
+                                           :row-data="scope.row" :field="head.name" :index="scope.$index">
+                                </component>
+
+                            </template>
+
+                        </el-table-column>
+
+                        <el-table-column v-else
+                                         :show-overflow-tooltip="is_show_tooltip(head) "
+                                         :prop="head.name.toString()"
+                                         :label="head.label"
+                                         :sortable="is_sort(head)"
+                                         :width="head.width">
+                        </el-table-column>
+
+                    </template>
+
+                </el-table>
+
+            </div>
+
+        </div>
+
+        <div >
+            <el-pagination
+                    @size-change="on_perpage_change"
+                    @current-change="get_page"
+                    :current-page="row_pages.crt_page"
+                    :page-sizes="[20, 50, 100, 500]"
+                    :page-size="row_pages.perpage"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="row_pages.total">
+            </el-pagination>
+        </div>
+
     </div>
-    <div class="flex-grow" style="position: relative;">
+
+    <div style="position: absolute;top:0;left:420px;bottom: 0;right:0">
         <com-map ref="map_com"></com-map>
     </div>
 </div>

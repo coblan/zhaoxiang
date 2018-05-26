@@ -1,7 +1,8 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.contrib import admin
-from helpers.director.shortcut import page_dc,TablePage,FieldsPage,ModelTable,ModelFields,model_dc,RowSearch,RowFilter
+from helpers.director.shortcut import page_dc,TablePage,FieldsPage,ModelTable,ModelFields,\
+     model_dc,RowSearch,RowFilter,director
 from geoscope.admin import BlockGroupTablePage,BlockGroupFormPage
 from geoscope.models import BlockGroup,BlockPolygon
 from .models import InspectorGroupAndWeilanRel,OutBlockWarning,WorkInspector
@@ -42,14 +43,14 @@ class GroupWeilanRel(TablePage):
                           'editor':'com-table-extraclick',
                           'extra_label':'提示',
                           'extra_fun':'hight_region',
-                          'width':30,
+                          'width':60,
                           })
             return heads
         
         def dict_head(self, head):
             
             dc={
-                'block':60,
+                'block':100,
                 'groups':100,
             }
             if dc.get(head['name']):
@@ -112,9 +113,9 @@ class OutBlockWaringPage(TablePage):
         #pop_edit_field='inspector'
         def dict_row(self, inst):
             return {
-                '_inspector_label': unicode(inst.inspector) if inst.inspector else "",
+                '_inspector_label': str(inst.inspector) if inst.inspector else "",
                 'code':inst.inspector.code if inst.inspector else "",
-                '_manager_label':unicode(inst.manager) if inst.manager else "",
+                '_manager_label':str(inst.manager) if inst.manager else "",
                 '_proc_status_label': inst.proc_status == 'processed',
                 #'proc_detail':'<span class="ellipsis" style="max-width:100px">%s</span>'%inst.proc_detail
             }
@@ -125,9 +126,9 @@ class OutBlockWaringPage(TablePage):
         def dict_head(self, head):
             dc={
                 'inspector':60,
-                'proc_status':60,
+                'proc_status':80,
                 'proc_detail':160,
-                'manager':60,
+                'manager':100,
                 'reason':160,
             }
             if dc.get(head['name']):
@@ -175,18 +176,21 @@ class OutBlockWaringPage(TablePage):
             ops = filter(lambda op:op['name'] in ['save_changed_rows'] ,operations)
             ls=[{
                  'fun':'selected_set_value',
-                 'editor':'com-op-a',
+                 'editor':'com-op-btn',
                  'field':'proc_status',
                  'value':'processed',
-                 'hide':'!has_select',
+                 'disabled':'!has_select',
+                 #'hide':'!has_select',
                  'label':'已处理'},
                 {
                  'fun':'selected_set_value',
-                 'editor':'com-op-a',
+                 'editor':'com-op-btn',
                  'field':'proc_status',
                  'value':'unprocess',
-                 'hide':'!has_select',
-                 'label':'未处理'},                
+                 'disabled':'!has_select',
+                 #'hide':'!has_select',
+                 'label':'未处理'}, 
+                
                 ]
             ls.extend(ops)
             return ls
@@ -239,12 +243,12 @@ class WorkinspectorPage(TablePage):
     class tableCls(ModelTable):
         model = WorkInspector
         exclude=['id']
-        pop_edit_field='date'
+        #pop_edit_field='date'
         
         def dict_head(self, head):
             
             dc={
-                'date':60,
+                'date':120,
                 'inspector':400,
             }
             if dc.get(head['name']):
@@ -253,13 +257,38 @@ class WorkinspectorPage(TablePage):
             if head['name']=='inspector':
                 head['editor']='com-table-array-mapper'
                 head['options']={ins.pk:ins.name for ins in Inspector.objects.all()}
-
+            elif head['name']=='date':
+                head['editor'] = 'com-table-switch-to-tab'
+                head['tab_name']='workinspector_form'                
             return head
         
         #def dict_row(self, inst):
             #return {
                 #'inspector':';'.join([unicode(x) for x in inst.inspector.all()])
             #}
+    def get_context(self):
+        ctx = TablePage.get_context(self)
+        wkinsp_form = WorkinspectorFormPage.fieldsCls(crt_user=self.crt_user)
+        ctx['tabs']=[
+            {'name':'workinspector_form',
+             'label':'WorkInspector Form',
+             'com':'com_tab_fields',
+             'get_data':{
+                 'fun':'get_row',
+                 'kws':{
+                    'director_name':WorkinspectorFormPage.fieldsCls.get_director_name(),
+                    'relat_field':'pk',              
+                 }
+             },
+             'after_save':{
+                 'fun':'update_or_insert'
+             },
+             'heads': wkinsp_form.get_heads(),
+             'ops': wkinsp_form.get_operations()  
+             }
+        ]
+        return ctx
+    
 
 class WorkinspectorFormPage(FieldsPage):
     template='dianzi_weilan/workinspector_form.html'
@@ -283,7 +312,7 @@ class WorkinspectorFormPage(FieldsPage):
     
     #def get_context(self):
         #ctx= FieldsPage.get_context(self)
-        #ls= []
+        #ls= []  el-transfer-panel
         #for group in InspectorGrop.objects.all():
             #ls.append({
                 #'label':group.name,
@@ -292,10 +321,20 @@ class WorkinspectorFormPage(FieldsPage):
         #ctx['groups'] = ls
         #return ctx
         
-
-model_dc[InspectorGroupAndWeilanRel]={'fields':GroupWeilanRelFormPage.fieldsCls}
-model_dc[OutBlockWarning]={'fields':OutBlockWarningFormPage.fieldCls}
-model_dc[WorkInspector]={'fields':WorkinspectorFormPage.fieldsCls}
+director.update({
+    'dianzi_weilan':Weilan.tableCls,
+    'dianzi_weilan.edit':WeilanForm,
+    'dianzi_weilan.warning':OutBlockWaringPage.tableCls,
+    'dianzi_weilan.warning.edit':OutBlockWarningFormPage.fieldCls,
+    'dianzi_weilan.groupweilanrel':GroupWeilanRel.tableCls,
+    'dianzi_weilan.groupweilanrel.edit':GroupWeilanRelFormPage.fieldsCls,    
+    
+    'dianzi_weilan.workinspector':WorkinspectorPage.tableCls,
+    'dianzi_weilan.workinspector.edit':WorkinspectorFormPage.fieldsCls,    
+})
+#model_dc[InspectorGroupAndWeilanRel]={'fields':GroupWeilanRelFormPage.fieldsCls}
+#model_dc[OutBlockWarning]={'fields':OutBlockWarningFormPage.fieldCls}
+#model_dc[WorkInspector]={'fields':WorkinspectorFormPage.fieldsCls}
 
 page_dc.update({
     'dianzi_weilan.blockgroup':Weilan,

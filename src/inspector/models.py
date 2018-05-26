@@ -24,14 +24,14 @@ class Inspector(models.Model):
     last_loc=models.CharField('上次坐标',max_length=100,blank=True)
     track_time= models.DateTimeField(verbose_name='追踪时间',blank=True,null=True)
     
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
 class InspectorGrop(models.Model):
     name=models.CharField('监督员组',max_length=100,unique=True,blank=False)
     inspector=models.ManyToManyField(Inspector,verbose_name='监督员',blank=True)
     
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class InspectorCase(models.Model):

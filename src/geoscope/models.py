@@ -15,7 +15,7 @@ class BlockPolygon(models.Model):
     bounding=models.PolygonField(verbose_name='探测多边形',null=True,blank=True)
     shot = models.CharField('截图',max_length=500,blank=True)
     
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
 class BlockGroup(models.Model):
@@ -28,5 +28,5 @@ class BlockGroup(models.Model):
         # if self.pk and not hasattr(self,'dispatched'):
             # Dispatched.objects.create(group=self)
     
-    def __unicode__(self):
+    def __str__(self):
         return self.name

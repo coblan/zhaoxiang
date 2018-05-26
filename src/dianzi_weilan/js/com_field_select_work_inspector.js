@@ -1,3 +1,5 @@
+//require('./scss/com_field_select_work_inspector.scss')
+
 var field_select_work_inspector =  {
     props:['row','head'],
     data:function(){
