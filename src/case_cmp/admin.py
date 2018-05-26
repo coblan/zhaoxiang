@@ -30,7 +30,8 @@ class CaseCmpPage(TablePage):
              'label':'案件比对',
              #'com':'com_tab_fields',
              'com':'com-tab-case-cmp',
-             'model_name':model_to_name(DuchaCase),
+             'director_name':cmpform.get_director_name(),
+             #'model_name':model_to_name(DuchaCase),
              #'get_data':{
                  #'fun':'get_row',
                  #'kws':{

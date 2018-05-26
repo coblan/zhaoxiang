@@ -2,7 +2,7 @@ require('./scss/com_tab_case_cmp.scss')
 
 var com_tab_case_cmp={
     props:['tab_head','par_row'],
-    template:`<div class="flex flex-grow">
+    template:`<div class="flex" style="height: 100%">
         <div style="margin: 1em 2em;width: 30em;">
             <label for="">案件编号:</label><span v-text="row.taskid"></span><br/>
             <label for="">案件大类:</label><span v-text="row.bigclass"></span><br/>
@@ -40,9 +40,9 @@ var com_tab_case_cmp={
             }
         },
         getData:function(callback){
-            var model_name=this.tab_head.model_name
+            var director_name=this.tab_head.director_name
             var relat_field = 'pk'
-            var dc ={fun:'get_row',model_name:model_name}
+            var dc ={fun:'get_row',director_name:director_name}
             dc[relat_field] = this.par_row[relat_field]
             var post_data=[dc]
             var self =this

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,11 +73,11 @@
 "use strict";
 
 
-__webpack_require__(5);
+__webpack_require__(4);
 
 var com_tab_case_cmp = {
     props: ['tab_head', 'par_row'],
-    template: '<div class="flex flex-grow">\n        <div style="margin: 1em 2em;width: 30em;">\n            <label for="">\u6848\u4EF6\u7F16\u53F7:</label><span v-text="row.taskid"></span><br/>\n            <label for="">\u6848\u4EF6\u5927\u7C7B:</label><span v-text="row.bigclass"></span><br/>\n            <label for="">\u6848\u4EF6\u5C0F\u7C7B:</label><span v-text="row.litclass"></span><br/>\n            <label for="">\u53D1\u751F\u5730\u5740:</label><span v-text="row.addr"></span><br/>\n            <label for="">\u53D1\u751F\u65F6\u95F4:</label><span v-text="row.subtime"></span><br/>\n            <ul style="overflow: scroll;max-height: 70vh;">\n                <li v-for="pic in row.pic"><img :src="pic" alt="" style="max-width: 300px"/></li>\n            </ul>\n        </div>\n        <div class="flex-grow" style="position: relative;">\n            <com-map ref="map_com"></com-map>\n        </div>\n    </div>',
+    template: '<div class="flex" style="height: 100%">\n        <div style="margin: 1em 2em;width: 30em;">\n            <label for="">\u6848\u4EF6\u7F16\u53F7:</label><span v-text="row.taskid"></span><br/>\n            <label for="">\u6848\u4EF6\u5927\u7C7B:</label><span v-text="row.bigclass"></span><br/>\n            <label for="">\u6848\u4EF6\u5C0F\u7C7B:</label><span v-text="row.litclass"></span><br/>\n            <label for="">\u53D1\u751F\u5730\u5740:</label><span v-text="row.addr"></span><br/>\n            <label for="">\u53D1\u751F\u65F6\u95F4:</label><span v-text="row.subtime"></span><br/>\n            <ul style="overflow: scroll;max-height: 70vh;">\n                <li v-for="pic in row.pic"><img :src="pic" alt="" style="max-width: 300px"/></li>\n            </ul>\n        </div>\n        <div class="flex-grow" style="position: relative;">\n            <com-map ref="map_com"></com-map>\n        </div>\n    </div>',
     data: function data() {
         return {
             heads: this.tab_head.heads,
@@ -101,9 +101,9 @@ var com_tab_case_cmp = {
             }
         },
         getData: function getData(callback) {
-            var model_name = this.tab_head.model_name;
+            var director_name = this.tab_head.director_name;
             var relat_field = 'pk';
-            var dc = { fun: 'get_row', model_name: model_name };
+            var dc = { fun: 'get_row', director_name: director_name };
             dc[relat_field] = this.par_row[relat_field];
             var post_data = [dc];
             var self = this;
@@ -165,20 +165,7 @@ Vue.component('com-tab-case-cmp', function (resolve, reject) {
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-var _com_tab_case_cmp = __webpack_require__(0);
-
-var case_cmp = _interopRequireWildcard(_com_tab_case_cmp);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)();
+exports = module.exports = __webpack_require__(2)();
 // imports
 
 
@@ -189,7 +176,7 @@ exports.push([module.i, ".red.circle {\n  background-color: red;\n  width: 20px;
 
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports) {
 
 /*
@@ -245,7 +232,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports) {
 
 /*
@@ -497,16 +484,16 @@ function updateLink(linkElement, obj) {
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(2);
+var content = __webpack_require__(1);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(4)(content, {});
+var update = __webpack_require__(3)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -521,6 +508,19 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _com_tab_case_cmp = __webpack_require__(0);
+
+var case_cmp = _interopRequireWildcard(_com_tab_case_cmp);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ })
 /******/ ]);
