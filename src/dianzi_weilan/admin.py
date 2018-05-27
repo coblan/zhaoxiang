@@ -109,7 +109,7 @@ class OutBlockWaringPage(TablePage):
     class tableCls(ModelTable):
         model=OutBlockWarning
         exclude=['id']
-        fields_sort=['inspector','code','proc_status','proc_detail','reason','manager']
+        fields_sort=['inspector','code','proc_status','proc_detail','reason','manager','create_time']
         #pop_edit_field='inspector'
         def dict_row(self, inst):
             return {
@@ -130,6 +130,7 @@ class OutBlockWaringPage(TablePage):
                 'proc_detail':160,
                 'manager':100,
                 'reason':160,
+                'create_time':150
             }
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])              
