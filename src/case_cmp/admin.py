@@ -55,10 +55,10 @@ class CaseCmpPage(TablePage):
         
         def dict_head(self, head):
             dc={
-                'taskid':60,
-                'subtime':100,
-                'bigclass':60,
-                'litclass':60,
+                'taskid':120,
+                'subtime':120,
+                'bigclass':100,
+                'litclass':100,
                 'addr':240,
             }
             if dc.get(head['name']):

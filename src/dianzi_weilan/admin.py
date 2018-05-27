@@ -181,6 +181,8 @@ class OutBlockWaringPage(TablePage):
                  'value':'processed',
                  'disabled':'!has_select',
                  #'hide':'!has_select',
+                 'icon':'fa-circle',
+                 'style':'color:green',
                  'label':'已处理'},
                 {
                  'fun':'selected_set_value',
@@ -189,6 +191,8 @@ class OutBlockWaringPage(TablePage):
                  'value':'unprocess',
                  'disabled':'!has_select',
                  #'hide':'!has_select',
+                 'icon':'fa-exclamation',
+                 'style':'color:red',
                  'label':'未处理'}, 
                 
                 ]
