@@ -2,7 +2,8 @@
 from __future__ import unicode_literals
 from django.core.management.base import BaseCommand
 from django.conf import settings
-from case_cmp.spider.ducha import DuchaCaseSpider
+#from case_cmp.spider.ducha import DuchaCaseSpider
+from .. .port.ducha import DuchaPort
 from case_cmp.models import DuchaCase
 import json
 from .alg.geo2 import  cord2loc
@@ -28,13 +29,26 @@ class Command(BaseCommand):
             else:
                 mintime='all'        
         
-        spd = DuchaCaseSpider()
-        for row in spd.get_data():
-            subtime = row[7]
-            if mintime !='all' and subtime <mintime:
-                return
-            
-            taskid=row[1]
+        #spd = DuchaCaseSpider()
+        mover = DuchaPort()
+        ls =[]
+        for row in mover.get_data():
+            #subtime = row[7]
+            #if mintime !='all' and subtime <mintime:
+                #return
+            taskid = row['taskid']
+            loc_x,loc_y = cord2loc(float( dc.get('coordx') ),float( dc.get('coordy') ))
+            dft={
+                'taskid':taskid,
+                'subtime':row['discovertime'],
+                'bigclass':row['bccode'],
+                'litclass':row['smcode'],
+                'addr':row[],
+                'loc':Point(x=loc_x,y=loc_y),
+                
+                
+            }
+            DuchaCase.objects.update_or_create(taskid=taskid,default=dft)
             obj , _ = DuchaCase.objects.get_or_create(taskid=taskid)
             obj.subtime=row[7]
             obj.bigclass = row[4]
