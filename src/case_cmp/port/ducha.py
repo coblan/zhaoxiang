@@ -14,7 +14,7 @@ class DuchaPort(object):
                 'perpage':100
             }
             rt = requests.post(url,data=json.dumps(data))
-            print(rt.text)
+            print('here---', rt.text)
             case_list = json.loads(rt.text)
             for item in case_list:
                 yield item
