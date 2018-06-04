@@ -33,6 +33,9 @@ class OutBlockWarning(models.Model):
     
 
 class WorkInspector(models.Model):
+    """
+    当天的工作员工组
+    """
     date = models.DateField(verbose_name='对应日期',blank=False,null=True)
     inspector = models.ManyToManyField(Inspector,verbose_name='对应监督员',blank=True)
     

@@ -7,6 +7,9 @@ from django.utils.timezone import datetime,make_aware
 from helpers.director.kv import get_value
 from django.utils.timezone import datetime,localtime
 
+import logging
+log = logging.getLogger('task')
+
 
 def check_inspector(inspector):
     """
@@ -15,35 +18,9 @@ def check_inspector(inspector):
     该函数作用是检查inspector是否在自己所属的电子围栏类，如果不在，则make warning
     inspector的电子围栏来自于所属的group
     """
+    
     if has_warning(inspector):
         return
-    
-    now = datetime.now()
-    in_worktime=False
-    work_time = get_value('work_time','8:30-12:30;14:00-18:00')
-    ls =work_time.split(';')
-    for span in ls:
-        start,end = span.split('-')
-        start,end = (to_datetime(start),to_datetime(end))
-        if start <= now <=end:
-            in_worktime=True
-    if not in_worktime:
-        return
-    today = now.date()
-    
-    try:
-        workgroup = WorkInspector.objects.get(date=today)
-        inspector_list = list(workgroup.inspector.all())
-        # 不是上班组，不报警
-        if inspector not in inspector_list:
-            return
-        # 不在围栏内，不需要报警
-        if not list(block_list(inspector)):
-            return    
-    except WorkInspector.DoesNotExist:
-        print('[error]working group of %s is not set'%today)
-        # 没设置上班组时，不报警
-        return 
     
     # 没有坐标，需要报警
     if inspector.last_loc =='NaN':

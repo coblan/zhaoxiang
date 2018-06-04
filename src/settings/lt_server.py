@@ -1,4 +1,5 @@
 from .base import *
+from .logging import*
 
 DATABASES = {
     'default': {
@@ -16,3 +17,4 @@ SANGO_BRIDGE='http://12.110.185.17:8499'
 
 #XUNCHA_HOST = "http://10.235.80.249:8199"
 XUNCHA_HOST = 'http://12.110.185.17:8199'
+
