@@ -220,8 +220,8 @@ class OutBlockWarningFormPage(FieldsPage):
         
         def get_row(self):
             row= ModelFields.get_row(self)
-            row['create_time']=timezone.localtime( self.instance.create_time).strftime('%Y-%m-%d %H:%M:%S')
-            row['proc_time']=timezone.localtime( self.instance.proc_time).strftime('%Y-%m-%d %H:%M:%S')
+            row['create_time']= self.instance.create_time.strftime('%Y-%m-%d %H:%M:%S')
+            row['proc_time']= self.instance.proc_time.strftime('%Y-%m-%d %H:%M:%S')
             return row
             
         def get_heads(self):
