@@ -3,11 +3,12 @@ from django.core.management.base import BaseCommand
 from inspector.models import Inspector
 #from dianzi_weilan.warning import check_inspector
 from django.conf import settings
-from case_cmp.spider.jiandu import JianDuSpider
+#from case_cmp.spider.jiandu import JianDuSpider
+from .. .port.jiandu import JianduPort
 from case_cmp.models import JianduCase
 from django.contrib.gis.geos import Polygon,Point
 from .alg.geo2 import cord2loc
-from django.utils.timezone import datetime
+from django.utils.timezone import datetime, timedelta
 import time
 import json
 
@@ -21,43 +22,68 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         #parser.add_argument('mintime', nargs='?',)
         parser.add_argument('-s', nargs='?')
-        parser.add_argument('-e', nargs='?')
+        #parser.add_argument('-e', nargs='?')
         
     def handle(self, *args, **options):
+        today_str = datetime.now().strftime('%Y-%m-%d %H:%M:%D')
+        print('start fetch jiandu %s' % today_str)
         
-        today = datetime.now().strftime('%Y-%m-%d')
+        tomorro = datetime.now() + timedelta(days = 1)
+        tomorro_str = tomorro.strftime('%Y-%m-%d')
         
-        end= options.get('e') or today
-        mintime = end
-        last_case = JianduCase.objects.order_by('-subtime').first()
-        if last_case:
-            mintime=last_case.subtime
+        start = options.get('s')
+        if not start:
+            lastone = JianduCase.objects.order_by('-subtime').first()
+            if lastone:
+                start = lastone.subtime
+            else:
+                start = today_str[:10]
+        end= options.get('e') or tomorro_str
+        #mintime = end
+        #last_case = JianduCase.objects.order_by('-subtime').first()
+        #if last_case:
+            #mintime=last_case.subtime
         
-        start = options.get('s') or mintime[0:10]
-        spd = JianDuSpider(start,end)
-        count = 0
-        print('start get jiandu_case start=%s end=%s'%(start,end))
+        #start = options.get('s') or mintime[0:10]
+        #spd = JianDuSpider(start,end)
+        spd =  JianduPort(start = start, end = end)
+        #count = 0
+        
+        #print('start get jiandu_case start=%s end=%s'%(start,end))
+        ls = []
         for row in spd.get_data():
-            subtime = row[4]
-            count +=1
-            if count % 50 ==0:
-                print(count)
-            if subtime <= mintime:
-                return
+            #subtime = row[4]
+            #count +=1
+            #if count % 50 ==0:
+                #print(count)
+            #if subtime <= mintime:
+                #return
+            loc_x,loc_y = cord2loc(float( row.get('coordx') ),float( row.get('coordy') ))
             
-            taskid=row[2]
-            obj , _ = JianduCase.objects.get_or_create(taskid=taskid)
-            obj.subtime=row[4]
-            obj.bigclass = row[6]
-            obj.litclass=row[7]
-            obj.addr=row[10]
+            def_data={
+               
+                'subtime':row['discovertime'],
+                'bigclass':row['bcname'],
+                'litclass':row['scname'],
+                'addr':row['address'],
+                'loc':Point(x=loc_x,y=loc_y),
+            }            
+            #ls.append(JianduCase(**def_data))
+            JianduCase.objects.update_or_create(taskid = row['taskid'], defaults = def_data)
+            #taskid=row[2]
+            #obj , _ = JianduCase.objects.get_or_create(taskid=taskid)
+            #obj.subtime=row[4]
+            #obj.bigclass = row[6]
+            #obj.litclass=row[7]
+            #obj.addr=row[10]
         
-            x,y = row[-1].split(',')
-            loc_x,loc_y = cord2loc(float( x ),float( y ))
-            obj.loc=Point(x=loc_x,y=loc_y)
+            #x,y = row[-1].split(',')
+            #loc_x,loc_y = cord2loc(float( x ),float( y ))
+            #obj.loc=Point(x=loc_x,y=loc_y)
             
-            obj.org_code = json.dumps(row)
-            obj.save()
+            #obj.org_code = json.dumps(row)
+            #obj.save()
             
-            print(obj.taskid,obj.subtime)
-
+            #print(obj.taskid,obj.subtime)
+        
+        #JianduCase.objects.bulk_create(ls)

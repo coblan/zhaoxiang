@@ -9,6 +9,7 @@ import json
 from .alg.geo2 import  cord2loc
 from django.contrib.gis.geos import Polygon,Point
 
+
 if getattr(settings,'DEV_STATUS',None)=='dev':
     import wingdbstub
 
@@ -21,14 +22,14 @@ class Command(BaseCommand):
         
     def handle(self, *args, **options):
         
-        mintime = options.get('mintime')
-        if not mintime:
-            last_case = DuchaCase.objects.order_by('-subtime').first()
-            if last_case:
-                mintime=last_case.subtime
-            else:
-                mintime='all'        
-        
+        #mintime = options.get('mintime')
+        #if not mintime:
+            #last_case = DuchaCase.objects.order_by('-subtime').first()
+            #if last_case:
+                #mintime=last_case.subtime
+            #else:
+                #mintime='all'        
+        DuchaCase.objects.all().delete()
         #spd = DuchaCaseSpider()
         mover = DuchaPort()
         ls =[]
@@ -36,39 +37,45 @@ class Command(BaseCommand):
             #subtime = row[7]
             #if mintime !='all' and subtime <mintime:
                 #return
+            time_prefix =  '/'.join( [str( int(x) )for x in row['discovertime'].split('-')] )
+            imagefilename = row['imagefilename']
+            image_list = imagefilename.split(',')
+            image_list = ["http://10.231.18.4/Mediainfo/18/%s/%s" % (time_prefix , x)for x in image_list]
+            
             taskid = row['taskid']
-            loc_x,loc_y = cord2loc(float( dc.get('coordx') ),float( dc.get('coordy') ))
-            dft={
+            loc_x,loc_y = cord2loc(float( row.get('coordx') ),float( row.get('coordy') ))
+            data_dc={
                 'taskid':taskid,
                 'subtime':row['discovertime'],
-                'bigclass':row['bccode'],
-                'litclass':row['smcode'],
-                'addr':row[],
+                'bigclass':row['bcname'],
+                'litclass':row['scname'],
+                'addr':row['address'],
                 'loc':Point(x=loc_x,y=loc_y),
-                
-                
+                'pic':json.dumps( image_list ),
+  
             }
-            DuchaCase.objects.update_or_create(taskid=taskid,default=dft)
-            obj , _ = DuchaCase.objects.get_or_create(taskid=taskid)
-            obj.subtime=row[7]
-            obj.bigclass = row[4]
-            obj.litclass=row[5]
-            obj.addr=row[8]
+            ls.append(DuchaCase(**data_dc))
             
-            obj.KEY=row[-2]
-            dc = row[-1]
-            #obj.coord='%s,%s'%(dc.get('x'),dc.get('y'))
-            loc_x,loc_y = cord2loc(float( dc.get('x') ),float( dc.get('y') ))
-            obj.loc=Point(x=loc_x,y=loc_y)
-            pic = [x['src'] for x in json.loads(dc.get('pic'))]
-            obj.pic= json.dumps(pic)
-            audio = [x['src'] for x in json.loads(dc.get('audio'))]
-            obj.audio= json.dumps(audio)
+            #DuchaCase.objects.update_or_create(taskid=taskid,default=dft)
+            #obj , _ = DuchaCase.objects.get_or_create(taskid=taskid)
+            #obj.subtime=row[7]
+            #obj.bigclass = row[4]
+            #obj.litclass=row[5]
+            #obj.addr=row[8]
+            
+            #obj.KEY=row[-2]
+            #dc = row[-1]
+            #loc_x,loc_y = cord2loc(float( dc.get('x') ),float( dc.get('y') ))
+            #obj.loc=Point(x=loc_x,y=loc_y)
+            #pic = [x['src'] for x in json.loads(dc.get('pic'))]
+            #obj.pic= json.dumps(pic)
+            #audio = [x['src'] for x in json.loads(dc.get('audio'))]
+            #obj.audio= json.dumps(audio)
+        DuchaCase.objects.bulk_create(ls)
             
             
-            obj.save()
             
-            print(obj.taskid,obj.subtime)
+ 
             
             
             

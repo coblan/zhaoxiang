@@ -98,7 +98,7 @@ class CaseCmpFormPage(FieldsPage):
             loc = row['loc']
             row['loc'] = row['loc'].x, row['loc'].y
             row['pic']=json.loads(row['pic'])
-            row['audio']=json.loads(row['audio'])
+            #row['audio']=json.loads(row['audio'])
             
             distance = 100
             ref_location = loc
