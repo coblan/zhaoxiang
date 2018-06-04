@@ -35,7 +35,7 @@ class Command(BaseCommand):
         if not start:
             lastone = JianduCase.objects.order_by('-subtime').first()
             if lastone:
-                start = lastone.subtime
+                start = lastone.subtime[:10]
             else:
                 start = today_str[:10]
         end= options.get('e') or tomorro_str
