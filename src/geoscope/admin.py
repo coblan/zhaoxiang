@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 from django.contrib import admin
 from helpers.director.model_func.dictfy import to_dict
-from helpers.director.shortcut import ModelTable,TablePage,page_dc,FieldsPage,ModelFields,model_dc,RowSort,RowFilter,RowSearch,has_permit,TabPage
+from helpers.director.shortcut import ModelTable,TablePage,page_dc,FieldsPage,ModelFields,model_dc,RowSort,RowFilter,RowSearch,has_permit,TabPage,director
 # Register your models here.
 from .models import BlockPolygon,BlockGroup
 from django.contrib.gis.geos import Polygon
@@ -105,7 +105,7 @@ class BlockGroupTablePage(TablePage):
             
         def dict_row(self, inst):
             return {
-                'blocks':';'.join( [unicode(b) for b in inst.blocks.all()])
+                'blocks':';'.join( [str(b) for b in inst.blocks.all()])
             }
         
         def set_belong(self,belong):
@@ -194,6 +194,11 @@ class BlockGroupDispatchPage(TablePage):
     
     tableCls=BlockGroupTable
     template='geoscope/blockgroup_dispatch.html'    
+
+director.update({
+    'geoscope.blockpolygon.edit':BlockPolygonFormPage.BlockPolygonForm,
+   
+})
 
 model_dc[BlockPolygon]={'fields':BlockPolygonFormPage.BlockPolygonForm}
 model_dc[BlockGroup]={'fields':BlockGroupFormPage.BlockGroupFormPage_normal.BlockGroupForm}

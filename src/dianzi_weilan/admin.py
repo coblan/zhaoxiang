@@ -24,6 +24,7 @@ class WeilanForm(BlockGroupFormPage):
     def __init__(self,*args,**kw):
         super(WeilanForm,self).__init__(*args,**kw)
         self.set_belong('weilan') 
+    
 
 # group_weilan_rel  = regist_director(name='dianzi_weilan.groupweilanrel',src_model=InspectorGroupAndWeilanRel)
 class GroupWeilanRel(TablePage):
@@ -328,7 +329,7 @@ class WorkinspectorFormPage(FieldsPage):
         
 director.update({
     'dianzi_weilan':Weilan.tableCls,
-    'dianzi_weilan.edit':WeilanForm,
+    'dianzi_weilan.edit':WeilanForm.BlockGroupFormPage_normal.BlockGroupForm,
     'dianzi_weilan.warning':OutBlockWaringPage.tableCls,
     'dianzi_weilan.warning.edit':OutBlockWarningFormPage.fieldCls,
     'dianzi_weilan.groupweilanrel':GroupWeilanRel.tableCls,

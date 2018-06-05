@@ -46,3 +46,28 @@ class PcMenu(BaseEngine):
         return ctx      
 
 PcMenu.add_pages(page_dc)
+
+
+class ProgramerMenu(BaseEngine):
+    url_name='Programer'
+    brand='Programer'
+    mini_brand='Programer'
+    menu=[
+        
+        {'label':'GIS区域','url':page('geoinfo.blockpolygon'),'icon':fa('fa-map-o')},
+        {'label':'区域编辑','url':page('geoscope.blockgroup'),'icon':fa('fa-map-o')},
+ 
+        {'label':'参数设置','url':page('kv'),'icon':fa('fa-map-o')},
+        
+        
+    ]  
+    
+    def custome_ctx(self, ctx):
+        ctx['js_stamp']=js_stamp
+        if not 'table_fun_config' in ctx:
+            ctx['table_fun_config'] ={
+                'detail_link': '详情', #'<i class="fa fa-info-circle" aria-hidden="true" title="查看详情"></i>'#,
+            }
+        return ctx 
+
+ProgramerMenu.add_pages(page_dc)

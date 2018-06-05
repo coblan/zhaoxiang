@@ -18,6 +18,8 @@ def dict2poly(arr):
     if arr:
         if arr[-1] != arr[0]:
             arr.append(arr[0])
-        return Polygon(arr)
+        poly = Polygon(arr)
+        poly.srid=4326
+        return poly
     else:
         return None    

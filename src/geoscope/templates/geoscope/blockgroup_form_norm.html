@@ -24,15 +24,8 @@
         data:{
             tabs:tabs,
             crt_tab:crt_tab,
-//				kw:{
-//					heads:heads,
-//			        row:row,
-//			   		errors:{},
-//				},
-//				menu:menu,
-//				can_add:can_add,
-//				can_del:can_del,
-//				can_log:can_log,
+            heads:heads,
+            row:row,
         },
         mixins:[field_fun],
         methods:{
@@ -71,10 +64,13 @@
     <div class="flex">
         <ul class="nav nav-tabs tabs flex-grow">
             <li v-for="tab in tabs" :class="{'active':crt_tab==tab.name}"><a :href="item_link(tab.name)" v-text="tab.label" ></a></li>
-
         </ul>
 
-        <com-form-btn :submit="submit" :del_row="del_row" :cancel="cancel" :form_bus="this"></com-form-btn>
+        <button @click="submit">保存</button>
+        <button @click="cancel">取消</button>
+
+        <!--<button></button>-->
+        <!--<com-form-btn :submit="submit" :del_row="del_row" :cancel="cancel" :form_bus="this"></com-form-btn>-->
 
     </div>
 
@@ -92,7 +88,7 @@
 
     <div class='field-panel'>
 
-        <field  v-for='head in kw.heads' :key="head.name" :name='head.name' :kw='kw'></field>
+        <field  v-for='head in heads' :key="head.name" :head='head' :row='row'></field>
     </div>
 
     {% block extra_body %}

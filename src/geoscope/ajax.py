@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 from .models import BlockGroup,BlockPolygon
-from helpers.director.db_tools import to_dict 
+from helpers.director.model_func.dictfy import to_dict 
 from .polygon import poly2dict
 
 def get_global():

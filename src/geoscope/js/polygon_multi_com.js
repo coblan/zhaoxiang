@@ -14,7 +14,7 @@ export class PolygonGroupController{
     get_items(){
         var self=this
         var post_data=[{fun:'block_group_items',group_pk:this.group_pk}]
-        ex.post('/_ajax/geoscope',JSON.stringify(post_data),function(resp){
+        ex.post('/d/ajax/geoscope',JSON.stringify(post_data),function(resp){
             ex.each(resp.block_group_items,function(row){
                 //self.insert(item)
                 var poly = drawer.insert_polygon(row.bounding)
@@ -197,12 +197,13 @@ export var polygon_multi_btn_panel={
             row.bounding= ex.map(path_pos,function(pos){
                 return [pos.lng,pos.lat]
             })
+            row._director_name = 'geoscope.blockpolygon.edit'
 
             delete row['poly']
 
-            var post_data=[{fun:'save',row:row}]
-            ex.post("/_ajax",JSON.stringify(post_data),function(resp){
-                var resp_row=resp.save
+            var post_data=[{fun:'save_row',row:row}]
+            ex.post("/d/ajax",JSON.stringify(post_data),function(resp){
+                var resp_row=resp.save_row
                 self.crt_row.id=resp_row.id
                 self.crt_row.pk=resp_row.pk
 
@@ -266,8 +267,10 @@ export var polygon_multi_btn_panel={
             if(r){
                 if(row.pk){
                     var self=this
-                    var post_data=[{fun:'del_rows',rows:[{pk:row.pk,_class:row._class}]}]
-                    ex.post('/_ajax',JSON.stringify(post_data),function(resp){
+
+
+                    var post_data=[{fun:'del_rows',rows:[{pk:row.pk,_director_name:'geoscope.blockpolygon.edit'}]}]
+                    ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
                         controller.delete_row(row)
                     })
                 }else{

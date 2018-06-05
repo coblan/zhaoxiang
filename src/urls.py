@@ -20,7 +20,7 @@ from django.contrib import admin
 
 from django.views.generic import RedirectView 
 
-from hello.engin_menu import PcMenu
+from hello.engin_menu import PcMenu,ProgramerMenu
 #from helpers.director import login_url 
 from helpers.director import views as director_views
 #from helpers.face import urls as face_urls
@@ -33,6 +33,9 @@ urlpatterns = [
     url(r'^accounts/',include(authuser_urls)),
     
     url(r'^pc/([\w\.]+)/?$',PcMenu.as_view(),name=PcMenu.url_name),
+    
+    url(r'^pg/([\w\.]+)/?$',ProgramerMenu.as_view(),name=ProgramerMenu.url_name),
+    url(r'^pg/',RedirectView.as_view(url='/pg/kv')),
     
     #url(r'^_ajax/(?P<app>\w+)?/?$',director_views.ajax_views,name='ajax_url'),
     #url(r'^_ajax/?$',director_views.ajax_views), 
