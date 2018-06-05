@@ -61,6 +61,7 @@ class Command(BaseCommand):
         #print('start get jiandu_case start=%s end=%s'%(start,end))
         ls = []
         count = 0
+        created_count = 0
         for row in spd.get_data():
             count += 1
             #subtime = row[4]
@@ -80,7 +81,9 @@ class Command(BaseCommand):
                 'loc':Point(x=loc_x,y=loc_y),
             }            
             #ls.append(JianduCase(**def_data))
-            JianduCase.objects.update_or_create(taskid = row['taskid'], defaults = def_data)
+            obj, created = JianduCase.objects.update_or_create(taskid = row['taskid'], defaults = def_data)
+            if created:
+                created_count += 1
             #taskid=row[2]
             #obj , _ = JianduCase.objects.get_or_create(taskid=taskid)
             #obj.subtime=row[4]
@@ -98,4 +101,4 @@ class Command(BaseCommand):
             #print(obj.taskid,obj.subtime)
         
         #JianduCase.objects.bulk_create(ls)
-        log.info('监督员按键抓取完成，总共抓取了 %s' % count)
+        log.info('监督员按键抓取完成，总共抓取了 %s ,新建了 %s ' % (count, created_count) )
