@@ -25,7 +25,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         #parser.add_argument('mintime', nargs='?',)
         parser.add_argument('-s', nargs='?')
-        #parser.add_argument('-e', nargs='?')
+        parser.add_argument('-e', nargs='?')
         
     def handle(self, *args, **options):
         log.info('-' * 30)
