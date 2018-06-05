@@ -45,8 +45,8 @@ class Command(BaseCommand):
             workgroup = WorkInspector.objects.get(date=today)
             log.info('开始遍历监督员')
             for person  in workgroup.inspector.all():
-                if not list(block_list(inspector)):
-                    log.info('%s 没有block' % inspector)
+                if not list(block_list(person)):
+                    log.info('%s 没有block' % person)
                     continue
                 else:
                     check_inspector(person)
