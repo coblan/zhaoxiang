@@ -12,6 +12,9 @@ from django.utils.timezone import datetime, timedelta
 import time
 import json
 
+import logging
+log = logging.getLogger('case')
+
 if getattr(settings,'DEV_STATUS',None)=='dev':
     import wingdbstub
 
@@ -25,7 +28,11 @@ class Command(BaseCommand):
         #parser.add_argument('-e', nargs='?')
         
     def handle(self, *args, **options):
+        log.info('-' * 30)
+        log.info('开始抓取【监督员】按键')
+        
         today_str = datetime.now().strftime('%Y-%m-%d %H:%M:%D')
+
         print('start fetch jiandu %s' % today_str)
         
         tomorro = datetime.now() + timedelta(days = 1)
@@ -46,12 +53,16 @@ class Command(BaseCommand):
         
         #start = options.get('s') or mintime[0:10]
         #spd = JianDuSpider(start,end)
+        
+        log.info('开始时间%s ; 结束时间%s' % (start, end))
         spd =  JianduPort(start = start, end = end)
         #count = 0
         
         #print('start get jiandu_case start=%s end=%s'%(start,end))
         ls = []
+        count = 0
         for row in spd.get_data():
+            count += 1
             #subtime = row[4]
             #count +=1
             #if count % 50 ==0:
@@ -87,3 +98,4 @@ class Command(BaseCommand):
             #print(obj.taskid,obj.subtime)
         
         #JianduCase.objects.bulk_create(ls)
+        log.info('监督员按键抓取完成，总共抓取了 %s' % count)

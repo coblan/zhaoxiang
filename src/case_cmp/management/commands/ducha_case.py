@@ -9,6 +9,8 @@ import json
 from .alg.geo2 import  cord2loc
 from django.contrib.gis.geos import Polygon,Point
 
+import logging
+log = logging.getLogger('case')
 
 if getattr(settings,'DEV_STATUS',None)=='dev':
     import wingdbstub
@@ -28,12 +30,16 @@ class Command(BaseCommand):
             #if last_case:
                 #mintime=last_case.subtime
             #else:
-                #mintime='all'        
+                #mintime='all'  
+        log.info('-' * 30)
+        log.info('开始抓取【督查】按键')
         DuchaCase.objects.all().delete()
         #spd = DuchaCaseSpider()
         mover = DuchaPort()
         ls =[]
+        count = 0
         for row in mover.get_data():
+            count += 1
             #subtime = row[7]
             #if mintime !='all' and subtime <mintime:
                 #return
@@ -72,6 +78,7 @@ class Command(BaseCommand):
             #audio = [x['src'] for x in json.loads(dc.get('audio'))]
             #obj.audio= json.dumps(audio)
         DuchaCase.objects.bulk_create(ls)
+        log.info('抓取完成，共抓取了%s' % count)
             
             
             

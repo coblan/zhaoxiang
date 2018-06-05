@@ -28,7 +28,15 @@ LOGGING = {
             'backupCount':3,
             'formatter':'standard',
             'filename': os.path.join(LOG_PATH,'task.log'),            
-            },     
+            }, 
+        'caseFile':{
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 1024*1024*5,
+            'backupCount':3,
+            'formatter':'standard',
+            'filename': os.path.join(LOG_PATH,'case_file.log'),            
+            },         
     },
     'loggers': {
         #'django.request': {
@@ -36,6 +44,11 @@ LOGGING = {
             #'level': 'DEBUG',
             #'propagate': True,
         #},
+        'case': {
+            'handlers': ['caseFile'],
+            'level': 'DEBUG',
+            'propagate': True,            
+            },
         'task':{
             'handlers': ['rotfile'],
             'level': 'DEBUG',
