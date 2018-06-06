@@ -54,7 +54,7 @@ class ProgramerMenu(BaseEngine):
     mini_brand='Programer'
     menu=[
         
-        {'label':'GIS区域','url':page('geoinfo.blockpolygon'),'icon':fa('fa-map-o')},
+        #{'label':'GIS区域','url':page('geoinfo.blockpolygon'),'icon':fa('fa-map-o')},
         {'label':'区域编辑','url':page('geoscope.blockgroup'),'icon':fa('fa-map-o')},
  
         {'label':'参数设置','url':page('kv'),'icon':fa('fa-map-o')},

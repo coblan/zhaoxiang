@@ -65,13 +65,11 @@
                     :search_tip='search_tip' @submit="search()"></com-filter>
         <div class="flex-grow"></div>
 
-        <com-table-btn v-if="!search_args._pop" :add_new="add_new" :del_item="del_item">
-            {% block extra_btn %}
+        <button @click="add_new">创建</button>
+        <button @click="del_item">删除</button>
 
-            <!--<button>hello</button>-->
-
-            {% endblock %}
-        </com-table-btn>
+        <!--<com-table-btn :add_new="add_new" :del_item="del_item">-->
+        <!--</com-table-btn>-->
 
     </div>
 

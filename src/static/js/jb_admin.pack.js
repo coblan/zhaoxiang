@@ -460,92 +460,7 @@ var ele_transfer = {
 Vue.component('com-field-ele-transfer', ele_transfer);
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var label_shower = {
-    props: ['row', 'head'],
-    methods: {
-        handleCheckChange: function handleCheckChange(data, checked, indeterminate) {
-            console.log(data, checked, indeterminate);
-            var ls = this.$refs.et.getCheckedKeys();
-            ls = ex.filter(ls, function (itm) {
-                return itm != undefined;
-            });
-            this.row[this.head.name] = ls;
-        },
-        handleNodeClick: function handleNodeClick(data) {
-            console.log(data);
-        }
-    },
-    data: function data() {
-        return {
-            selected: [1, 2],
-            data: [{
-                label: '一级 1',
-                children: [{
-                    label: '二级 1-1',
-                    children: [{
-                        label: '三级 1-1-1',
-                        pk: 1
-                    }]
-                }]
-            }, {
-                label: '一级 2',
-                children: [{
-                    label: '二级 2-1',
-                    children: [{
-                        label: '三级 2-1-1',
-                        pk: 3
-                    }]
-                }, {
-                    label: '二级 2-2',
-                    children: [{
-                        label: '三级 2-2-1'
-                    }]
-                }]
-            }, {
-                label: '一级 3',
-                children: [{
-                    label: '二级 3-1',
-                    children: [{
-                        label: '三级 3-1-1',
-                        pk: 2
-                    }]
-                }, {
-                    label: '二级 3-2',
-                    children: [{
-                        label: '三级 3-2-1'
-                    }]
-                }]
-            }],
-            defaultProps: {
-                children: 'children',
-                label: 'label'
-            }
-        };
-    },
-    template: '<div>\n        <el-tree ref="et" :data="head.options" :props="defaultProps"\n             @node-click="handleNodeClick"\n             show-checkbox\n             @check-change="handleCheckChange"\n\n             :default-checked-keys="row[head.name]"\n             node-key="value"\n    ></el-tree>\n    </div>',
-    //default-expand-all
-    computed: {
-        label: function label() {
-            return this.row['_' + this.head.name + '_label'];
-        }
-    }
-};
-
-Vue.component('com-field-ele-tree-name-layer', label_shower);
-//Vue.component('com-field-ele-tree-name-layer',function(resolve,reject){
-//ex.load_css('https://unpkg.com/element-ui/lib/theme-chalk/index.css')
-//ex.load_js('https://unpkg.com/element-ui/lib/index.js',function(){
-//resolve(label_shower)
-//})
-//})
-
-/***/ }),
+/* 5 */,
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -931,7 +846,7 @@ function pop_table_layer(row, table_ctx, callback) {
             layer_vue.setHeight(total_height - 160);
         },
         shadeClose: true, //点击遮罩关闭
-        content: '<div id="pop-table-' + pop_id + '" style="height: 100%;">\n\n        <div class="rows-block">\n        <div class=\'flex\' style="min-height: 3em;" v-if="row_filters.length > 0">\n            <com-filter class="flex" :heads="row_filters" :search_args="search_args"\n                        @submit="search()"></com-filter>\n            <div class="flex-grow"></div>\n        </div>\n        <div class="box box-success">\n            <div class="table-wraper">\n                <v-table ref="vtable"\n                         is-horizontal-resize\n                         is-vertical-resize\n                         :title-row-height="30"\n                         :vertical-resize-offset="80"\n                         :row-height="24"\n                         odd-bg-color="#f0f6f8"\n                         column-width-drag\n                         style="width: 100%;"\n                         :height=height\n                         :columns="columns"\n                         :table-data="rows"\n                         @sort-change="sortChange"\n                         @on-custom-comp="on_td_event($event)"\n                         row-hover-color="#eee"\n                         row-click-color="#edf7ff">\n                </v-table>\n            </div>\n            <div style="margin-top: 10px;">\n                <v-pagination @page-change="get_page($event)"\n                              :total="row_pages.total"\n                              size="small"\n                              :page-size="row_pages.perpage"\n                              @page-size-change="on_perpage_change($event)"\n                              :layout="[\'total\', \'prev\', \'pager\', \'next\', \'sizer\', \'jumper\']">\n                </v-pagination>\n            </div>\n        </div>\n    </div>\n                    <!--<com-v-table ref="com_table"-->\n                        <!--@del_success="on_del()"-->\n                        <!--@sub_success="on_sub_success($event)"-->\n                        <!--:par_row="par_row" :table_ctx="table_ctx">-->\n                    <!--</com-v-table>-->\n                </div>'
+        content: '<div id="pop-table-' + pop_id + '" style="height: 100%;">\n\n            <div class="rows-block flex-v" style="height: 100%">\n                <div class=\'flex\' style="min-height: 3em;" v-if="row_filters.length > 0">\n                    <com-filter class="flex" :heads="row_filters" :search_args="search_args"\n                                @submit="search()"></com-filter>\n                    <div class="flex-grow"></div>\n                </div>\n                <div class="box box-success flex-grow flex-v" >\n                    <div class="table-wraper flex-grow" style="position: relative">\n                    <div style="position: absolute;top:0;right:0;left:0;bottom: 0">\n                     <el-table class="table" ref="e_table"\n                                      :data="rows"\n                                      border\n                                      show-summary\n                                      :fit="false"\n                                      :stripe="true"\n                                      size="mini"\n                                      @sort-change="sortChange($event)"\n                                      @selection-change="handleSelectionChange"\n                                      :summary-method="getSum"\n                                      height="100%"\n                                      style="width: 100%">\n                                <el-table-column\n                                        type="selection"\n                                        width="55">\n                                </el-table-column>\n\n                                <template  v-for="head in heads">\n\n                                    <el-table-column v-if="head.editor"\n                                                     :show-overflow-tooltip="is_show_tooltip(head) "\n                                                     :label="head.label"\n                                                     :sortable="is_sort(head)"\n                                                     :width="head.width">\n                                        <template slot-scope="scope">\n                                            <component :is="head.editor"\n                                                       @on-custom-comp="on_td_event($event)"\n                                                       :row-data="scope.row" :field="head.name" :index="scope.$index">\n                                            </component>\n\n                                        </template>\n\n                                    </el-table-column>\n\n                                    <el-table-column v-else\n                                                     :show-overflow-tooltip="is_show_tooltip(head) "\n                                                     :prop="head.name.toString()"\n                                                     :label="head.label"\n                                                     :sortable="is_sort(head)"\n                                                     :width="head.width">\n                                    </el-table-column>\n\n                                </template>\n\n                            </el-table>\n                     </div>\n\n                    </div>\n                    <div style="margin-top: 10px;">\n                         <el-pagination\n                                @size-change="on_perpage_change"\n                                @current-change="get_page"\n                                :current-page="row_pages.crt_page"\n                                :page-sizes="[20, 50, 100, 500]"\n                                :page-size="row_pages.perpage"\n                                layout="total, sizes, prev, pager, next, jumper"\n                                :total="row_pages.total">\n                        </el-pagination>\n                    </div>\n                </div>\n        </div>\n    </div>'
     });
 
     var layer_vue = new Vue({
@@ -946,13 +861,14 @@ function pop_table_layer(row, table_ctx, callback) {
             director_name: table_ctx.director_name,
             row_pages: {},
             rows: [],
+            footer: [],
             selected: [],
             del_info: [],
             search_args: {},
 
             height: 350
         },
-        mixins: [mix_table_data, mix_v_table_adapter],
+        mixins: [mix_table_data, mix_ele_table_adapter],
         mounted: function mounted() {
             this.getRows();
             //this.$refs.com_table.getRows()
@@ -2490,7 +2406,7 @@ var com_pop_field = exports.com_pop_field = {
         }
 
     },
-    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div class = "flex-grow" style="overflow: auto;margin: 0;">\n        <div class="field-panel msg-hide" >\n            <field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>\n        </div>\n    </div>\n     <div style="text-align: right;padding: 8px 3em;">\n        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>\n        <!--<button @click="save()">\u4FDD\u5B58</button>-->\n        <!--<button @click="del_row()" v-if="row.pk">\u5220\u9664</button>-->\n    </div>\n     </div>',
+    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div class = "flex-grow" style="overflow: auto;margin: 0;">\n        <div class="field-panel msg-hide" >\n            <field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>\n        </div>\n      <div style="height: 15em;">\n      </div>\n    </div>\n     <div style="text-align: right;padding: 8px 3em;">\n        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>\n        <!--<button @click="save()">\u4FDD\u5B58</button>-->\n        <!--<button @click="del_row()" v-if="row.pk">\u5220\u9664</button>-->\n    </div>\n     </div>',
     data: function data() {
         return {
             fields_kw: {
@@ -2742,9 +2658,9 @@ var _ajax_table = __webpack_require__(34);
 
 var ajax_table = _interopRequireWildcard(_ajax_table);
 
-var _ele_tree_name_layer = __webpack_require__(5);
+var _ele_tree = __webpack_require__(57);
 
-var ele_tree = _interopRequireWildcard(_ele_tree_name_layer);
+var ele_tree = _interopRequireWildcard(_ele_tree);
 
 var _picture = __webpack_require__(26);
 
@@ -2801,6 +2717,14 @@ var foreign_click_select = _interopRequireWildcard(_foreign_click_select);
 var _array_option_mapper = __webpack_require__(17);
 
 var array_option_mapper = _interopRequireWildcard(_array_option_mapper);
+
+var _html_shower = __webpack_require__(58);
+
+var html_shower = _interopRequireWildcard(_html_shower);
+
+var _bool_editor = __webpack_require__(59);
+
+var bool_editor = _interopRequireWildcard(_bool_editor);
 
 var _label_shower2 = __webpack_require__(6);
 
@@ -2974,6 +2898,185 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".com-field-ele-tree-name-layer {\n  min-width: 20em;\n  border: 1px solid #b1b1b1; }\n  .com-field-ele-tree-name-layer .el-tree {\n    min-height: 20em; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(55);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./ele_tree_name_layer.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./ele_tree_name_layer.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(56);
+var label_shower = {
+    props: ['row', 'head'],
+    methods: {
+        handleCheckChange: function handleCheckChange(data, checked, indeterminate) {
+            console.log(data, checked, indeterminate);
+            var ls = this.$refs.et.getCheckedKeys();
+            ls = ex.filter(ls, function (itm) {
+                return itm != undefined;
+            });
+            this.row[this.head.name] = ls;
+        },
+        handleNodeClick: function handleNodeClick(data) {
+            console.log(data);
+        }
+    },
+    data: function data() {
+        return {
+            selected: [1, 2],
+            // demon 数据
+            data: [{
+                label: '一级 1',
+                children: [{
+                    label: '二级 1-1',
+                    children: [{
+                        label: '三级 1-1-1',
+                        pk: 1
+                    }]
+                }]
+            }, {
+                label: '一级 2',
+                children: [{
+                    label: '二级 2-1',
+                    children: [{
+                        label: '三级 2-1-1',
+                        pk: 3
+                    }]
+                }, {
+                    label: '二级 2-2',
+                    children: [{
+                        label: '三级 2-2-1'
+                    }]
+                }]
+            }, {
+                label: '一级 3',
+                children: [{
+                    label: '二级 3-1',
+                    children: [{
+                        label: '三级 3-1-1',
+                        pk: 2
+                    }]
+                }, {
+                    label: '二级 3-2',
+                    children: [{
+                        label: '三级 3-2-1'
+                    }]
+                }]
+            }],
+            defaultProps: {
+                children: 'children',
+                label: 'label'
+            }
+        };
+    },
+    template: '<div class="com-field-ele-tree-name-layer">\n        <el-tree ref="et" :data="head.options" :props="defaultProps"\n             @node-click="handleNodeClick"\n             show-checkbox\n             @check-change="handleCheckChange"\n\n             :default-checked-keys="row[head.name]"\n             node-key="value"\n    ></el-tree>\n    </div>',
+    //default-expand-all
+    computed: {
+        label: function label() {
+            return this.row['_' + this.head.name + '_label'];
+        }
+    }
+};
+
+Vue.component('com-field-ele-tree', label_shower);
+//Vue.component('com-field-ele-tree-name-layer',function(resolve,reject){
+//ex.load_css('https://unpkg.com/element-ui/lib/theme-chalk/index.css')
+//ex.load_js('https://unpkg.com/element-ui/lib/index.js',function(){
+//resolve(label_shower)
+//})
+//})
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var bool_shower = {
+    props: ['rowData', 'field', 'index'],
+    template: '<span v-html="rowData[field]"></span>'
+
+};
+
+Vue.component('com-table-html-shower', bool_shower);
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var bool_shower = {
+    props: ['rowData', 'field', 'index'],
+    template: '<span>\n       <el-switch\n              v-model="is_true"\n              active-color="#13ce66"\n              inactive-color="#ff4949">\n        </el-switch>\n    </span>',
+
+    computed: {
+        is_true: {
+            get: function get() {
+                var value = this.rowData[this.field];
+                if (value == 1) {
+                    return true;
+                } else {
+                    return value;
+                }
+            },
+            set: function set(newValue) {
+                var crt_value = this.rowData[this.field];
+                if (crt_value == 0 || crt_value == 1) {
+                    this.rowData[this.field] = newValue ? 1 : 0;
+                } else {
+                    this.rowData[this.field] = newValue;
+                }
+            }
+        }
+    }
+
+};
+
+Vue.component('com-table-bool-editor', bool_shower);
 
 /***/ })
 /******/ ]);
