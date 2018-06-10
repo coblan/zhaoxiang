@@ -36,7 +36,12 @@ LOGGING = {
             'backupCount':3,
             'formatter':'standard',
             'filename': os.path.join(LOG_PATH,'case_file.log'),            
-            },         
+            }, 
+        'console': {
+            'level':'DEBUG',
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout
+               },        
     },
     'loggers': {
         #'django.request': {
