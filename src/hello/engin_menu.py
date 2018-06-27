@@ -16,7 +16,9 @@ class PcMenu(BaseEngine):
          'submenu':[
              {'label':'实时点位','url':page('inspector.inspector_map')},
              {'label':'监督员名单','url':page('inspector.inspector')},
-             {'label':'监督员分组','url':page('inspector.inspectorgroup')}
+             {'label':'监督员分组','url':page('inspector.inspectorgroup')}, 
+             {'label':'监督员工作组','url':page('inspectorWorkGroup')}
+             
              ]},
         # {'label':'GIS区域','url':page('geoinfo.blockpolygon'),'icon':fa('fa-map-o')},
         #{'label':'区域编辑','url':page('geoscope.blockgroup'),'icon':fa('fa-map-o')},

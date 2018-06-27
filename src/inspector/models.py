@@ -26,11 +26,19 @@ class Inspector(models.Model):
     
     def __str__(self):
         return self.name
-    
+
 class InspectorGrop(models.Model):
     name=models.CharField('监督员组',max_length=100,unique=True,blank=False)
     inspector=models.ManyToManyField(Inspector,verbose_name='监督员',blank=True)
     
+    def __str__(self):
+        return self.name
+
+class InspectorWorkGroup(models.Model):
+    name=models.CharField('监督员组',max_length=100,unique=True,blank=False)
+    inspector=models.ManyToManyField(Inspector,verbose_name='监督员',blank=True)
+    work_time = models.CharField('工作时间段',max_length= 300,blank=True, help_text = '(8:00-12:00;13:30-17:30)<br>按照括号内的格式输入，以分号分割时间段')
+
     def __str__(self):
         return self.name
 

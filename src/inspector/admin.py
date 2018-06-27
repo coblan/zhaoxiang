@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 from helpers.director.shortcut import ModelTable,TablePage,page_dc,FieldsPage,ModelFields,model_dc,RowSort,RowFilter,RowSearch,has_permit,director
-from .models import Inspector,InspectorGrop
+from .models import Inspector,InspectorGrop, InspectorWorkGroup
 # Register your models here.
 
 class InspectorPage(TablePage):
@@ -117,6 +117,7 @@ class InspectorGroupPage(TablePage):
         def dict_head(self, head):
             dc={
                 'name':150,
+                'inspector': 600,
             }
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])              
@@ -162,12 +163,6 @@ class InspectorGroupForm(ModelFields):
         model=InspectorGrop
         exclude=[]
         
-    #def dict_head(self, head):
-        #if head['name']=='inspector':
-            #head['editor']=''
-            
-
-
 class InspectorMapPage(TablePage):
     template='inspector/inspector_map.html'
     class InspectorTable(ModelTable):
@@ -186,12 +181,25 @@ class InspectorMapPage(TablePage):
         
     tableCls=InspectorTable
 
+class InspectorWorkGroupPage(InspectorGroupPage):
+    class tableCls(InspectorGroupPage.tableCls):
+        model = InspectorWorkGroup
+
+class InspectorWorkGroupForm(ModelFields):
+    class Meta:
+        model = InspectorWorkGroup
+        exclude = []
+        
+
 
 director.update({
     'inspector':InspectorPage.tableCls,
     'inspector.edit':InspectorForm,
     'inspectorgroup':InspectorGroupPage.tableCls,
-    'inspectorgroup.edit':InspectorGroupForm
+    'inspectorgroup.edit':InspectorGroupForm, 
+    
+    'inspectorWorkGroup': InspectorWorkGroupPage.tableCls,
+    'inspectorWorkGroup.edit': InspectorWorkGroupForm,
 })
 
 model_dc[Inspector]={'fields':InspectorForm}
@@ -204,4 +212,6 @@ page_dc.update({
     #'inspector.inspectorgroup.edit':InspectorGroupFormPage,
     
     'inspector.inspector_map':InspectorMapPage,
+    
+    'inspectorWorkGroup': InspectorWorkGroupPage,
 })
