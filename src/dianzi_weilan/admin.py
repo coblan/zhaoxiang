@@ -6,7 +6,7 @@ from helpers.director.shortcut import page_dc,TablePage,FieldsPage,ModelTable,Mo
 from geoscope.admin import BlockGroupTablePage,BlockGroupFormPage
 from geoscope.models import BlockGroup,BlockPolygon
 from .models import InspectorGroupAndWeilanRel,OutBlockWarning,WorkInspector
-from inspector.models import InspectorGrop
+from inspector.models import InspectorGrop, InspectorWorkGroup
 from geoscope.polygon import poly2dict
 from django.utils import timezone
 from .models import PROC_STATUS
@@ -274,7 +274,7 @@ class WorkinspectorPage(TablePage):
             #}
     def get_context(self):
         ctx = TablePage.get_context(self)
-        wkinsp_form = WorkinspectorFormPage.fieldsCls(crt_user=self.crt_user)
+        wkinsp_form = InspectorWorkScheduleForm(crt_user=self.crt_user)
         ctx['tabs']=[
             {'name':'workinspector_form',
              'label':'WorkInspector Form',
@@ -282,7 +282,7 @@ class WorkinspectorPage(TablePage):
              'get_data':{
                  'fun':'get_row',
                  'kws':{
-                    'director_name':WorkinspectorFormPage.fieldsCls.get_director_name(),
+                    'director_name':InspectorWorkScheduleForm.get_director_name(),
                     'relat_field':'pk',              
                  }
              },
@@ -296,36 +296,27 @@ class WorkinspectorPage(TablePage):
         return ctx
     
 
-class WorkinspectorFormPage(FieldsPage):
-    template='dianzi_weilan/workinspector_form.html'
+#class WorkinspectorFormPage(FieldsPage):
+    #template='dianzi_weilan/workinspector_form.html'
    
-    class fieldsCls(ModelFields):
-        class Meta:
-            model = WorkInspector
-            exclude= []
-        
-        def dict_head(self, head):
-            if head['name']=='inspector':
-                ls= []
-                for group in InspectorGrop.objects.all():
-                    ls.append({
-                        'label':group.name,
-                        'inspectors':[x.pk for x in group.inspector.all()]
-                    })
-                head['editor'] = 'com-field-select-work-inspector' 
-                head['groups']= ls
-            return head
+class InspectorWorkScheduleForm(ModelFields):
+    class Meta:
+        model = WorkInspector
+        exclude= []
     
-    #def get_context(self):
-        #ctx= FieldsPage.get_context(self)
-        #ls= []  el-transfer-panel
-        #for group in InspectorGrop.objects.all():
-            #ls.append({
-                #'label':group.name,
-                #'inspectors':[x.pk for x in group.inspector.all()]
-            #})
-        #ctx['groups'] = ls
-        #return ctx
+    def dict_head(self, head):
+        if head['name']=='inspector':
+            ls= []
+            #for group in InspectorGrop.objects.all():
+            for group in InspectorWorkGroup.objects.all():
+                ls.append({
+                    'label':group.name,
+                    'inspectors':[x.pk for x in group.inspector.all()]
+                })
+            head['editor'] = 'com-field-select-work-inspector' 
+            head['groups']= ls
+        return head
+    
         
 director.update({
     'dianzi_weilan':Weilan.tableCls,
@@ -336,7 +327,7 @@ director.update({
     'dianzi_weilan.groupweilanrel.edit':GroupWeilanRelFormPage.fieldsCls,    
     
     'dianzi_weilan.workinspector':WorkinspectorPage.tableCls,
-    'dianzi_weilan.workinspector.edit':WorkinspectorFormPage.fieldsCls,    
+    'dianzi_weilan.workinspector.edit':InspectorWorkScheduleForm,    
 })
 #model_dc[InspectorGroupAndWeilanRel]={'fields':GroupWeilanRelFormPage.fieldsCls}
 #model_dc[OutBlockWarning]={'fields':OutBlockWarningFormPage.fieldCls}
@@ -352,6 +343,6 @@ page_dc.update({
     'dianzi_weilan.warning.edit':OutBlockWarningFormPage,
     
     'dianzi_weilan.workinspector':WorkinspectorPage,
-    'dianzi_weilan.workinspector.edit':WorkinspectorFormPage,
+    #'dianzi_weilan.workinspector.edit':WorkinspectorFormPage,
 })
 # page_dc.update(group_weilan_rel)

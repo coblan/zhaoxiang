@@ -13,9 +13,6 @@ log = logging.getLogger('task')
 if getattr(settings,'DEV_STATUS',None)=='dev':
     import wingdbstub
 
-if getattr(settings,'DEV_STATUS',None)=='dev':
-    import wingdbstub
-
 class Command(BaseCommand):
     """
     检查监督员的位置，判断其是否出界
