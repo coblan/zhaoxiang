@@ -19,7 +19,8 @@ DATA_PROXY ={
 
 XUNCHA_HOST = "http://localhost:8001"
 
-SANGO_BRIDGE='http://7.207.150.71:8000'
+#SANGO_BRIDGE='http://7.207.150.71:8000'
+SANGO_BRIDGE='http://12.110.185.17:8499'
 DEV_STATUS='dev'
 
 GDAL_LIBRARY_PATH = r'C:\Program Files\GDAL\gdal202'

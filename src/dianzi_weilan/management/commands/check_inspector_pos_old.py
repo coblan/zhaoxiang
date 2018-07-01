@@ -5,10 +5,7 @@ from .. .models import WorkInspector
 from dianzi_weilan.warning import check_inspector,block_list,to_datetime
 from django.conf import settings
 from helpers.director.kv import get_value
-from django.utils.timezone import datetime,timedelta
-from dianzi_weilan.port_sangao import getKeeperTrack
-import json
-from dianzi_weilan.alg.checkpos import outBoxCheck
+from django.utils.timezone import datetime,localtime
 
 import logging
 log = logging.getLogger('task')
@@ -22,27 +19,10 @@ class Command(BaseCommand):
     """
     def handle(self, *args, **options):
         log.info('-'*30)
-
+        log.info('开始检测围栏')
+        
         now = datetime.now()
         today = now.date()
-        startDate= str( today )
-        tomorro = now+timedelta(days=1)
-        endDate= str(tomorro.date())
-        
-        todayWorkGroup= WorkInspector.objects.get(date=today)
-        
-        keeperList= todayWorkGroup.inspector.all()
-        keeperSnList=[keeper.code for keeper in keeperList]
-        log.info('开始拉取坐标数据')
-        dc = getKeeperTrack(keeperSnList, startDate, endDate)
-        for keeper in keeperList:
-            posList = dc.get(keeper.code)
-            if posList:
-                outBoxCheck(keeper, posList)
-                noPosCheck(keeper,posList)
-                
-        
-       
         in_worktime=False
         work_time = get_value('work_time','8:30-12:30;14:00-18:00')
         log.info('设置的work_time=%s'% work_time)
@@ -75,4 +55,3 @@ class Command(BaseCommand):
         
 
 
-    
