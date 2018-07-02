@@ -8,7 +8,8 @@ from helpers.director.kv import get_value
 from django.utils.timezone import datetime,timedelta
 from dianzi_weilan.port_sangao import getKeeperTrack
 import json
-from dianzi_weilan.alg.checkpos import outBoxCheck
+from dianzi_weilan.alg.checkpos import outBoxCheck, noPosCheck, removeInvalidPos
+from sangao.cordToLoc import cordToloc
 
 import logging
 log = logging.getLogger('task')
@@ -31,15 +32,30 @@ class Command(BaseCommand):
         
         todayWorkGroup= WorkInspector.objects.get(date=today)
         
-        keeperList= todayWorkGroup.inspector.all()
-        keeperSnList=[keeper.code for keeper in keeperList]
         log.info('开始拉取坐标数据')
-        dc = getKeeperTrack(keeperSnList, startDate, endDate)
-        for keeper in keeperList:
-            posList = dc.get(keeper.code)
-            if posList:
-                outBoxCheck(keeper, posList)
-                noPosCheck(keeper,posList)
+        for keeper in todayWorkGroup.inspector.all():
+            
+            tracks = getKeeperTrack(keeper.code, startDate, endDate)
+            posList = []
+            for track in tracks:
+                x,y=cordToloc(track.get('coordx'),track.get('coordy'))
+                pos = Point(float(x),float(y))    
+                posList.append({'tracktime': track.get('tracktime'),
+                                'pos': pos,})
+            
+            posList = removeInvalidPos(keeper, posList)
+            noPosCheck(keeper,posList)
+            outBoxCheck(keeper, posList)
+                       
+            
+        #keeperSnList=[keeper.code for keeper in keeperList]
+        
+        #dc = getKeeperTrack(keeperSnList, startDate, endDate)
+        #for keeper in keeperList:
+            #posList = dc.get(keeper.code)
+            #if posList:
+                #outBoxCheck(keeper, posList)
+                #noPosCheck(keeper,posList)
                 
         
        

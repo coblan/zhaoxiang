@@ -1,6 +1,20 @@
 
 from inspector.models import Inspector,InspectorWorkGroup
-from sangao.cordToLoc import cordToloc
+
+
+def removeInvalidPos(keeper, posList): 
+    """
+    移除非工作时间的数据
+    """
+    worktimes = inspectorWorkTime(keeper)
+    leftPos = [x for x in posList if isInWorktime( x.get('pos'), worktimes )]
+    return leftPos
+
+def noPosCheck(keeper,posList):
+    """
+    检查工作时间内，没有数据的点
+    """
+    pass
 
 def outBoxCheck(keeper,posList):
     """
@@ -9,13 +23,18 @@ def outBoxCheck(keeper,posList):
     """
     for pos in posList:
         # 不在围栏内，需要报警
-        x,y=cordToloc(pos.get('coordx'),pos.get('coordy'))
-        pos = Point(float(x),float(y))
+        #x,y=cordToloc(pos.get('coordx'),pos.get('coordy'))
+        #pos = Point(float(x),float(y))
         if not in_the_block(pos, inspector):
             pass
 
-def noPosCheck(keeper,posList):
-    pass
+
+def isInWorktime(tracktime, worktimes): 
+    for worktime in worktimes:
+        lt, gt = worktime.split('-')
+        if lt <= worktime <= gt:
+            return True
+    return False
 
 def inspectorWorkTime(keeper):
     ls=[]
