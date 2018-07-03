@@ -27,9 +27,16 @@ class Inspector(models.Model):
     def __str__(self):
         return self.name
 
+INSPECTOR_KIND = (
+    (0, '缺省'), 
+    (1, '围栏'), 
+    (2, '排班')
+)
+
 class InspectorGrop(models.Model):
     name=models.CharField('监督员组',max_length=100,unique=True,blank=False)
     inspector=models.ManyToManyField(Inspector,verbose_name='监督员',blank=True)
+    kind = models.IntegerField(verbose_name= '类型', default= 0, choices= INSPECTOR_KIND )
     
     def __str__(self):
         return self.name

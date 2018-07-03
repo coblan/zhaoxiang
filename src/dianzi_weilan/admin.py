@@ -60,7 +60,7 @@ class GroupWeilanRel(TablePage):
             
             if head['name']=='groups':
                 head['editor']='com-table-array-mapper'
-                head['options']={g.pk:g.name for g in InspectorGrop.objects.all()}
+                head['options']={g.pk:g.name for g in InspectorGrop.objects.filter(kind = 1)}
             if head['name']=='block':
                 head['show_label']={
                     'fun':'use_other_field',
@@ -110,7 +110,7 @@ class OutBlockWaringPage(TablePage):
     class tableCls(ModelTable):
         model=OutBlockWarning
         exclude=['id']
-        fields_sort=['inspector','code','proc_status','proc_detail','reason','manager','create_time']
+        fields_sort=['inspector','code','proc_status','proc_detail','reason','manager','start_time', 'end_time']
         #pop_edit_field='inspector'
         def dict_row(self, inst):
             return {
@@ -131,7 +131,8 @@ class OutBlockWaringPage(TablePage):
                 'proc_detail':160,
                 'manager':100,
                 'reason':160,
-                'create_time':150
+                'start_time':150, 
+                'end_time': 150,
             }
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])              
@@ -307,8 +308,8 @@ class InspectorWorkScheduleForm(ModelFields):
     def dict_head(self, head):
         if head['name']=='inspector':
             ls= []
-            #for group in InspectorGrop.objects.all():
-            for group in InspectorWorkGroup.objects.all():
+            for group in InspectorGrop.objects.filter(kind = 2):
+            #for group in InspectorWorkGroup.objects.all():
                 ls.append({
                     'label':group.name,
                     'inspectors':[x.pk for x in group.inspector.all()]

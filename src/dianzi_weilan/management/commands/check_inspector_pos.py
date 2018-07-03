@@ -10,6 +10,7 @@ from dianzi_weilan.port_sangao import getKeeperTrack
 import json
 from dianzi_weilan.alg.checkpos import outBoxCheck, noPosCheck, removeInvalidPos
 from sangao.cordToLoc import cordToloc
+from django.contrib.gis.geos import Polygon,Point
 
 import logging
 log = logging.getLogger('task')
@@ -23,7 +24,8 @@ class Command(BaseCommand):
     """
     def handle(self, *args, **options):
         log.info('-'*30)
-
+        log.info('开始检查监督员坐标')
+        
         now = datetime.now()
         today = now.date()
         startDate= str( today )
@@ -32,20 +34,24 @@ class Command(BaseCommand):
         
         todayWorkGroup= WorkInspector.objects.get(date=today)
         
-        log.info('开始拉取坐标数据')
+        
         for keeper in todayWorkGroup.inspector.all():
             
+            log.info('开始拉取%s轨迹数据' % str(keeper))
             tracks = getKeeperTrack(keeper.code, startDate, endDate)
+            log.info('总共拉取了%s条' % len(tracks))
             posList = []
             for track in tracks:
                 x,y=cordToloc(track.get('coordx'),track.get('coordy'))
                 pos = Point(float(x),float(y))    
-                posList.append({'tracktime': track.get('tracktime'),
+                posList.append({'tracktime': datetime.strptime( track.get('tracktime'), '%Y-%m-%d %H:%M:%S' ),
                                 'pos': pos,})
             
             posList = removeInvalidPos(keeper, posList)
             noPosCheck(keeper,posList)
             outBoxCheck(keeper, posList)
+        
+        log.info('检查监督员完成')
                        
             
         #keeperSnList=[keeper.code for keeper in keeperList]
@@ -59,35 +65,35 @@ class Command(BaseCommand):
                 
         
        
-        in_worktime=False
-        work_time = get_value('work_time','8:30-12:30;14:00-18:00')
-        log.info('设置的work_time=%s'% work_time)
-        ls =work_time.split(';')
-        for span in ls:
-            start,end = span.split('-')
-            start,end = (to_datetime(start),to_datetime(end))
-            if start <= now <=end:
-                in_worktime=True
-        log.info('当前时间 %s'%now )
-        if not in_worktime:
-            log.info('不在工作时间内' )
-            return
-        log.info('在工作时间内')
+        #in_worktime=False
+        #work_time = get_value('work_time','8:30-12:30;14:00-18:00')
+        #log.info('设置的work_time=%s'% work_time)
+        #ls =work_time.split(';')
+        #for span in ls:
+            #start,end = span.split('-')
+            #start,end = (to_datetime(start),to_datetime(end))
+            #if start <= now <=end:
+                #in_worktime=True
+        #log.info('当前时间 %s'%now )
+        #if not in_worktime:
+            #log.info('不在工作时间内' )
+            #return
+        #log.info('在工作时间内')
         
-        try:
-            workgroup = WorkInspector.objects.get(date=today)
-            log.info('开始遍历监督员')
-            for person  in workgroup.inspector.all():
-                if not list(block_list(person)):
-                    log.info('%s 没有block' % person)
-                    continue
-                else:
-                    check_inspector(person)
+        #try:
+            #workgroup = WorkInspector.objects.get(date=today)
+            #log.info('开始遍历监督员')
+            #for person  in workgroup.inspector.all():
+                #if not list(block_list(person)):
+                    #log.info('%s 没有block' % person)
+                    #continue
+                #else:
+                    #check_inspector(person)
 
-        except WorkInspector.DoesNotExist:
-            log.info('working group of [%s] is not set'%today)
-            # 没设置上班组时，不报警
-            return 
+        #except WorkInspector.DoesNotExist:
+            #log.info('working group of [%s] is not set'%today)
+            ## 没设置上班组时，不报警
+            #return 
         
 
 

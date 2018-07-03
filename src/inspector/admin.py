@@ -131,6 +131,9 @@ class InspectorGroupPage(TablePage):
             names=['name']
         class sort(RowSort):
             names=['name']
+            
+        class filters(RowFilter):
+            names = ['kind']
         #def dict_row(self, inst):
             #return {
                 #'inspector':','.join([unicode(x) for x in inst.inspector.all()])
