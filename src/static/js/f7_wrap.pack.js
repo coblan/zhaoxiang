@@ -1,38 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
+
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-/******/
+
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
+/******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/ 		}
+
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-/******/
+
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-/******/
+
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
-/******/
+
+
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-/******/
+
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
+
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -43,7 +46,7 @@
 /******/ 			});
 /******/ 		}
 /******/ 	};
-/******/
+
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -52,26 +55,138 @@
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-/******/
+
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
+
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/
+
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 80);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 10:
+/***/ 18:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _myhistory = __webpack_require__(11);
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+exports.enable_custom_history = enable_custom_history;
+
+var _win = __webpack_require__(45);
+
+var win = _interopRequireWildcard(_win);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function enable_custom_history() {
+    var his = new HistoryManager();
+}
+
+var HistoryManager = function () {
+    function HistoryManager() {
+        _classCallCheck(this, HistoryManager);
+
+        this.add_history();
+        this.listen_event();
+    }
+
+    _createClass(HistoryManager, [{
+        key: 'add_history',
+        value: function add_history() {
+            for (var i = 0; i < 3; i++) {
+                history.pushState({ count: i }, '');
+            }
+        }
+    }, {
+        key: 'listen_event',
+        value: function listen_event() {
+            window.addEventListener('popstate', function (e) {
+
+                if (mainView.history.length == 1 && state_stack.length == 0) {
+                    win.info_quit();
+                }
+
+                var state = e.state;
+                if (state.count < 1) {
+                    add_history();
+                }
+                if (state_stack.length <= 0) {
+                    //注意：state_stack只能用来记录“非跨越f7.load”的状态。
+                    mainView.router.back();
+                } else {
+                    var real_state = state_stack.pop();
+                    if (typeof real_state === 'function') {
+                        real_state();
+                    }
+                }
+                hide_load();
+            }, false);
+        }
+    }]);
+
+    return HistoryManager;
+}();
+
+/***/ }),
+
+/***/ 45:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.info_quit = info_quit;
+function cus_close() {
+    window.opener = null;
+    window.open('', '_self');
+    window.close();
+}
+
+var quit_ready = false;
+function info_quit() {
+
+    if (quit_ready) {
+        cus_close();
+    } else {
+        myApp.addNotification({
+            title: 'warning',
+            message: '再次点击退出应用程序!',
+            hold: 3000,
+            closeIcon: false,
+            additionalClass: 'bottom_msg'
+        });
+        quit_ready = true;
+
+        setTimeout(function () {
+            quit_ready = false;
+        }, 3000);
+    }
+}
+
+/***/ }),
+
+/***/ 80:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _myhistory = __webpack_require__(18);
 
 var myhistory = _interopRequireWildcard(_myhistory);
 
@@ -181,118 +296,6 @@ window.load_iframe = load_iframe;
 window.load_vue_com = load_vue_com;
 window.set_title = set_title;
 window.init_page = init_page;
-
-/***/ }),
-
-/***/ 11:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-exports.enable_custom_history = enable_custom_history;
-
-var _win = __webpack_require__(12);
-
-var win = _interopRequireWildcard(_win);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function enable_custom_history() {
-    var his = new HistoryManager();
-}
-
-var HistoryManager = function () {
-    function HistoryManager() {
-        _classCallCheck(this, HistoryManager);
-
-        this.add_history();
-        this.listen_event();
-    }
-
-    _createClass(HistoryManager, [{
-        key: 'add_history',
-        value: function add_history() {
-            for (var i = 0; i < 3; i++) {
-                history.pushState({ count: i }, '');
-            }
-        }
-    }, {
-        key: 'listen_event',
-        value: function listen_event() {
-            window.addEventListener('popstate', function (e) {
-
-                if (mainView.history.length == 1 && state_stack.length == 0) {
-                    win.info_quit();
-                }
-
-                var state = e.state;
-                if (state.count < 1) {
-                    add_history();
-                }
-                if (state_stack.length <= 0) {
-                    //注意：state_stack只能用来记录“非跨越f7.load”的状态。
-                    mainView.router.back();
-                } else {
-                    var real_state = state_stack.pop();
-                    if (typeof real_state === 'function') {
-                        real_state();
-                    }
-                }
-                hide_load();
-            }, false);
-        }
-    }]);
-
-    return HistoryManager;
-}();
-
-/***/ }),
-
-/***/ 12:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.info_quit = info_quit;
-function cus_close() {
-    window.opener = null;
-    window.open('', '_self');
-    window.close();
-}
-
-var quit_ready = false;
-function info_quit() {
-
-    if (quit_ready) {
-        cus_close();
-    } else {
-        myApp.addNotification({
-            title: 'warning',
-            message: '再次点击退出应用程序!',
-            hold: 3000,
-            closeIcon: false,
-            additionalClass: 'bottom_msg'
-        });
-        quit_ready = true;
-
-        setTimeout(function () {
-            quit_ready = false;
-        }, 3000);
-    }
-}
 
 /***/ })
 

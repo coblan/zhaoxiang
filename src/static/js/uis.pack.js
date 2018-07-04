@@ -6,9 +6,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
+/******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/ 		}
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -63,11 +63,12 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 82);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ 0:
 /***/ (function(module, exports) {
 
 /*
@@ -123,7 +124,8 @@ module.exports = function() {
 
 
 /***/ }),
-/* 1 */
+
+/***/ 1:
 /***/ (function(module, exports) {
 
 /*
@@ -375,186 +377,247 @@ function updateLink(linkElement, obj) {
 
 
 /***/ }),
-/* 2 */
+
+/***/ 18:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var template_str = '\n<div class=\'_expand_menu\'>\n\t<ul>\n\t\t<li v-for=\'act in normed_menu\'>\n\t\t\t<a :class=\'["menu_item",{"selected":act.selected,"opened_submenu":opened_submenu==act.submenu}]\' \n\t\t\t\t:href=\'act.submenu?"javascript:void(0)":act.url\'\n\t\t\t\t@click=\'main_act_click(act)\'>\n\t\t\t\t<span v-html=\'act.icon\' class=\'_icon\'></span><span v-text=\'act.label\'></span>\n\t\t\t\t<span class=\'left-arrow\' v-if=\'act.selected\'></span>\n\t\t\t</a>\n\t\t\t\n\t\t\t<ul class=\'submenu\' v-show=\'opened_submenu==act.submenu ||act.selected\' transition="expand">\n\t\t\t\t<li v-for=\'sub_act in act.submenu\' :class=\'{"active":sub_act.active}\'>\n\t\t\t\t\t<a :href=\'sub_act.url\' class=\'sub_item\'>\n\t\t\t\t\t\t<span v-text=\'sub_act.label\'></span>\n\t\t\t\t\t</a>\n\t\t\t\t\t\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</li>\n\t</ul>\n</div>\n';
-
-Vue.component('expand_menu', {
-	template: template_str,
-	props: ['menu'],
-	computed: {
-		normed_menu: function normed_menu() {
-			var path = location.pathname;
-
-			var matched_menu = null;
-			var matched_submenu = null;
-
-			ex.each(this.menu, function (menu) {
-				if (menu.submenu) {
-					ex.each(menu.submenu, function (submenu) {
-						if (path.startsWith(submenu.url)) {
-							if (!matched_submenu || matched_submenu.url.length < submenu.url.length) {
-								matched_menu = menu;
-								matched_submenu = submenu;
-							}
-							//menu.selected=true
-							//submenu.active=true
-							//return 'break'
-						}
-					});
-				} else if (menu.url && path.startsWith(menu.url)) {
-					if (matched_submenu) {} else if (!matched_menu || matched_menu.url.length < menu.url.length) {
-						matched_menu = menu;
-					}
-					//menu.selected=true
-					//return 'break'
-				}
-			});
-
-			if (matched_menu) {
-				matched_menu.selected = true;
-			}
-			if (matched_submenu) {
-				matched_submenu.active = true;
-			}
-
-			//for (var x=0;x<this.menu.length;x++){
-			//	var url = this.menu[x].url
-			//	if(path.startsWith(url)&&url.length>matched.url.length){
-			//		matched=this.menu[x]
-			//		matched_menu=this.menu[x]
-			//		matched_submenu={url:''}
-			//	}
-			//	var submenu=this.menu[x].submenu || []
-			//	for(var y=0;y<submenu.length;y++){
-			//		var url = submenu[y].url
-			//		if(path.startsWith(url)&&url.length>=matched.url.length){
-			//			matched=submenu[y]
-			//			matched_menu=this.menu[x]
-			//			matched_submenu=submenu[y]
-			//		}
-			//	}
-			//}
-			//if(matched_menu.label){
-			//	matched_menu.selected=true
-			//	matched_submenu.active=true
-			//}
-			//if(matched_submenu){
-			//	matched_submenu.active=true
-			//}
-			return this.menu;
-		}
-	},
-
-	data: function data() {
-		return {
-			opened_submenu: ''
-		};
-	},
-	methods: {
-		main_act_click: function main_act_click(act) {
-			if (!act.submenu) return;
-			if (this.opened_submenu == act.submenu) {
-				this.opened_submenu = '';
-			} else {
-				this.opened_submenu = act.submenu;
-			}
-		}
-	}
+Object.defineProperty(exports, "__esModule", {
+    value: true
 });
-//Vue.transition('expand', {
-//  beforeEnter: function (el) {
-//    $(el).slideDown(300)
-//  },
+__webpack_require__(2);
 
-//  leave: function (el) {
-//    $(el).slideUp(300)
-//  },
+/*
+* config={
+*    accept:""
+* }
+* */
 
-//})
+var field_file_uploader = exports.field_file_uploader = {
+    props: ['name', 'row', 'kw'],
+    template: '<div><com-file-uploader v-model="row[name]" :config="kw.config"></com-file-uploader></div>'
+};
 
-if (!window.__expand_menu) {
-	document.write('\n <style type="text/css" media="screen" id="test">\n\t._expand_menu{\n\t\tbackground-color: #364150;\n\t}\n\t._expand_menu a{\n\t\tcolor: #8f97a3;\n\t}\n\t._expand_menu a:hover{\n\t\ttext-decoration: none;\n\t}\n\t._expand_menu ul{\n\t\tpadding: 0px;\n\t}\n\t._expand_menu ._icon{\n\t\tpadding: 0px 10px;\n\t}\n\t._expand_menu li{\n\t\tlist-style-type:none;\n\t\tcursor: pointer;\n\t\tposition: relative;\n\t\tpadding: 0px;\n\t}\n\t._expand_menu ul.submenu li{\n\t\tpadding: 5px 0px;\n\t}\n\t._expand_menu .menu_item{\n\t\tborder-top:1px solid #475563;\n\t\tpadding: 5px 0px;\n\t\tdisplay:block;\n\t}\n\t._expand_menu .sub_item{\n\t\tdisplay:block;\n\t}\n\t._expand_menu .opened_submenu{\n\t\tbackground-color: #2C3542;\n\t}\n\t._expand_menu ul.submenu{\n\t\tpadding:0px;\n\t}\n\t\n\t._expand_menu ul.submenu li{\n\t\tpadding-left: 20px;\n\t\tcolor: #B4BCC8;\n\t}\n\n\t._expand_menu .menu_item:hover{\n\t\tbackground-color: #2C3542;\n\t\tcolor: #A7BCAE;\n\t}\n\t._expand_menu ul.submenu li:hover , ._expand_menu .submenu .active{\n\t\tbackground-color: #3E4B5C;\n\t}\n\t._expand_menu .menu_item.selected{\n\t\tbackground-color: #1CAF9A;\n\t\tcolor: white;\n\t}\n   \t._expand_menu .left-arrow{\n\t   \tposition: absolute;\n\t   \tright:0px;\n\t   \tborder-top:12px solid transparent;\n\t   \tborder-bottom:12px solid transparent;\n\t   \tborder-right: 12px solid white;\n   \t}\n   \t.expand-transition {\n\t\t  transition: max-height .3s ease;\n\t\t\n\t}\n   </style>\n');
-	window.__expand_menu = true;
-}
+var com_file_uploader = exports.com_file_uploader = {
+    props: ['to', 'value', 'config'],
+    data: function data() {
+
+        return {
+            picstr: this.value,
+            pictures: this.value ? this.value.split(';') : [],
+            crt_pic: ''
+        };
+    },
+
+    template: '<div class="com_multi_picture">\n\n    <input v-if="cpt_config.multiple" class="pic-input" type="file" @change="upload_pictures($event)" :accept="cpt_config.accept" multiple="multiple">\n    <input v-else class="pic-input" type="file" @change="upload_pictures($event)" :accept="cpt_config.accept">\n\n     <ul class="sortable">\n        <li  v-for="pic in pictures" class="item" >\n            <img v-if="is_image(pic)" :src="pic" alt=""/>\n            <div v-else style="width: 5em;text-align: center;padding:1em 0;word-wrap: break-word;">\n                <span v-text="get_res_type(pic)" style="font-size: 300%;font-weight: 700;"></span>\n                <span v-text="get_res_basename(pic)"></span>\n            </div>\n            <!--<span class="remove-btn" title="remove image" @click="remove(pic)">-->\n                <!--<i class="fa fa-window-close" aria-hidden="true"></i>-->\n            <!--</span>-->\n\n        </li>\n    </ul>\n\n    </div>',
+    mounted: function mounted() {
+        var self = this;
+        if (this.cpt_config.sortable) {
+            ex.load_js("/static/lib/sortable.min.js", function () {
+                new Sortable($(self.$el).find('.sortable')[0], {
+                    onSort: function onSort( /**Event*/evt) {
+                        self.ajust_order();
+                    }
+                });
+            });
+        }
+    },
+    computed: {
+        res_url: function res_url() {
+            return this.to ? this.to : "/_face/upload";
+        },
+        cpt_config: function cpt_config() {
+            var def_config = {
+                accept: 'image/*',
+                multiple: true,
+                sortable: true
+            };
+            if (this.config) {
+                ex.assign(def_config, this.config);
+            }
+            return def_config;
+        }
+
+    },
+    watch: {
+        value: function value(new_val, old_val) {
+            if (this.picstr != new_val) {
+                this.picstr = new_val;
+                this.pictures = this.value ? this.value.split(';') : [];
+            }
+            if (!this.picstr) {
+                $(this.$el).find('.pic-input').val("");
+            }
+        }
+    },
+    methods: {
+        enter: function enter(pic) {
+            this.crt_pic = pic;
+        },
+        out: function out() {
+            this.crt_pic = '';
+        },
+        upload_pictures: function upload_pictures(event) {
+            var self = this;
+            var file_list = event.target.files;
+            if (file_list.length == 0) {
+                return;
+            }
+            var upload_url = this.res_url;
+
+            show_upload();
+
+            fl.uploads(file_list, upload_url, function (resp) {
+                if (resp) {
+                    var val = resp.join(';');
+                    self.$emit('input', val);
+                }
+                hide_upload(300);
+            });
+        },
+        ajust_order: function ajust_order() {
+            var list = $(this.$el).find('ul.sortable img');
+            var url_list = [];
+            for (var i = 0; i < list.length; i++) {
+                var ele = list[i];
+                url_list.push($(ele).attr('src'));
+            }
+            var val = url_list.join(';');
+            this.picstr = val;
+            this.$emit('input', val);
+        },
+        //remove:function(pic){
+        //    var pics =this.picstr.split(';')
+        //    ex.remove(pics,function(item){return pic==item})
+        //    var val= pics.join(';')
+        //    this.$emit('input',val)
+        //}
+        is_image: function is_image(url) {
+            var type = this.get_res_type(url);
+            return ex.isin(type.toLowerCase(), ['jpg', 'png', 'webp', 'gif', 'jpeg', 'ico']);
+        },
+        get_res_type: function get_res_type(url) {
+            var mt = /[^.]+$/.exec(url);
+            if (mt.length > 0) {
+                return mt[0];
+            } else {
+                return "";
+            }
+        },
+        get_res_basename: function get_res_basename(url) {
+            var mt = /[^/]+$/.exec(url);
+            if (mt.length > 0) {
+                return mt[0];
+            } else {
+                return mt[0];
+            }
+        }
+    }
+};
 
 /***/ }),
-/* 3 */
+
+/***/ 19:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var transfer = {};
-function disable_scroll() {
-	transfer.wsctop = $(window).scrollTop(); //记住滚动条的位置
-	$('body').addClass('modal-show');
-	$('body').css('top', -transfer.wsctop);
-	//        $("body").css({position:'fixed',top:-transfer.wsctop});
-}
-function enable_scroll() {
-	//        $("body").css({position:'static'});
-	$("body").removeClass('modal-show');
-	$(window).scrollTop(transfer.wsctop); //弹框关闭时，启动滚动条，并滚动到原来的位置
-}
-
-if (!window.__modal_mark) {
-	window.__modal_mark = true;
-	document.write('\n\t\t<style>\n\t\t._modal_popup{\n\t\t\tposition: fixed;\n\t\t\ttop: 0;\n\t\t\tleft: 0;\n\t\t\tright: 0;\n\t\t\tbottom: 0;\n\t\t\tbackground: rgba(0, 0, 0, 0.2);\n\t\t\tz-index:1000;\n\t\t}\n\t\t._modal_inn{\n\t\t\t/*background: rgba(88, 88, 88, 0.2);*/\n\t\t\tborder-radius: 5px;\n\t\t\tbackground:white;\n\t\t\tposition: relative;\n\n\t\n\t\t\t/*padding:30px 80px ;*/\n\t\t}\n\t\t._modal_popup>._modal_middle{\n\t\t    position: absolute;\n\t        top: 50%;\n\t        left: 50%;\n\t        transform: translate(-50%, -50%);\n\t        -ms-transform:translate(-50%, -50%); \t/* IE 9 */\n\t\t\t-moz-transform:translate(-50%, -50%); \t/* Firefox */\n\t\t\t-webkit-transform:translate(-50%, -50%); /* Safari \u548C Chrome */\n\t\t\t-o-transform:translate(-50%, -50%); \n\t        /*text-align: center;*/\n\t        /*z-index: 1000;*/\n    \t}\n\t\t</style>');
-}
-Vue.component('modal', {
-	template: '<div class="_modal_popup " v-show="is_show">\n\t<div class="flex flex-vh-center" style="width: 100%;height: 100%;">\n\t\t<div class="_modal_inn" :style=\'inn_style\'>\n\t\t\t<span v-if="with_close_btn" @click="$emit(\'close\')" style="position: absolute;right:5px;top:-2em; color: #ff9b11;">\n\t\t\t\t<i class="fa fa-times fa-2x" aria-hidden="true"></i>\n\t\t\t</span>\n\t\t<div style="overflow:auto;">\n        \t<slot></slot>\n         </div>\n\n\t\t</div>\n\t</div>\n\t</div>',
-
-	methods: function methods() {
-		//var self=this
-		//setTimeout(function(){
-		//	self.$refs.	editor_scroller.refresh()
-		//},500)
-
-	},
-	props: ['inn_style', 'with_close_btn', 'show'],
-	computed: {
-		is_show: function is_show() {
-			if (this.show) {
-				disable_scroll();
-			} else {
-				enable_scroll();
-			}
-			return this.show;
-		}
-		//methods:{
-		//	hide_me:function () {
-		//		this.$dispatch('sd_hide')
-		//	}
-		//}@click='hide_me()'
-	} });
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Vue.component('page-tab', {
-	template: '<ul class=\'inst-menu\'>\n    <li v-for=\'tab in tabs\' :class=\'{"active":value==tab}\' @click=\'$emit("input",tab)\' v-text=\'tab\'></li>\n    </ul>',
-	props: ['value', 'tabs']
+Object.defineProperty(exports, "__esModule", {
+    value: true
 });
+__webpack_require__(2);
 
-document.write('\n <style type="text/css" media="screen" id="test">\n.inst-menu{\n\t\tmargin: 30px auto;\n\t\tborder-bottom: 1px solid #DADCDE;\n\t}\n.inst-menu li{\n\tdisplay: inline-block;\n\tpadding: 10px 20px;\n\tfont-size: 16px;\n}\n.inst-menu li:hover{\n\tcursor: pointer;\n}\n.inst-menu .active{\n\tborder-bottom: 5px solid #0092F2;\n\tcolor: #0092F2;\n}\n</style>\n');
+var com_multi_picture = exports.com_multi_picture = {
+    props: ['to', 'value'],
+    data: function data() {
+        return {
+            picstr: this.value,
+            pictures: this.value ? this.value.split(';') : [],
+            crt_pic: ''
+        };
+    },
+    template: '<div class="com_multi_picture">\n\n    <input class="pic-input" type="file" @change="upload_pictures(event)" accept="image/*" multiple="multiple">\n\n     <ul class="sortable">\n        <li  v-for="pic in pictures" class="item" >\n            <img :src="pic" alt=""/>\n            <!--<span class="remove-btn" title="remove image" @click="remove(pic)">-->\n                <!--<i class="fa fa-window-close" aria-hidden="true"></i>-->\n            <!--</span>-->\n\n        </li>\n    </ul>\n\n    </div>',
+    mounted: function mounted() {
+        var self = this;
+        ex.load_js("/static/lib/sortable.min.js", function () {
+            new Sortable($(self.$el).find('.sortable')[0], {
+                onSort: function onSort( /**Event*/evt) {
+                    self.ajust_order();
+                }
+            });
+        });
+    },
+    computed: {
+        res_url: function res_url() {
+            return this.to ? this.to : "/res/upload";
+        }
+
+    },
+    watch: {
+        value: function value(new_val, old_val) {
+            if (this.picstr != new_val) {
+                this.picstr = new_val;
+                this.pictures = this.value ? this.value.split(';') : [];
+            }
+            if (!this.picstr) {
+                $(this.$el).find('.pic-input').val("");
+            }
+        }
+    },
+    methods: {
+        enter: function enter(pic) {
+            this.crt_pic = pic;
+        },
+        out: function out() {
+            this.crt_pic = '';
+        },
+        upload_pictures: function upload_pictures(event) {
+            var self = this;
+            var file_list = event.target.files;
+            if (file_list.length == 0) {
+                return;
+            }
+            var upload_url = this.res_url;
+            fl.uploads(file_list, upload_url, function (resp) {
+                if (resp) {
+                    var val = resp.join(';');
+                    self.$emit('input', val);
+                }
+            });
+        },
+        ajust_order: function ajust_order() {
+            var list = $(this.$el).find('ul.sortable img');
+            var url_list = [];
+            for (var i = 0; i < list.length; i++) {
+                var ele = list[i];
+                url_list.push($(ele).attr('src'));
+            }
+            var val = url_list.join(';');
+            this.picstr = val;
+            this.$emit('input', val);
+        }
+        //remove:function(pic){
+        //    var pics =this.picstr.split(';')
+        //    ex.remove(pics,function(item){return pic==item})
+        //    var val= pics.join(';')
+        //    this.$emit('input',val)
+        //}
+    }
+
+};
 
 /***/ }),
-/* 5 */
+
+/***/ 2:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(10);
+var content = __webpack_require__(64);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -563,8 +626,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/index.js??ref--1-2!../../../node_modules/sass-loader/lib/loader.js!./adapt.scss", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/index.js??ref--1-2!../../../node_modules/sass-loader/lib/loader.js!./adapt.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./multi_picture.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./multi_picture.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -574,13 +637,14 @@ if(false) {
 }
 
 /***/ }),
-/* 6 */
+
+/***/ 22:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(11);
+var content = __webpack_require__(65);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -589,8 +653,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/index.js??ref--1-2!../../../node_modules/sass-loader/lib/loader.js!./aliagn.scss", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/index.js??ref--1-2!../../../node_modules/sass-loader/lib/loader.js!./aliagn.scss");
+		module.hot.accept("!!../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./text.scss", function() {
+			var newContent = require("!!../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./text.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -600,138 +664,56 @@ if(false) {
 }
 
 /***/ }),
-/* 7 */
+
+/***/ 64:
 /***/ (function(module, exports, __webpack_require__) {
 
-// style-loader: Adds some css to the DOM by adding a <style> tag
+exports = module.exports = __webpack_require__(0)();
+// imports
 
-// load the styles
-var content = __webpack_require__(12);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/index.js??ref--1-2!../../../node_modules/sass-loader/lib/loader.js!./button.scss", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/index.js??ref--1-2!../../../node_modules/sass-loader/lib/loader.js!./button.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
+
+// module
+exports.push([module.i, ".com_multi_picture .item img {\n  max-width: 300px; }\n\n.com_multi_picture .sortable {\n  display: flex;\n  flex-wrap: wrap; }\n  .com_multi_picture .sortable li {\n    display: block;\n    margin: 0.5em;\n    padding: 0.3em;\n    border: 1px solid #cbcbcb;\n    background-color: #f6f6f6;\n    position: relative; }\n", ""]);
+
+// exports
+
 
 /***/ }),
-/* 8 */
+
+/***/ 65:
 /***/ (function(module, exports, __webpack_require__) {
 
-// style-loader: Adds some css to the DOM by adding a <style> tag
+exports = module.exports = __webpack_require__(0)();
+// imports
 
-// load the styles
-var content = __webpack_require__(13);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/index.js??ref--1-2!../../../node_modules/sass-loader/lib/loader.js!./flex.scss", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/index.js??ref--1-2!../../../node_modules/sass-loader/lib/loader.js!./flex.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
+
+// module
+exports.push([module.i, ".clickable {\n  cursor: pointer;\n  color: #4da8cd; }\n", ""]);
+
+// exports
+
 
 /***/ }),
-/* 9 */
+
+/***/ 82:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _expand_menu = __webpack_require__(2);
+var _multi_picture = __webpack_require__(19);
 
-var f = _interopRequireWildcard(_expand_menu);
+var _file_uploader = __webpack_require__(18);
 
-var _modal = __webpack_require__(3);
+// 这个文件夹里面的所有代码暂时不用了。
+// 留下 com-multi-picture 好像是因为 color的feature时，用到了这个组件。
+// com_file_uploader 包含了图片上传的所有功能，已经移到了director/inputs目录下
+// 自己项目里面，其实可以把uis这个目录删除了。因为uis应该移到direcor(PC)或者f7(手机)目录下去
 
-var a = _interopRequireWildcard(_modal);
+__webpack_require__(22);
 
-var _page_tab = __webpack_require__(4);
-
-var page = _interopRequireWildcard(_page_tab);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-__webpack_require__(8);
-__webpack_require__(7);
-__webpack_require__(5);
-__webpack_require__(6);
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "template {\n  display: none; }\n\nhtml, body {\n  height: 100%;\n  margin: 0;\n  padding: 0; }\n\nbody.modal-show {\n  position: fixed;\n  width: 100%;\n  height: 100%; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "@charset \"UTF-8\";\n.center-vh {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  -ms-transform: translate(-50%, -50%);\n  /* IE 9 */\n  -moz-transform: translate(-50%, -50%);\n  /* Firefox */\n  -webkit-transform: translate(-50%, -50%);\n  /* Safari 和 Chrome */\n  -o-transform: translate(-50%, -50%);\n  /*text-align: center;*/\n  /*z-index: 1000;*/ }\n\n.center-v {\n  position: absolute;\n  top: 50%;\n  -webkit-transform: translateY(-50%);\n          transform: translateY(-50%);\n  /*text-align: center;*/\n  /*z-index: 1000;*/ }\n\n.center-h {\n  position: absolute;\n  left: 50%;\n  -webkit-transform: translateX(-50%);\n          transform: translateX(-50%);\n  /*text-align: center;*/\n  /*z-index: 1000;*/ }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".checkbox {\n  padding-left: 20px; }\n\n.checkbox label {\n  display: inline-block;\n  vertical-align: middle;\n  position: relative;\n  padding-left: 5px; }\n\n.checkbox label::before {\n  content: \"\";\n  display: inline-block;\n  position: absolute;\n  width: 17px;\n  height: 17px;\n  left: 0;\n  margin-left: -20px;\n  border: 1px solid #cccccc;\n  border-radius: 3px;\n  background-color: #fff;\n  transition: border 0.15s ease-in-out, color 0.15s ease-in-out; }\n\n.checkbox label::after {\n  display: inline-block;\n  position: absolute;\n  width: 16px;\n  height: 16px;\n  left: 0;\n  top: 0;\n  margin-left: -20px;\n  padding-left: 3px;\n  padding-top: 1px;\n  font-size: 11px;\n  color: #555555; }\n\n.checkbox input[type=\"checkbox\"],\n.checkbox input[type=\"radio\"] {\n  opacity: 0;\n  z-index: 1; }\n\n.checkbox input[type=\"checkbox\"]:focus + label::before,\n.checkbox input[type=\"radio\"]:focus + label::before {\n  outline: thin dotted;\n  outline: 5px auto -webkit-focus-ring-color;\n  outline-offset: -2px; }\n\n.checkbox input[type=\"checkbox\"]:checked + label::after,\n.checkbox input[type=\"radio\"]:checked + label::after {\n  font-family: \"FontAwesome\";\n  content: \"\\F00C\"; }\n\n.checkbox input[type=\"checkbox\"]:indeterminate + label::after,\n.checkbox input[type=\"radio\"]:indeterminate + label::after {\n  display: block;\n  content: \"\";\n  width: 10px;\n  height: 3px;\n  background-color: #555555;\n  border-radius: 2px;\n  margin-left: -16.5px;\n  margin-top: 7px; }\n\n.checkbox input[type=\"checkbox\"]:disabled + label,\n.checkbox input[type=\"radio\"]:disabled + label {\n  opacity: 0.65; }\n\n.checkbox input[type=\"checkbox\"]:disabled + label::before,\n.checkbox input[type=\"radio\"]:disabled + label::before {\n  background-color: #eeeeee;\n  cursor: not-allowed; }\n\n.checkbox.checkbox-circle label::before {\n  border-radius: 50%; }\n\n.checkbox.checkbox-inline {\n  margin-top: 0; }\n\n.checkbox-primary input[type=\"checkbox\"]:checked + label::before,\n.checkbox-primary input[type=\"radio\"]:checked + label::before {\n  background-color: #337ab7;\n  border-color: #337ab7; }\n\n.checkbox-primary input[type=\"checkbox\"]:checked + label::after,\n.checkbox-primary input[type=\"radio\"]:checked + label::after {\n  color: #fff; }\n\n.checkbox-danger input[type=\"checkbox\"]:checked + label::before,\n.checkbox-danger input[type=\"radio\"]:checked + label::before {\n  background-color: #d9534f;\n  border-color: #d9534f; }\n\n.checkbox-danger input[type=\"checkbox\"]:checked + label::after,\n.checkbox-danger input[type=\"radio\"]:checked + label::after {\n  color: #fff; }\n\n.checkbox-info input[type=\"checkbox\"]:checked + label::before,\n.checkbox-info input[type=\"radio\"]:checked + label::before {\n  background-color: #5bc0de;\n  border-color: #5bc0de; }\n\n.checkbox-info input[type=\"checkbox\"]:checked + label::after,\n.checkbox-info input[type=\"radio\"]:checked + label::after {\n  color: #fff; }\n\n.checkbox-warning input[type=\"checkbox\"]:checked + label::before,\n.checkbox-warning input[type=\"radio\"]:checked + label::before {\n  background-color: #f0ad4e;\n  border-color: #f0ad4e; }\n\n.checkbox-warning input[type=\"checkbox\"]:checked + label::after,\n.checkbox-warning input[type=\"radio\"]:checked + label::after {\n  color: #fff; }\n\n.checkbox-success input[type=\"checkbox\"]:checked + label::before,\n.checkbox-success input[type=\"radio\"]:checked + label::before {\n  background-color: #5cb85c;\n  border-color: #5cb85c; }\n\n.checkbox-success input[type=\"checkbox\"]:checked + label::after,\n.checkbox-success input[type=\"radio\"]:checked + label::after {\n  color: #fff; }\n\n.checkbox-primary input[type=\"checkbox\"]:indeterminate + label::before,\n.checkbox-primary input[type=\"radio\"]:indeterminate + label::before {\n  background-color: #337ab7;\n  border-color: #337ab7; }\n\n.checkbox-primary input[type=\"checkbox\"]:indeterminate + label::after,\n.checkbox-primary input[type=\"radio\"]:indeterminate + label::after {\n  background-color: #fff; }\n\n.checkbox-danger input[type=\"checkbox\"]:indeterminate + label::before,\n.checkbox-danger input[type=\"radio\"]:indeterminate + label::before {\n  background-color: #d9534f;\n  border-color: #d9534f; }\n\n.checkbox-danger input[type=\"checkbox\"]:indeterminate + label::after,\n.checkbox-danger input[type=\"radio\"]:indeterminate + label::after {\n  background-color: #fff; }\n\n.checkbox-info input[type=\"checkbox\"]:indeterminate + label::before,\n.checkbox-info input[type=\"radio\"]:indeterminate + label::before {\n  background-color: #5bc0de;\n  border-color: #5bc0de; }\n\n.checkbox-info input[type=\"checkbox\"]:indeterminate + label::after,\n.checkbox-info input[type=\"radio\"]:indeterminate + label::after {\n  background-color: #fff; }\n\n.checkbox-warning input[type=\"checkbox\"]:indeterminate + label::before,\n.checkbox-warning input[type=\"radio\"]:indeterminate + label::before {\n  background-color: #f0ad4e;\n  border-color: #f0ad4e; }\n\n.checkbox-warning input[type=\"checkbox\"]:indeterminate + label::after,\n.checkbox-warning input[type=\"radio\"]:indeterminate + label::after {\n  background-color: #fff; }\n\n.checkbox-success input[type=\"checkbox\"]:indeterminate + label::before,\n.checkbox-success input[type=\"radio\"]:indeterminate + label::before {\n  background-color: #5cb85c;\n  border-color: #5cb85c; }\n\n.checkbox-success input[type=\"checkbox\"]:indeterminate + label::after,\n.checkbox-success input[type=\"radio\"]:indeterminate + label::after {\n  background-color: #fff; }\n\n.radio {\n  padding-left: 20px; }\n\n.radio label {\n  display: inline-block;\n  vertical-align: middle;\n  position: relative;\n  padding-left: 5px; }\n\n.radio label::before {\n  content: \"\";\n  display: inline-block;\n  position: absolute;\n  width: 17px;\n  height: 17px;\n  left: 0;\n  margin-left: -20px;\n  border: 1px solid #cccccc;\n  border-radius: 50%;\n  background-color: #fff;\n  transition: border 0.15s ease-in-out; }\n\n.radio label::after {\n  display: inline-block;\n  position: absolute;\n  content: \" \";\n  width: 11px;\n  height: 11px;\n  left: 3px;\n  top: 3px;\n  margin-left: -20px;\n  border-radius: 50%;\n  background-color: #555555;\n  -webkit-transform: scale(0, 0);\n  transform: scale(0, 0);\n  transition: -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);\n  transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);\n  transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33), -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33); }\n\n.radio input[type=\"radio\"] {\n  opacity: 0;\n  z-index: 1; }\n\n.radio input[type=\"radio\"]:focus + label::before {\n  outline: thin dotted;\n  outline: 5px auto -webkit-focus-ring-color;\n  outline-offset: -2px; }\n\n.radio input[type=\"radio\"]:checked + label::after {\n  -webkit-transform: scale(1, 1);\n  transform: scale(1, 1); }\n\n.radio input[type=\"radio\"]:disabled + label {\n  opacity: 0.65; }\n\n.radio input[type=\"radio\"]:disabled + label::before {\n  cursor: not-allowed; }\n\n.radio.radio-inline {\n  margin-top: 0; }\n\n.radio-primary input[type=\"radio\"] + label::after {\n  background-color: #337ab7; }\n\n.radio-primary input[type=\"radio\"]:checked + label::before {\n  border-color: #337ab7; }\n\n.radio-primary input[type=\"radio\"]:checked + label::after {\n  background-color: #337ab7; }\n\n.radio-danger input[type=\"radio\"] + label::after {\n  background-color: #d9534f; }\n\n.radio-danger input[type=\"radio\"]:checked + label::before {\n  border-color: #d9534f; }\n\n.radio-danger input[type=\"radio\"]:checked + label::after {\n  background-color: #d9534f; }\n\n.radio-info input[type=\"radio\"] + label::after {\n  background-color: #5bc0de; }\n\n.radio-info input[type=\"radio\"]:checked + label::before {\n  border-color: #5bc0de; }\n\n.radio-info input[type=\"radio\"]:checked + label::after {\n  background-color: #5bc0de; }\n\n.radio-warning input[type=\"radio\"] + label::after {\n  background-color: #f0ad4e; }\n\n.radio-warning input[type=\"radio\"]:checked + label::before {\n  border-color: #f0ad4e; }\n\n.radio-warning input[type=\"radio\"]:checked + label::after {\n  background-color: #f0ad4e; }\n\n.radio-success input[type=\"radio\"] + label::after {\n  background-color: #5cb85c; }\n\n.radio-success input[type=\"radio\"]:checked + label::before {\n  border-color: #5cb85c; }\n\n.radio-success input[type=\"radio\"]:checked + label::after {\n  background-color: #5cb85c; }\n\ninput[type=\"checkbox\"].styled:checked + label:after,\ninput[type=\"radio\"].styled:checked + label:after {\n  font-family: 'FontAwesome';\n  content: \"\\F00C\"; }\n\ninput[type=\"checkbox\"] .styled:checked + label::before,\ninput[type=\"radio\"] .styled:checked + label::before {\n  color: #fff; }\n\ninput[type=\"checkbox\"] .styled:checked + label::after,\ninput[type=\"radio\"] .styled:checked + label::after {\n  color: #fff; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".flex {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex; }\n\n.flex-v {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column; }\n\n.flex-grow {\n  -webkit-box-flex: 10;\n      -ms-flex-positive: 10;\n          flex-grow: 10; }\n\n.flex-jc {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center; }\n\n.flex-ac {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center; }\n\n.flex-sb {\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between; }\n\n.flex-vh-center {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center; }\n", ""]);
-
-// exports
-
+Vue.component('com-multi-picture', _multi_picture.com_multi_picture);
 
 /***/ })
-/******/ ]);
+
+/******/ });
