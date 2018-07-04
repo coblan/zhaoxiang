@@ -26,7 +26,7 @@ class XunCha(object):
         """
         url = urljoin(self.xuncha_host,'forcast?jiezheng=14')
         rt = requests.get(url)
-        return json.loads(rt.content.decode('utf-8'))   
+        return json.loads(rt.text)   
     
     def _cal_prob(self,data):
         last = data[0]
