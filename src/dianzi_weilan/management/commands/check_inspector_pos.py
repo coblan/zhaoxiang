@@ -32,26 +32,29 @@ class Command(BaseCommand):
         tomorro = now+timedelta(days=1)
         endDate= today.strftime('%Y%m%d23')
         log.info('today = %s' % today)
-        todayWorkGroup= WorkInspector.objects.get(date=today)
-        
-        keepers = list( todayWorkGroup.inspector.all() )
-        log.info('上班人数：%s' % len(keepers))
-        
-        for keeper in keepers:
+        try:
+            todayWorkGroup= WorkInspector.objects.get(date=today)
             
-            log.info('开始拉取%s轨迹数据' % str(keeper))
-            tracks = getKeeperTrack(keeper.code, startDate, endDate)
-            log.info('总共拉取了%s条' % len(tracks))
-            posList = []
-            for track in tracks:
-                x,y=cordToloc(track.get('coordx'),track.get('coordy'))
-                pos = Point(float(x),float(y))    
-                posList.append({'tracktime': datetime.strptime( track.get('tracktime'), '%Y-%m-%d %H:%M:%S' ),
-                                'pos': pos,})
+            keepers = list( todayWorkGroup.inspector.all() )
+            log.info('上班人数：%s' % len(keepers))
             
-            posList = removeInvalidPos(keeper, posList)
-            noPosCheck(keeper,posList)
-            outBoxCheck(keeper, posList)
+            for keeper in keepers:
+                
+                log.info('开始拉取%s轨迹数据' % str(keeper))
+                tracks = getKeeperTrack(keeper.code, startDate, endDate)
+                log.info('总共拉取了%s条' % len(tracks))
+                posList = []
+                for track in tracks:
+                    x,y=cordToloc(track.get('coordx'),track.get('coordy'))
+                    pos = Point(float(x),float(y))    
+                    posList.append({'tracktime': datetime.strptime( track.get('tracktime'), '%Y-%m-%d %H:%M:%S' ),
+                                    'pos': pos,})
+                
+                posList = removeInvalidPos(keeper, posList)
+                noPosCheck(keeper,posList)
+                outBoxCheck(keeper, posList)
+        except WorkInspector.DoesNotExist:
+            log.info('未设置工作组')
         
         log.info('检查监督员完成')
                        
