@@ -31,11 +31,13 @@ class Command(BaseCommand):
         startDate= str( today )
         tomorro = now+timedelta(days=1)
         endDate= str(tomorro.date())
-        
+        log.info('today =' % today)
         todayWorkGroup= WorkInspector.objects.get(date=today)
         
+        keepers = list( todayWorkGroup.inspector.all() )
+        log.info('上班人数：%s' % len(keepers))
         
-        for keeper in todayWorkGroup.inspector.all():
+        for keeper in keepers:
             
             log.info('开始拉取%s轨迹数据' % str(keeper))
             tracks = getKeeperTrack(keeper.code, startDate, endDate)
