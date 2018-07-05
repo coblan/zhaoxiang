@@ -653,10 +653,11 @@ var baseInput = exports.baseInput = {
 
 window.cfg = {
     showMsg: function showMsg(msg) {
-        alert(msg);
+        //alert(msg)
+        layer.msg(msg);
     },
     warning: function warning(msg) {
-        alert(msg);
+        layer.confirm(msg, { title: ['警告', 'color:white;background-color:red'] });
     },
     tr: {
         'picture_size_excceed': '图片尺寸不能超过{maxsize}'
@@ -782,7 +783,7 @@ var field = {
       layer.tips(msg, event.target);
     }
   },
-  template: '\n    \t\t<div :class=\'["form-group field",{"error":head.error}]\' v-if="head" style="position: relative;">\n                <label :for="\'id_\'+head.name"  class="control-label" v-if=\'head.label && head.label!=""\'>\n                    <span v-text="head.label"></span><span class="req_star" v-if=\'head.required\'>*</span>\n                </label>\n                <div class="field_input">\n                    <component :is=\'head.editor\'\n                        :row=\'row\'\n                        :head=\'head\'>\n                    </component>\n                </div>\n                <slot></slot>\n                <!--<i class="help-text" v-if="head.help_text" v-text="head.help_text"></i>-->\n                <span class="help-text clickable">\n                    <i style="color: #3780af;position: relative;top:10px;"  v-if="head.help_text" @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n                </span>\n\n                 <div class="msg" style="position: absolute;right: 5px;top: 1px;">\n\n                        <!--<i v-if="head.help_text" @click="show_msg(head.help_text,$event)" class="fa fa-shield" ></i>-->\n\n                        <span class="fa-stack error" v-if="head.error" @click="show_msg(head.error,$event)" style="font-size: 0.5em;">\n                              <i class="fa fa-cloud fa-stack-2x" style="color: black"></i>\n                              <i class="fa fa-close fa-stack-1x" style="color: red"></i>\n                        </span>\n\n                        <!--<i v-if="head.error" @click="show_msg(head.error,$event)" class="fa fa-shield  error" ></i>-->\n                        <!--<span class="help_text" v-text="head.help_text"></span>-->\n                        <!--<span v-if="head.error_msg" class="error_msg error"  v-text=\'head.error_msg\'></span>-->\n                 </div>\n\t\t</div>\n\n\n\t'
+  template: '\n    \t\t<div :class=\'["form-group field",{"error":head.error}]\' v-if="head" style="position: relative;">\n                <label :for="\'id_\'+head.name"  class="control-label" v-if=\'head.label && head.label!=""\'>\n                    <span v-text="head.label"></span><span class="req_star" v-if=\'head.required\'>*</span>\n                </label>\n                <div class="field_input">\n                    <component :is=\'head.editor\'\n                        :row=\'row\'\n                        :head=\'head\'>\n                    </component>\n                </div>\n                <slot></slot>\n                <!--<i class="help-text" v-if="head.help_text" v-text="head.help_text"></i>-->\n                <span class="help-text clickable">\n                    <i style="color: #3780af;position: relative;top:10px;"  v-if="head.help_text" @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n                </span>\n\n                 <!--<div class="msg" style="position: absolute;right: 5px;top: 1px;">-->\n\n                        <!--&lt;!&ndash;<i v-if="head.help_text" @click="show_msg(head.help_text,$event)" class="fa fa-shield" ></i>&ndash;&gt;-->\n\n                        <!--<span class="fa-stack error" v-if="head.error" @click="show_msg(head.error,$event)" style="font-size: 0.5em;">-->\n                              <!--<i class="fa fa-cloud fa-stack-2x" style="color: black"></i>-->\n                              <!--<i class="fa fa-close fa-stack-1x" style="color: red"></i>-->\n                        <!--</span>-->\n\n                        <!--&lt;!&ndash;<i v-if="head.error" @click="show_msg(head.error,$event)" class="fa fa-shield  error" ></i>&ndash;&gt;-->\n                        <!--&lt;!&ndash;<span class="help_text" v-text="head.help_text"></span>&ndash;&gt;-->\n                        <!--&lt;!&ndash;<span v-if="head.error_msg" class="error_msg error"  v-text=\'head.error_msg\'></span>&ndash;&gt;-->\n                 <!--</div>-->\n\t\t</div>\n\n\n\t'
 
 };
 

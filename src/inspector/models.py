@@ -34,15 +34,17 @@ INSPECTOR_KIND = (
 )
 
 class InspectorGrop(models.Model):
-    name=models.CharField('监督员组',max_length=100,unique=True,blank=False)
+    name=models.CharField('组名',max_length=100,unique=True,blank=False, error_messages={'unique':"相同名字的组已经存在，请换一个名字"})
     inspector=models.ManyToManyField(Inspector,verbose_name='监督员',blank=True)
     kind = models.IntegerField(verbose_name= '类型', default= 0, choices= INSPECTOR_KIND )
     
     def __str__(self):
         return self.name
+    class Meta:
+        verbose_name = '监督员分组表'
 
 class InspectorWorkGroup(models.Model):
-    name=models.CharField('监督员组',max_length=100,unique=True,blank=False)
+    name=models.CharField('组名',max_length=100,unique=True,blank=False, error_messages={'unique':"相同名字的组已经存在，请换一个名字"})
     inspector=models.ManyToManyField(Inspector,verbose_name='监督员',blank=True)
     work_time = models.CharField('工作时间段',max_length= 300,blank=True, help_text = '(8:00-12:00;13:30-17:30)<br>按照括号内的格式输入，以分号分割时间段')
 
