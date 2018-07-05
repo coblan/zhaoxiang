@@ -28,9 +28,9 @@ class Command(BaseCommand):
         
         now = datetime.now()
         today = now.date()
-        startDate= str( today )
+        startDate= today.strftime('%Y%m%d00')
         tomorro = now+timedelta(days=1)
-        endDate= str(tomorro.date())
+        endDate= today.strftime('%Y%m%d23')
         log.info('today = %s' % today)
         todayWorkGroup= WorkInspector.objects.get(date=today)
         

@@ -27,9 +27,11 @@ def noPosCheck(keeper,posList):
                     working = False
                 else:
                     lastWarning.end_time = timePoint
+                    lastWarning.save()
                     working = True
         if lastWarning and not lastWarning.end_time:
             lastWarning.end_time = timePoint 
+            lastWarning.save()
         
             
 
@@ -50,6 +52,7 @@ def outBoxCheck(keeper,posList):
                 working = False
             else:
                 lastWarning.end_time = timePoint
+                lastWarning.save()
                 working = True          
 
 
