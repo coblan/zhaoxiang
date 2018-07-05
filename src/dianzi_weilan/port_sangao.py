@@ -5,7 +5,7 @@ import json
 import logging
 log = logging.getLogger('task')
 
-proxies = getattr(settings, 'DATA_PROXY')
+proxies = getattr(settings, 'DATA_PROXY', {})
 
 def getKeeperTrack(keeper,start,end):
      """
