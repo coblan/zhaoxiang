@@ -31,7 +31,7 @@ class Command(BaseCommand):
         startDate= str( today )
         tomorro = now+timedelta(days=1)
         endDate= str(tomorro.date())
-        log.info('today =' % today)
+        log.info('today = %s' % today)
         todayWorkGroup= WorkInspector.objects.get(date=today)
         
         keepers = list( todayWorkGroup.inspector.all() )
