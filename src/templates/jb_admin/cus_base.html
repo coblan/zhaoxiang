@@ -38,26 +38,26 @@
         // 出于尊重，我们不应该再打扰他们了
     }
 
-    crt_pk=9999999
-    poll(function(poll_next){
-        var post_data=[{fun:'get_warning_last_pk'}]
-        $.post('/d/ajax/dianzi_weilan',JSON.stringify(post_data),function(resp){
-            var pk = parseInt(resp.get_warning_last_pk)
-            if(crt_pk >= pk){
-                // 证明是第一次
-                crt_pk = pk
-                poll_next()
-            }else if( pk> crt_pk){
-
-                notifyMe('围栏告警', {
-                    body: '有新的围栏告警，请前往处理。'
-                });
-                if(user_msg.length==0){
-                    user_msg.push({url:'/pc/dianzi_weilan.warning',title:'有新的围栏告警，请前往处理。'})
-                }
-
-            }
-
-        })
-    },1000*20)
+//    crt_pk=9999999
+//    poll(function(poll_next){
+//        var post_data=[{fun:'get_warning_last_pk'}]
+//        $.post('/d/ajax/dianzi_weilan',JSON.stringify(post_data),function(resp){
+//            var pk = parseInt(resp.get_warning_last_pk)
+//            if(crt_pk >= pk){
+//                // 证明是第一次
+//                crt_pk = pk
+//                poll_next()
+//            }else if( pk> crt_pk){
+//
+//                notifyMe('围栏告警', {
+//                    body: '有新的围栏告警，请前往处理。'
+//                });
+//                if(user_msg.length==0){
+//                    user_msg.push({url:'/pc/dianzi_weilan.warning',title:'有新的围栏告警，请前往处理。'})
+//                }
+//
+//            }
+//
+//        })
+//    },1000*20)
 </script>
