@@ -37,6 +37,7 @@ class Command(BaseCommand):
         log.info('数据日期为：%s' % day)
         
         now = day
+        checkDay = day
         today = now.date()
         startDate= today.strftime('%Y%m%d00')
         tomorro = now+timedelta(days=1)
@@ -61,7 +62,7 @@ class Command(BaseCommand):
                                     'pos': pos,})
                 
                 posList = removeInvalidPos(keeper, posList)
-                noPosCheck(keeper,posList)
+                noPosCheck(keeper,posList, checkDay)
                 outBoxCheck(keeper, posList)
         except WorkInspector.DoesNotExist:
             log.info('未设置工作组')

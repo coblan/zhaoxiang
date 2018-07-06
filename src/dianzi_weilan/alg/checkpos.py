@@ -12,18 +12,15 @@ def removeInvalidPos(keeper, posList):
     leftPos = [x for x in posList if isInWorktime( x.get('tracktime'), worktimes )]
     return leftPos
 
-def noPosCheck(keeper,posList):
+def noPosCheck(keeper,posList, checkDay):
     """
     检查工作时间内，没有数据的点
     """
-    if not posList:
-        return
-    mainTime = posList[0].get('tracktime')
     worktimes = inspectorWorkTime(keeper)
     for worktime in worktimes:
         working = True
         lastWarning = None
-        for timePoint in splitTime(worktime, mainTime):
+        for timePoint in splitTime(worktime, checkDay):
             if working != hasTrackNearTime(timePoint, posList):
                 if working:
                     lastWarning = OutBlockWarning.objects.create(inspector= keeper,reason= '没有坐标点', start_time = timePoint)
