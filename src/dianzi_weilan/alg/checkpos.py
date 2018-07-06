@@ -46,7 +46,8 @@ def outBoxCheck(keeper,posList):
         #pos = Point(float(x),float(y))
         pos = posdc.get('pos')
         timePoint = posdc.get('tracktime')
-        if working != in_the_block(pos, keeper):
+        weilanBox =  inspectorWeilan(keeper)
+        if working != in_the_block(pos, weilanBox):
             if working:
                 lastWarning = OutBlockWarning.objects.create(inspector= keeper,reason= '跑出围栏', start_time = timePoint)
                 working = False
@@ -71,11 +72,12 @@ def inspectorWorkTime(keeper):
         ls.extend( get_value('work_time','8:30-12:30;14:00-18:00').split(';') )
     return ls
 
-def in_the_block(pos,inspector):
+def in_the_block(pos,weilanBox):
     out_blocks=[]
-    for group in inspector.inspectorgrop_set.filter(kind = 1):
-        for rel in group.inspectorgroupandweilanrel_set.all():
-            polygon = rel.block.bounding
+    #for group in inspector.inspectorgrop_set.filter(kind = 1):
+        #for rel in group.inspectorgroupandweilanrel_set.all():
+            #polygon = rel.block.bounding
+    for polygon in  weilanBox:
             # 经纬度坐标之distance*100大致等于公里数。因为不准确性的存在，warning_distance是按照公里数来判断的。
             if pos.distance(polygon)*100< float( get_value('warning_distance','0.3') ):
                 return True
@@ -87,6 +89,18 @@ def in_the_block(pos,inspector):
     else:
         return False
 
+def inspectorWeilan(inspector): 
+    ls = []
+    for group in inspector.inspectorgrop_set.filter(kind = 1):
+        for rel in group.inspectorgroupandweilanrel_set.all():
+            polygon = rel.block.bounding
+            ls.append(polygon)
+    return ls
+            ## 经纬度坐标之distance*100大致等于公里数。因为不准确性的存在，warning_distance是按照公里数来判断的。
+            #if pos.distance(polygon)*100< float( get_value('warning_distance','0.3') ):
+                #return True
+            #else:
+                #out_blocks.append(polygon)
 
 def splitTime(timeSpan, mainTime = None): 
     """
