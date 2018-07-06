@@ -40,13 +40,13 @@ def outBoxCheck(keeper,posList):
     @posList:
     """
     working = True
+    weilanBox =  inspectorWeilan(keeper)
     for posdc in posList:
         # 不在围栏内，需要报警
         #x,y=cordToloc(pos.get('coordx'),pos.get('coordy'))
         #pos = Point(float(x),float(y))
         pos = posdc.get('pos')
         timePoint = posdc.get('tracktime')
-        weilanBox =  inspectorWeilan(keeper)
         if working != in_the_block(pos, weilanBox):
             if working:
                 lastWarning = OutBlockWarning.objects.create(inspector= keeper,reason= '跑出围栏', start_time = timePoint)
