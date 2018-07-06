@@ -87,7 +87,11 @@ def getKeeperTrack(keeper,start,end):
      rtDict = xmltodict.parse(rt.text)
      content = rtDict['soap:Envelope']['soap:Body']['SelectResponse']['SelectResult']
      contentDict = xmltodict.parse(content)
-     ll = contentDict['Result']['Rows']['Row']
+     rows = contentDict['Result']['Rows']
+     if rows:
+          ll = rows['Row']
+     else:
+          ll = []
      out = []
      for track in ll:
           tracktime = datetime.strptime(track.get('TTIME'), '%Y/%m/%d %H:%M:%S')

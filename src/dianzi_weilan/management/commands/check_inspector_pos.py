@@ -55,6 +55,8 @@ class Command(BaseCommand):
                 outBoxCheck(keeper, posList)
         except WorkInspector.DoesNotExist:
             log.info('未设置工作组')
+        except Exception as e:
+            log.error(str(e))
         
         log.info('检查监督员完成')
                        
