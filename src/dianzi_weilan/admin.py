@@ -211,7 +211,8 @@ class OutBlockWaringPage(TablePage):
                     return query
         class filters(RowFilter):
             names=['proc_status']
-            range_fields=[{'name':'create_time','type':'date'}]
+            range_fields = ['start_time']
+            #range_fields=[{'name':'create_time','type':'date'}]
 
 class OutBlockWarningFormPage(FieldsPage):
     class fieldCls(ModelFields):
