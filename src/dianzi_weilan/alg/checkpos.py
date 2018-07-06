@@ -16,11 +16,14 @@ def noPosCheck(keeper,posList):
     """
     检查工作时间内，没有数据的点
     """
+    if not posList:
+        return
+    mainTime = posList[0].get('tracktime')
     worktimes = inspectorWorkTime(keeper)
     for worktime in worktimes:
         working = True
         lastWarning = None
-        for timePoint in splitTime(worktime):
+        for timePoint in splitTime(worktime, mainTime):
             if working != hasTrackNearTime(timePoint, posList):
                 if working:
                     lastWarning = OutBlockWarning.objects.create(inspector= keeper,reason= '没有坐标点', start_time = timePoint)
@@ -58,7 +61,7 @@ def outBoxCheck(keeper,posList):
 
 def isInWorktime(tracktime, worktimes): 
     for worktime in worktimes:
-        lt, gt = [todayTime(x) for x in worktime.split('-')]
+        lt, gt = [todayTime(x, tracktime) for x in worktime.split('-')]
         if lt <= tracktime <= gt:
             return True
     return False
@@ -88,11 +91,12 @@ def in_the_block(pos,inspector):
         return False
 
 
-def splitTime(timeSpan): 
+def splitTime(timeSpan, mainTime = None): 
     """
     @timeSpan:8:30-12:30
     """
-    start, end = [todayTime(x) for x in timeSpan.split('-')]
+    mainTime = mainTime or datetime.now()
+    start, end = [todayTime(x, mainTime) for x in timeSpan.split('-')]
     
     start += timedelta(minutes = 15)
     while start < end:
@@ -100,10 +104,11 @@ def splitTime(timeSpan):
         start += timedelta(minutes = 15)
     
 
-def todayTime(timeStr): 
+def todayTime(timeStr, mainTime = None): 
+    if not mainTime:
+        mainTime =  datetime.now()
     nn = datetime.strptime(timeStr, '%H:%M')
-    now = datetime.now()
-    tm = now.replace(hour = nn.hour, minute = nn.minute)
+    tm = mainTime.replace(hour = nn.hour, minute = nn.minute)
     return tm
 
 def hasTrackNearTime(timePoint, posList): 
