@@ -41,14 +41,21 @@ LOGGING = {
             'level':'DEBUG',
             'class': 'logging.StreamHandler',
             'stream': sys.stdout
-               },        
+            },  
+        'djangoout':{
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 1024*1024*5,
+            'backupCount':3,
+            'formatter':'standard',
+            'filename': os.path.join(LOG_PATH,'django.log'),            
+            },         
     },
     'loggers': {
-        #'django.request': {
-            #'handlers': ['tofile'],
-            #'level': 'DEBUG',
-            #'propagate': True,
-        #},
+        'django': {
+            'handlers': ['console', 'djangoout', 'mail_admins'],
+            'level': 'INFO',
+            },        
         'case': {
             'handlers': ['caseFile'],
             'level': 'DEBUG',

@@ -22,11 +22,21 @@ class Command(BaseCommand):
     """
     检查监督员的位置，判断其是否出界
     """
+    def add_arguments(self, parser):
+        parser.add_argument('d', nargs='?',)
+        
     def handle(self, *args, **options):
         log.info('-'*30)
         log.info('开始检查监督员坐标')
         
-        now = datetime.now()
+        day = options.get('d')
+        if not day:
+            day = datetime.now()
+        else:
+            day = datetime.strptime(day, '%Y-%m-%d')
+        log.info('数据日期为：%s' % day)
+        
+        now = day
         today = now.date()
         startDate= today.strftime('%Y%m%d00')
         tomorro = now+timedelta(days=1)
