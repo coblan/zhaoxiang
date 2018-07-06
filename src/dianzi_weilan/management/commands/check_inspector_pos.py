@@ -60,9 +60,12 @@ class Command(BaseCommand):
                     pos = Point(float(x),float(y))    
                     posList.append({'tracktime': datetime.strptime( track.get('tracktime'), '%Y-%m-%d %H:%M:%S' ),
                                     'pos': pos,})
-                
+                    
+                log.info('开始去除无效轨迹点')
                 posList = removeInvalidPos(keeper, posList)
+                log.info('开始检查是否有工作时间内没有轨迹点的情况')
                 noPosCheck(keeper,posList, checkDay)
+                log.info('开始检查轨迹点是否跑到围栏外')
                 outBoxCheck(keeper, posList)
         except WorkInspector.DoesNotExist:
             log.info('未设置工作组')
