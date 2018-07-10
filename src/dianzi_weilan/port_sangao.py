@@ -75,13 +75,13 @@ def getKeeperTrack(keeper,start,end):
      <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
        <SOAP-ENV:Body>
          <tns:Select xmlns:tns="http://www.china-gis.com/gisshare/">
-           <tns:sql>select tb.keepersn as kno,tk.keepername as kname,tb.tracktime as ttime,tb.COORDX as tbx, tb.COORDY as tby,tk.keepertype as ktype FROM (select * FROM citygrid.T_KEEPERSTRACK PARTITION(P20180705) t WHERE t.keepersn = '%(keeper)s' AND (t.coordx &lt;&gt; 0 AND t.coordy &lt;&gt; 0) and (t.coordx &lt;&gt; -1 AND t.coordy &lt;&gt; -1) AND t.tracktime &gt;= to_date('%(start)s','YYYY-MM-DD HH24:MI:SS') AND t.tracktime &lt;= to_date('%(end)s','YYYY-MM-DD HH24:MI:SS')) tb left join citygrid.t_Keepersinfo tk on tb.keepersn = tk.keepersn order by tb.tracktime asc</tns:sql>
+           <tns:sql>select tb.keepersn as kno,tk.keepername as kname,tb.tracktime as ttime,tb.COORDX as tbx, tb.COORDY as tby,tk.keepertype as ktype FROM (select * FROM citygrid.T_KEEPERSTRACK PARTITION(P%(partition)s) t WHERE t.keepersn = '%(keeper)s' AND (t.coordx &lt;&gt; 0 AND t.coordy &lt;&gt; 0) and (t.coordx &lt;&gt; -1 AND t.coordy &lt;&gt; -1) AND t.tracktime &gt;= to_date('%(start)s','YYYY-MM-DD HH24:MI:SS') AND t.tracktime &lt;= to_date('%(end)s','YYYY-MM-DD HH24:MI:SS')) tb left join citygrid.t_Keepersinfo tk on tb.keepersn = tk.keepersn order by tb.tracktime asc</tns:sql>
            <tns:pageSize>0</tns:pageSize>
            <tns:pageIndex>0</tns:pageIndex>
          </tns:Select>
        </SOAP-ENV:Body>
      </SOAP-ENV:Envelope>
-     """% {'keeper': keeper, 'start':start , 'end': end,}
+     """% {'keeper': keeper,'partition':start[:-2], 'start':start , 'end': end,}
      
      rt = requests.post(url,data= query, headers = headers,proxies=proxies)
      rtDict = xmltodict.parse(rt.text)
