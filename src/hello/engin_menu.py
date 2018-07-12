@@ -15,20 +15,22 @@ class PcMenu(BaseEngine):
         {'label':'监督员','url':page('inspector.inspector'),'icon':fa('fa-user-secret'),
          'submenu':[
              {'label':'实时点位','url':page('inspector.inspector_map')},
-             {'label':'监督员名单','url':page('inspector.inspector')},
+             {'label':'监督员列表','url':page('inspector.inspector')},
              {'label':'监督员分组','url':page('inspector.inspectorgroup')}, 
-             {'label':'监督员工作组','url':page('inspectorWorkGroup')}
-             
+             {'label':'监督员排班','url':page('dianzi_weilan.workinspector')}, 
+            
+           
              ]},
         # {'label':'GIS区域','url':page('geoinfo.blockpolygon'),'icon':fa('fa-map-o')},
         #{'label':'区域编辑','url':page('geoscope.blockgroup'),'icon':fa('fa-map-o')},
-        {'label':'案件对比','url':page('case_cmp.duchacase'),'icon':fa('fa-search-minus')},
-        {'label':'电子围栏','icon':fa('fa-hand-stop-o'),
+        {'label':'案件对比','url':page('case_cmp.duchacase'),'icon':fa('fa-search')},
+        {'label':'电子围栏','icon':fa('fa-object-group'),
              'submenu':[
                     {'label':'围栏告警','url':page('dianzi_weilan.warning')},
                     #{'label':'围栏区域','url':page('dianzi_weilan.blockgroup')},
                     {'label':'围栏信息','url':page('dianzi_weilan.groupweilanrel')},
-                    {'label':'上班排单','url':page('dianzi_weilan.workinspector')}
+                     {'label':'告警时段组','url':page('inspectorWorkGroup')}, 
+                    #{'label':'上班排单','url':page('dianzi_weilan.workinspector')}
                     ]},           
         {'label':'重点区域','icon':fa('fa-key'),
              'submenu':[

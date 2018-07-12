@@ -1162,11 +1162,7 @@ var mix_fields_data = {
             ex.assign(this.row, new_row);
         },
         showErrors: function showErrors(errors) {
-            for (var k in errors) {
-                //var head = ex.findone(this.heads,{name:k})
-                $(this.$el).find('#id_' + k).trigger("showmsg", ["error", errors[k].join(';')]);
-                //str += head.label + ':' + errors[k] +'<br>'
-            }
+            // 落到 nice validator去
 
             //var str = ""
             //for(var k in errors){
@@ -1252,6 +1248,17 @@ var nice_validator = {
                 return 'continue';
             } else {
                 return 'break';
+            }
+        },
+        showErrors: function showErrors(errors) {
+            for (var k in errors) {
+                //var head = ex.findone(this.heads,{name:k})
+                var real_input = $(this.$el).find('.real-input');
+                if (real_input.length != 0) {
+                    real_input.trigger("showmsg", ["error", errors[k].join(';')]);
+                } else {
+                    $(this.$el).find('#id_' + k).trigger("showmsg", ["error", errors[k].join(';')]);
+                }
             }
         }
     }
