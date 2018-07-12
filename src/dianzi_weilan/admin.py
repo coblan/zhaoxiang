@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.contrib import admin
 from helpers.director.shortcut import page_dc,TablePage,FieldsPage,ModelTable,ModelFields,\
-     model_dc,RowSearch,RowFilter,director
+     model_dc,RowSearch,RowFilter,director,RowSort
 from geoscope.admin import BlockGroupTablePage,BlockGroupFormPage
 from geoscope.models import BlockGroup,BlockPolygon
 from .models import InspectorGroupAndWeilanRel,OutBlockWarning,WorkInspector
@@ -204,15 +204,28 @@ class OutBlockWaringPage(TablePage):
         
         class search(RowSearch):
             names=['inspector']
+            def get_context(self):
+                dc = super().get_context()
+                dc.update({
+                    'search_tip':'监督员姓名，编号'
+                })
+                return dc
+            
             def get_query(self,query):
-                if self.q:
-                    return query.filter(inspector__name__icontains=self.q)
-                else:
-                    return query
+                self.valid_name=['inspector__name','inspector__code']
+                return super().get_query(query)
+            
+                #if self.q:
+                    #return query.filter(inspector__name__icontains=self.q,inspector__code__icontains=self.q)
+                #else:
+                    #return query
         class filters(RowFilter):
             names=['proc_status']
             range_fields = ['start_time']
             #range_fields=[{'name':'create_time','type':'date'}]
+        
+        class sort(RowSort):
+            names=['start_time']
 
 class OutBlockWarningFormPage(FieldsPage):
     class fieldCls(ModelFields):
