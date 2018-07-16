@@ -2018,9 +2018,10 @@ Vue.component('com-table-operations', operations);
 "use strict";
 
 
+//
 var picture = {
     props: ['rowData', 'field', 'index'],
-    template: '<span>\n        <img @load=\'loaded=true\' v-show=\'loaded\' @click="open()" :src="src" alt="" height="96px" style="cursor: pointer;">\n        </span>',
+    template: '<span>\n        <img @load=\'loaded=true\' :style="cusStyle"  @click="open()" :src="src" alt="" height="96px" style="cursor: pointer;">\n        </span>',
     data: function data() {
         return {
             loaded: false
@@ -2034,6 +2035,17 @@ var picture = {
     computed: {
         src: function src() {
             return this.rowData[this.field];
+        },
+        cusStyle: function cusStyle() {
+            if (!this.loaded) {
+                return {
+                    visibility: 'hidden'
+                };
+            } else {
+                return {
+                    visibility: 'visible'
+                };
+            }
         }
     },
     methods: {

@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.contrib import admin
 from helpers.director.shortcut import ModelTable,TablePage,page_dc,FieldsPage,ModelFields,model_dc,RowSort,RowFilter,RowSearch,has_permit,director
 from .models import Inspector,InspectorGrop, InspectorWorkGroup
+from helpers.maintenance.update_static_timestamp import js_stamp
 # Register your models here.
 
 class InspectorPage(TablePage):
@@ -185,6 +186,7 @@ class InspectorMapPage(TablePage):
     tableCls=InspectorTable
 
 class InspectorWorkGroupPage(InspectorGroupPage):
+    extra_js=['/static/js/inspector.pack.js?t=%s'%js_stamp.inspector_pack_js]
     class tableCls(InspectorGroupPage.tableCls):
         model = InspectorWorkGroup
 
@@ -192,6 +194,10 @@ class InspectorWorkGroupForm(ModelFields):
     class Meta:
         model = InspectorWorkGroup
         exclude = []
+    def dict_head(self, head):
+        if head['name']=='work_time':
+            head['fv_rule']='work_time;'
+        return head
         
 
 
