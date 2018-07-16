@@ -138,9 +138,9 @@ class BlockGroupFormPage(TabPage):
                 model=BlockGroup
                 exclude=['blocks'] 
             
-            def get_heads(self):
-                heads = ModelFields.get_heads(self)
-                return [x  for x in heads if x['name'] !='belong']
+            #def get_heads(self):
+                #heads = ModelFields.get_heads(self)
+                #return [x  for x in heads if x['name'] !='belong']
            
                     
         fieldsCls=BlockGroupForm
