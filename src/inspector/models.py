@@ -14,7 +14,7 @@ GEN=(
 
 class Inspector(models.Model):
     name=models.CharField('姓名',max_length=50,blank=False)
-    code=models.CharField('编号',max_length=50,blank=True)
+    code=models.CharField('编号',max_length=50,blank=True, unique=True)
     gen=models.CharField('性别',max_length=30,choices=GEN,blank=True)
     # scope=models.ManyToManyField(BlockPolygon,verbose_name='工作区域',blank=True)
     PDA=models.CharField('PDA号码',max_length=100,blank=True)

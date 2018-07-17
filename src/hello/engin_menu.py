@@ -18,6 +18,7 @@ class PcMenu(BaseEngine):
              {'label':'监督员列表','url':page('inspector.inspector')},
              {'label':'监督员分组','url':page('inspector.inspectorgroup')}, 
              {'label':'监督员排班','url':page('dianzi_weilan.workinspector')}, 
+            {'label':'监督员统计','url':page('keeper.caseStatic')}, 
             
            
              ]},

@@ -21,6 +21,8 @@ if getattr(settings,'DEV_STATUS',None)=='dev':
 class Command(BaseCommand):
     """
     检查监督员的位置，判断其是否出界
+    python manage.py jiandu_case
+    python manage.py jiandu_case -s 2018-04-01 -e 2018-05-01
     """
     def add_arguments(self, parser):
         #parser.add_argument('mintime', nargs='?',)
@@ -79,26 +81,17 @@ class Command(BaseCommand):
                 'litclass':row['scname'],
                 'addr':row['address'],
                 'loc':Point(x=loc_x,y=loc_y),
+                'org_code': json.dumps(row),
+                'infotypeid': row['infotypeid'],
+                'status': row['status'],
+                'keepersn': row['keepersn'],
+                'description': row['description'],
+                'deptcode': row['deptcode'],
+                'executedeptcode': row['executedeptcode'],
             }            
-            #ls.append(JianduCase(**def_data))
+            log.info(row['taskid'])
             obj, created = JianduCase.objects.update_or_create(taskid = row['taskid'], defaults = def_data)
             if created:
                 created_count += 1
-            #taskid=row[2]
-            #obj , _ = JianduCase.objects.get_or_create(taskid=taskid)
-            #obj.subtime=row[4]
-            #obj.bigclass = row[6]
-            #obj.litclass=row[7]
-            #obj.addr=row[10]
-        
-            #x,y = row[-1].split(',')
-            #loc_x,loc_y = cord2loc(float( x ),float( y ))
-            #obj.loc=Point(x=loc_x,y=loc_y)
-            
-            #obj.org_code = json.dumps(row)
-            #obj.save()
-            
-            #print(obj.taskid,obj.subtime)
-        
-        #JianduCase.objects.bulk_create(ls)
+    
         log.info('监督员按键抓取完成，总共抓取了 %s ,新建了 %s ' % (count, created_count) )

@@ -57,12 +57,12 @@ LOGGING = {
             'level': 'INFO',
             },        
         'case': {
-            'handlers': ['caseFile'],
+            'handlers': ['caseFile', 'console'],
             'level': 'DEBUG',
             'propagate': True,            
             },
         'task':{
-            'handlers': ['rotfile'],
+            'handlers': ['rotfile', 'console'],
             'level': 'DEBUG',
             'propagate': True,            
         },

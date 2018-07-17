@@ -5,6 +5,7 @@ from django.contrib import admin
 from helpers.director.shortcut import ModelTable,TablePage,page_dc,FieldsPage,ModelFields,model_dc,RowSort,RowFilter,RowSearch,has_permit,director
 from .models import Inspector,InspectorGrop, InspectorWorkGroup
 from helpers.maintenance.update_static_timestamp import js_stamp
+from . import admin_static
 # Register your models here.
 
 class InspectorPage(TablePage):
