@@ -157,9 +157,9 @@ class BlockGroupFormPage(TabPage):
           {'name':'blockgroup_map','label':'地图编辑','page_cls':BlockGroupFormPage_map}
           ]
     
-    def __init__(self, request):
+    def __init__(self, request, engin):
         self.pk = request.GET.get('pk')
-        super(BlockGroupFormPage,self).__init__(request)
+        super(BlockGroupFormPage,self).__init__(request, engin)
         
     
     def get_tabs(self):
