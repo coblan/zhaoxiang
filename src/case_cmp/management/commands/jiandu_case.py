@@ -74,6 +74,7 @@ class Command(BaseCommand):
                 #return
             loc_x,loc_y = cord2loc(float( row.get('coordx') ),float( row.get('coordy') ))
             
+            keeper = row['keepersn'] if  row['keepersn'] else None
             def_data={
                
                 'subtime':row['discovertime'],
@@ -84,7 +85,7 @@ class Command(BaseCommand):
                 'org_code': json.dumps(row),
                 'infotypeid': row['infotypeid'],
                 'status': row['status'],
-                'keepersn': row['keepersn'],
+                'keepersn_id': keeper,
                 'description': row['description'],
                 'deptcode': row['deptcode'],
                 'executedeptcode': row['executedeptcode'],
