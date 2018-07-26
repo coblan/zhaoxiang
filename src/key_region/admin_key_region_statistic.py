@@ -14,6 +14,9 @@ class KeyRegionStatic(TablePage):
         #fiel = ['loc', 'org_code', 'id']
         include = ['name']
         
+        #def __init__(self, _page=1, row_sort=[], row_filter={}, row_search='', crt_user=None, perpage=None, **kw): 
+            #page_dc
+        
         def getExtraHead(self): 
             return [
                  {'name': 'total','label': '案件数',}, 
