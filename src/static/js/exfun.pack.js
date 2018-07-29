@@ -1,41 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
+
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-/******/
+
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/
+
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-/******/
+
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-/******/
+
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
-/******/
+
+
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-/******/
+
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
+
 /******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
+
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -46,7 +46,7 @@
 /******/ 			});
 /******/ 		}
 /******/ 	};
-/******/
+
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -55,15 +55,15 @@
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-/******/
+
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
+
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/
+
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 85);
+/******/ 	return __webpack_require__(__webpack_require__.s = 88);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -141,7 +141,7 @@ var stylesInDom = {},
 		};
 	},
 	isOldIE = memoize(function() {
-		return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
+		return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
 	}),
 	getHeadElement = memoize(function () {
 		return document.head || document.getElementsByTagName("head")[0];
@@ -791,43 +791,43 @@ var old = exports.old = {
         return out_list;
     }
 
-    //function parseSearch(queryString) {
-    //    var queryString = queryString || location.search
-    //    if(queryString.startsWith('?')){
-    //        var queryString=queryString.substring(1)
-    //    }
-    //    var params = {}
-    //    // Split into key/value pairs
-    //    var queries = queryString.split("&");
-    //    // Convert the array of strings into an object
-    //    for (var i = 0; i < queries.length; i++ ) {
-    //        var mt = /([^=]+?)=(.+)/.exec(queries[i])
-    //        params[mt[1]] = mt[2];
-    //    }
-    //    return params;
-    //}
-    //function searchfy(obj,pre){
-    //    var outstr=pre||''
-    //    for(x in obj){
-    //        if(obj[x]){
-    //            outstr+=x.toString()+'='+ obj[x].toString()+'&';
-    //        }
-    //
-    //    }
-    //    if(outstr.endsWith('&')){
-    //        return outstr.slice(0,-1)
-    //    }else{
-    //        return outstr
-    //    }
-    //
-    //}
-    //function update(dst_obj,src_obj) {
-    //    for(x in src_obj){
-    //        dst_obj[x]=src_obj[x]
-    //    }
-    //}
-
 };
+
+//function parseSearch(queryString) {
+//    var queryString = queryString || location.search
+//    if(queryString.startsWith('?')){
+//        var queryString=queryString.substring(1)
+//    }
+//    var params = {}
+//    // Split into key/value pairs
+//    var queries = queryString.split("&");
+//    // Convert the array of strings into an object
+//    for (var i = 0; i < queries.length; i++ ) {
+//        var mt = /([^=]+?)=(.+)/.exec(queries[i])
+//        params[mt[1]] = mt[2];
+//    }
+//    return params;
+//}
+//function searchfy(obj,pre){
+//    var outstr=pre||''
+//    for(x in obj){
+//        if(obj[x]){
+//            outstr+=x.toString()+'='+ obj[x].toString()+'&';
+//        }
+//
+//    }
+//    if(outstr.endsWith('&')){
+//        return outstr.slice(0,-1)
+//    }else{
+//        return outstr
+//    }
+//
+//}
+//function update(dst_obj,src_obj) {
+//    for(x in src_obj){
+//        dst_obj[x]=src_obj[x]
+//    }
+//}
 
 /***/ }),
 
@@ -1069,7 +1069,8 @@ if (!window.atob) {
 "use strict";
 
 
-__webpack_require__(83);
+__webpack_require__(86);
+__webpack_require__(85);
 
 /***/ }),
 
@@ -1198,8 +1199,9 @@ var vuetool = exports.vuetool = {
         }
         for (var i = index - 1; i > -1; i--) {
             var mix = self.$options.mixins[i];
-            if (mix[name]) {
-                return mix.apply(self, args);
+            var methods = mix.methods[name];
+            if (methods) {
+                return methods.apply(self, args);
             }
         }
     },
@@ -1207,10 +1209,33 @@ var vuetool = exports.vuetool = {
         var rt = [];
         cusBroadCall(self, fun, kws, rt);
         return rt;
+    },
+    vueParCall: function vueParCall(self, fun, kws) {
+        var rt = [];
+        cusParCall(self, fun, kws, rt);
+        return rt;
+    },
+    vueExtend: function vueExtend(par, mixins) {
+        var real_par = $.extend({}, par);
+        var orgin_mixins = real_par.mixins;
+        delete real_par.mixins;
+        if (orgin_mixins) {
+            var list = orgin_mixins;
+        } else {
+            var list = [];
+        }
+        list.push(real_par);
+        list = list.concat(mixins);
+        var final_obj = list[list.length - 1];
+        final_obj.mixins = list.slice(0, list.length - 1);
+        return final_obj;
     }
 };
 
 function cusBroadCall(self, fun, kws, rt) {
+    if (!self.$children) {
+        return;
+    }
     for (var i = 0; i < self.$children.length; i++) {
         var child = self.$children[i];
         if (child[fun]) {
@@ -1219,10 +1244,43 @@ function cusBroadCall(self, fun, kws, rt) {
         cusBroadCall(child, fun, kws, rt);
     }
 }
+function cusParCall(self, fun, kws, rt) {
+    if (!self.$parent) {
+        return;
+    }
+    var par = self.$parent;
+    if (par[fun]) {
+        rt.push(par[fun](kws));
+    }
+    cusParCall(par, fun, kws, rt);
+
+    //for(var i =0;i<self.$parent.length;i++){
+    //    var par =self.$parent[i]
+    //    if(par[fun]){
+    //        rt.push(par[fun](kws))
+    //    }
+    //    cusParCall(par,fun,kws,rt)
+    //}
+}
 
 /***/ }),
 
-/***/ 67:
+/***/ 68:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".abs-full {\n  position: absolute;\n  bottom: 0;\n  top: 0;\n  left: 0;\n  right: 0; }\n\n.abs-middle {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%); }\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 69:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1280,41 +1338,17 @@ var code = exports.code = {
         var dc_str = lsl.join(';');
         return md5(dc_str);
     }
-    //hashCode: function (input){
-    //    var I64BIT_TABLE =
-    //        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-'.split('');
-    //    var hash = 5381;
-    //    var i = input.length - 1;
-    //
-    //    if(typeof input == 'string'){
-    //        for (; i > -1; i--)
-    //            hash += (hash << 5) + input.charCodeAt(i);
-    //    }
-    //    else{
-    //        for (; i > -1; i--)
-    //            hash += (hash << 5) + input[i];
-    //    }
-    //    var value = hash & 0x7FFFFFFF;
-    //
-    //    var retValue = '';
-    //    do{
-    //        retValue += I64BIT_TABLE[value & 0x3F];
-    //    }
-    //    while(value >>= 6);
-    //
-    //    return retValue;
-    //}
 };
 
 /***/ }),
 
-/***/ 83:
+/***/ 85:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(67);
+var content = __webpack_require__(68);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1323,8 +1357,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./text.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./text.scss");
+		module.hot.accept("!!./../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!./../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./pos_size.scss", function() {
+			var newContent = require("!!./../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!./../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./pos_size.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -1335,7 +1369,34 @@ if(false) {
 
 /***/ }),
 
-/***/ 85:
+/***/ 86:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(69);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!./../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!./../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./text.scss", function() {
+			var newContent = require("!!./../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!./../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./text.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 88:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1375,10 +1436,11 @@ var ex = {
             dst[key] = src[key];
         }
     }
+};
 
-    //import {md5} from  './md5.min'
+//import {md5} from  './md5.min'
 
-};ex.assign(ex, _old.old);
+ex.assign(ex, _old.old);
 ex.assign(ex, _network.network);
 ex.assign(ex, _urlparse.urlparse);
 ex.assign(ex, _collection.collection);
