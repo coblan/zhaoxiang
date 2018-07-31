@@ -82,7 +82,7 @@ class Command(BaseCommand):
                 'litclass':row['scname'],
                 'addr':row['address'],
                 'loc':Point(x=loc_x,y=loc_y),
-                'org_code': json.dumps(row),
+                'org_code': '' ,  #json.dumps(row), 现在不存储原始数据了，以后直接从三高系统里面刷新。
                 'infotypeid': row['infotypeid'],
                 'status': row['status'],
                 'keepersn_id': keeper,
