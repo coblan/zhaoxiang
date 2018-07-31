@@ -77,9 +77,13 @@ class KeyRegionStatic(TablePage):
             bujian = qq.aggregate(nums_bujian = Count(Case(When(infotypeid = 0, then= 1))), \
                                   nums_shijian = Count(Case(When(infotypeid = 1, then= 1))))          
             out.update(bujian)
+            if total == 0:
+                jie_ratio = '0'
+            else:
+                jie_ratio = '%s%%' % round(100.0 * jie_total / total, 2)
             out.update({
                  'total': total,
-                 'jie_ratio': '%s%%' % round(100.0 * jie_total / total, 2),
+                 'jie_ratio': jie_ratio,
             })
             
             return out

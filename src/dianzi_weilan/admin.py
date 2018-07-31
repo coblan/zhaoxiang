@@ -60,7 +60,7 @@ class GroupWeilanRel(TablePage):
             
             if head['name']=='groups':
                 head['editor']='com-table-array-mapper'
-                head['options']={g.pk:g.name for g in InspectorGrop.objects.filter(kind = 1)}
+                head['options']= [{'value': g.pk, 'label': g.name,}for g in InspectorGrop.objects.filter(kind = 1) ] #{g.pk:g.name for g in InspectorGrop.objects.filter(kind = 1)}
             if head['name']=='block':
                 head['show_label']={
                     'fun':'use_other_field',
@@ -277,7 +277,7 @@ class WorkinspectorPage(TablePage):
                 
             if head['name']=='inspector':
                 head['editor']='com-table-array-mapper'
-                head['options']={ins.pk:ins.name for ins in Inspector.objects.all()}
+                head['options']= [{'value': ins.pk, 'label':ins.name } for ins in Inspector.objects.all() ] #{ins.pk:ins.name for ins in Inspector.objects.all()}
             elif head['name']=='date':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name']='workinspector_form'                
