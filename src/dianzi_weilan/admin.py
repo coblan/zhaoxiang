@@ -42,8 +42,8 @@ class GroupWeilanRel(TablePage):
             heads.append({'name':'hight_region',
                           'label':'围栏区域',
                           'editor':'com-table-extraclick',
-                          'extra_label':'提示',
-                          'extra_fun':'hight_region',
+                          'label':'提示',
+                          'fun':'hight_region',
                           'width':60,
                           })
             return heads
@@ -83,13 +83,23 @@ class GroupWeilanRelFormPage(FieldsPage):
         class Meta:
             model=InspectorGroupAndWeilanRel
             exclude=[]
-        def dict_options(self):
-            blocks = BlockPolygon.objects.filter(blockgroup__belong='weilan').distinct()
-            groups = InspectorGrop.objects.all()
-            return {
-                'block':[{'value':x.pk,'label':x.name} for x in blocks],
-                'groups':[{'value':x.pk,'label':x.name} for x in groups],
-            }
+        
+        def dict_head(self, head): 
+            if head['name'] == 'block':
+                blocks = BlockPolygon.objects.filter(blockgroup__belong='weilan').distinct()
+                head['options'] = [{'value':x.pk,'label':x.name} for x in blocks]
+            if head['name'] == 'groups':
+                groups = InspectorGrop.objects.all()
+                head['groups'] = [{'value':x.pk,'label':x.name} for x in groups]
+            return head
+        
+        #def dict_options(self):
+            #blocks = BlockPolygon.objects.filter(blockgroup__belong='weilan').distinct()
+            #groups = InspectorGrop.objects.all()
+            #return {
+                #'block':[{'value':x.pk,'label':x.name} for x in blocks],
+                #'groups':[{'value':x.pk,'label':x.name} for x in groups],
+            #}
         
             # blocks = BlockPolygon.objects.filter(blockgroup__belong='weilan').distinct()
             # return {
