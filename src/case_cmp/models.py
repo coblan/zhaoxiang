@@ -27,8 +27,8 @@ class DuchaCase(models.Model):
 class JianduCase(models.Model):
     taskid=models.CharField('任务号',max_length=20,blank=True)
     subtime=models.CharField('发现时间',max_length=20,blank=True)
-    bigclass=models.CharField('大类',max_length=30,blank=True)
-    litclass=models.CharField('小类',max_length=30,blank=True)
+    bigclass=models.CharField('大类',max_length=60,blank=True)
+    litclass=models.CharField('小类',max_length=60,blank=True)
     addr=models.CharField('地址',max_length=500,blank=True)
     loc = models.PointField(verbose_name='经纬度',blank=True,null=True)
     org_code =models.TextField('原始抓取数据',blank=True)
