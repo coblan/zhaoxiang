@@ -1,4 +1,4 @@
-//require('./scss/com_field_select_work_inspector.scss')
+require('./scss/com_field_select_work_inspector.scss')
 
 var field_select_work_inspector =  {
     props:['row','head'],
@@ -19,7 +19,7 @@ var field_select_work_inspector =  {
                 <button @click="add_group()">添加</button>
             </div>
 
-            <div style="position: relative;width: 600px">
+            <div class="select-work-inspector"  style="position: relative;width: 600px">
                 <el-transfer
                 v-model="row[head.name]"
                 :titles="['可选人员', '已选人员']"
