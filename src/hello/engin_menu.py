@@ -28,7 +28,8 @@ class PcMenu(BaseEngine):
         {'label':'电子围栏','icon':fa('fa-object-group'),
              'submenu':[
                     {'label':'围栏告警','url':page('dianzi_weilan.warning')},
-                    #{'label':'围栏区域','url':page('dianzi_weilan.blockgroup')},
+                    {'label':'实时围栏告警','url':page('dianzi_weilan.realtime_warning')},
+
                     {'label':'围栏信息','url':page('dianzi_weilan.groupweilanrel')},
                      {'label':'告警时段组','url':page('inspectorWorkGroup')}, 
                     #{'label':'上班排单','url':page('dianzi_weilan.workinspector')}

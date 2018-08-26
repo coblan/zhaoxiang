@@ -12,6 +12,7 @@ from django.utils import timezone
 from .models import PROC_STATUS
 from inspector.models import Inspector
 from helpers.maintenance.update_static_timestamp import js_stamp
+from . import admin_warning_real_time
 
 # Register your models here.
 class Weilan(BlockGroupTablePage):

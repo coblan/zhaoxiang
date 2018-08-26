@@ -43,5 +43,20 @@ class WorkInspector(models.Model):
     
     def __unicode__(self):
         return '上班排单'
+
+
+class RealtimeWarning(models.Model):
+    inspector = models.ForeignKey(Inspector,verbose_name = '监察员')
+    create_time = models.DateTimeField(verbose_name='告警时间',auto_now_add=True)
+    manager=models.ForeignKey(User,verbose_name='处理人员',blank=True,null=True)
+    proc_time = models.DateTimeField(verbose_name='处理时间', auto_now=True)
+    proc_status = models.CharField('处理状态',max_length=30,choices=PROC_STATUS,default='unprocess')
+    proc_detail = models.TextField('处理结果',blank=True)
+    reason = models.CharField('警告原因',max_length=700,blank=True)
+    #start_time = models.DateTimeField(verbose_name='开始时间',blank=True,null=True)
+    #end_time = models.DateTimeField(verbose_name='结束时间',blank=True,null=True    )
+    
+    def __unicode__(self):
+        return "实时围栏告警 %s"% self.inspector 
     
     

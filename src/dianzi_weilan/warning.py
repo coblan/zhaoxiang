@@ -2,7 +2,9 @@
 from __future__ import unicode_literals
 from inspector.models import Inspector
 from django.contrib.gis.geos import Polygon,Point
-from .models import OutBlockWarning,WorkInspector
+
+from .models import WorkInspector,RealtimeWarning  #OutBlockWarning,
+
 from django.utils.timezone import datetime,make_aware
 from helpers.director.kv import get_value
 from django.utils.timezone import datetime,localtime
@@ -35,6 +37,7 @@ def check_inspector(inspector):
         return make_warning(inspector,'跑出了电子围栏')
     
     log.info('%s 没有警告' % inspector)
+    return True
 
 def block_list(inspector):
     for group in inspector.inspectorgrop_set.all():
@@ -61,13 +64,14 @@ def in_the_block(pos,inspector):
 def has_warning(inspector):
     today=datetime.today()
     today = make_aware( today.replace(hour=0,minute=0) )
-    if OutBlockWarning.objects.filter(inspector=inspector,create_time__gt=today,proc_status='unprocess')\
+    if RealtimeWarning.objects.filter(inspector=inspector,create_time__gt=today,proc_status='unprocess')\
         .exists():
         return True
     return False
 
 def make_warning(inspector,reason):
-    OutBlockWarning.objects.create(inspector=inspector,reason=reason)
+    RealtimeWarning.objects.create(inspector=inspector,reason=reason)
+    return False
 
 
 

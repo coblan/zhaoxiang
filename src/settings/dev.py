@@ -24,6 +24,9 @@ SANGO_BRIDGE='http://12.110.185.17:8499'
 #SANGO_BRIDGE='http://10.235.80.249:8000'
 
 DEV_STATUS='dev'
+RABBIT_SERVER = 'localhost'
+RABBIT_USER='guest'
+RABBIT_PSWD='guest'
 
 GDAL_LIBRARY_PATH = r'C:\Program Files\GDAL\gdal202'
 #GDAL_LIBRARY_PATH = r'C:\Program Files (x86)\GDAL\gdal202'

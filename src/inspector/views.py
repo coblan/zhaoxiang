@@ -19,3 +19,8 @@ def inspector_case(request,code):
             case_list.append(row)
 
     return render(request,'inspector/case.html',context={'case_list':case_list})
+
+
+
+def rab_websock(request):
+    return render(request,'inspector/rab_websock.html')

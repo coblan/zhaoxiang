@@ -25,7 +25,7 @@ from hello.engin_menu import PcMenu,ProgramerMenu
 from helpers.director import views as director_views
 #from helpers.face import urls as face_urls
 from helpers.authuser import urls as authuser_urls
-from inspector.views import inspector_case
+from inspector.views import inspector_case,rab_websock
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -46,7 +46,9 @@ urlpatterns = [
     
     url(r'^$',RedirectView.as_view(url='/pc/inspector.inspector')),
     
-    url('^inspector_case/(?P<code>\w+)/?$',inspector_case)
+    url('^inspector_case/(?P<code>\w+)/?$',inspector_case),
+    
+    url(r'rab_websock/',rab_websock,name='rab_websock'),
 ]
 
 
