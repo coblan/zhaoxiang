@@ -27,7 +27,7 @@ class PcMenu(BaseEngine):
         {'label':'案件对比','url':page('case_cmp.duchacase'),'icon':fa('fa-search')},
         {'label':'电子围栏','icon':fa('fa-object-group'),
              'submenu':[
-                    {'label':'围栏告警','url':page('dianzi_weilan.warning')},
+                    #{'label':'围栏告警','url':page('dianzi_weilan.warning')},
                     {'label':'实时围栏告警','url':page('dianzi_weilan.realtime_warning')},
 
                     {'label':'围栏信息','url':page('dianzi_weilan.groupweilanrel')},
