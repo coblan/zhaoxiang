@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from helpers.director.shortcut import page_dc
 from helpers.director.engine import BaseEngine,page,fa
-
+from django.conf import settings
 from helpers.maintenance.update_static_timestamp import js_stamp
 
 class PcMenu(BaseEngine):
@@ -51,6 +51,11 @@ class PcMenu(BaseEngine):
             ctx['table_fun_config'] ={
                 'detail_link': '详情', #'<i class="fa fa-info-circle" aria-hidden="true" title="查看详情"></i>'#,
             }
+        ctx['rabbit'] = {
+            'url': settings.RABBIT_SERVER,
+            'user': settings.RABBIT_USER,
+            'pswd': settings.RABBIT_PSWD,
+        }
         return ctx      
 
 PcMenu.add_pages(page_dc)

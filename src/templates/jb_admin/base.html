@@ -98,7 +98,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
         // Stomp.js boilerplate
-        var client = Stomp.client('ws://' + window.location.hostname + ':15674/ws');
+        var client = Stomp.client('ws://' + rabbit.url + ':15674/ws');
 //        client.debug = pipe('#second');
 
 //        var print_first = pipe('#first', function(data) {
@@ -120,12 +120,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
             console.log('error');
 
             setTimeout(function(){
-                client = Stomp.client('ws://' + window.location.hostname + ':15674/ws');
-                client.connect('guest', 'guest', on_connect, on_error, '/');
+                client = Stomp.client('ws://' + rabbit.url + ':15674/ws');
+                client.connect(rabbit.user, rabbit.pswd, on_connect, on_error, '/');
             },10000)
 
         };
-        client.connect('guest', 'guest', on_connect, on_error, '/');
+        client.connect(rabbit.user, rabbit.pswd, on_connect, on_error, '/');
 
 
     </script>
@@ -180,6 +180,7 @@ desired effect
     js_config = {{js_config | jsonify}}
     ex.assign(cfg.tr,js_config.tr)
     cfg.js_lib = js_config.js_lib
+    rabbit={{ rabbit | jsonify }}
 
     $(function(){
 
@@ -297,52 +298,6 @@ desired effect
                     <component :is="widget.editor" :ctx="widget" v-for="widget in header_bar_widgets">
 
                     </component>
-                    <!-- User Account Menu -->
-                    <!--<li class="dropdown user user-menu">-->
-                    <!--&lt;!&ndash; Menu Toggle Button &ndash;&gt;-->
-                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">-->
-                    <!--&lt;!&ndash; The user image in the navbar&ndash;&gt;-->
-                    <!--&lt;!&ndash;<img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">&ndash;&gt;-->
-                    <!--<i class="fa fa-user-circle-o"></i>-->
-
-                    <!--&lt;!&ndash; hidden-xs hides the username on small devices so only the image appears. &ndash;&gt;-->
-                    <!--<span class="hidden-xs" v-text="user.first_name || user.username">-->
-                    <!--</span>-->
-                    <!--</a>-->
-                    <!--<ul class="dropdown-menu">-->
-                    <!--&lt;!&ndash; The user image in the menu &ndash;&gt;-->
-                    <!--<li class="user-header" style="font-size: 3em;">-->
-                    <!--&lt;!&ndash;<img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">&ndash;&gt;-->
-                    <!--<i class="fa fa-user-circle-o fa-lg"></i>-->
-                    <!--<p v-text="user.first_name || user.username">-->
-                    <!--</p>-->
-                    <!--</li>-->
-                    <!--&lt;!&ndash; Menu Body &ndash;&gt;-->
-                    <!--&lt;!&ndash;<li class="user-body">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<div class="col-xs-4 text-center">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<a href="#">Followers</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<div class="col-xs-4 text-center">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<a href="#">Sales</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<div class="col-xs-4 text-center">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<a href="#">Friends</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;&lt;!&ndash; /.row &ndash;&gt;&ndash;&gt;-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                    <!--&lt;!&ndash; Menu Footer&ndash;&gt;-->
-                    <!--<li class="user-footer">-->
-                    <!--<div class="pull-left">-->
-                    <!--<a href="/accounts/pswd" class="btn btn-default btn-flat" v-text="tr.change_password"></a>-->
-                    <!--</div>-->
-                    <!--<div class="pull-right">-->
-                    <!--<a href="/accounts/logout" class="btn btn-default btn-flat" v-text="tr.logout"></a>-->
-                    <!--</div>-->
-                    <!--</li>-->
-                    <!--</ul>-->
-                    <!--</li>-->
 
                     <!-- Control Sidebar Toggle Button -->
                     {% if fast_config_panel %}
@@ -409,19 +364,7 @@ desired effect
                     </ul>
                 </li>
 
-                <!--<li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>-->
-                <!--<li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>-->
-                <!--<li class="treeview">-->
-                <!--<a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>-->
-                <!--<span class="pull-right-container">-->
-                <!--<i class="fa fa-angle-left pull-right"></i>-->
-                <!--</span>-->
-                <!--</a>-->
-                <!--<ul class="treeview-menu">-->
-                <!--<li><a href="#">Link in level 2</a></li>-->
-                <!--<li><a href="#">Link in level 2</a></li>-->
-                <!--</ul>-->
-                <!--</li>-->
+
             </ul>
             <!-- /.sidebar-menu -->
         </section>
@@ -438,43 +381,9 @@ desired effect
             {% endblock %}
 
         </section>
-        <!--<div id='content' class="flex-grow">-->
 
-        <!--</div>-->
-
-        <!--&lt;!&ndash; Content Header (Page header) &ndash;&gt;-->
-        <!--<section class="content-header">-->
-        <!--<h1>-->
-        <!--Page Header-->
-        <!--<small>Optional description</small>-->
-        <!--</h1>-->
-        <!--<ol class="breadcrumb">-->
-        <!--<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>-->
-        <!--<li class="active">Here</li>-->
-        <!--</ol>-->
-        <!--</section>-->
-
-        <!--&lt;!&ndash; Main content &ndash;&gt;-->
-        <!--<section class="content container-fluid">-->
-
-        <!--&lt;!&ndash;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
-        <!--| Your Page Content Here |-->
-        <!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
-
-        <!--</section>-->
         <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
-
-    <!-- Main Footer -->
-    <!--<footer class="main-footer">-->
-    <!--&lt;!&ndash; To the right &ndash;&gt;-->
-    <!--<div class="pull-right hidden-xs">-->
-    <!--Anything you want-->
-    <!--</div>-->
-    <!--&lt;!&ndash; Default to the left &ndash;&gt;-->
-    <!--<strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.-->
-    <!--</footer>-->
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
