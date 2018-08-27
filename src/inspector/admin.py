@@ -127,6 +127,7 @@ class InspectorGroupPage(TablePage):
             if head['name']=='inspector':
                 head['editor']='com-table-array-mapper'
                 head['options']= [{'value': opt.pk, 'label': opt.name,} for opt in Inspector.objects.all()] #{opt.pk:opt.name for opt in Inspector.objects.all()}
+        
             return head
         
         class search(RowSearch):
