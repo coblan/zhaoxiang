@@ -67,6 +67,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="http://localhost:15670/web-stomp-examples/stomp.js"></script>
     <!--<link href="https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">-->
     <script>
+    rabbit={{ rabbit | jsonify }}
+    
         (function(){
             document.onreadystatechange = function(){
                 NProgress.configure({ showSpinner: false });
@@ -181,7 +183,7 @@ desired effect
     js_config = {{js_config | jsonify}}
     ex.assign(cfg.tr,js_config.tr)
     cfg.js_lib = js_config.js_lib
-    rabbit={{ rabbit | jsonify }}
+    
 
     $(function(){
 
