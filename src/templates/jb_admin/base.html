@@ -66,7 +66,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!--<link href="https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">-->
     <script>
-    rabbit={{ rabbit | jsonify }}
+   
     
         (function(){
             document.onreadystatechange = function(){
@@ -97,7 +97,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 sessionStorage.removeItem("sidebar-collapse");
             }
         }
-
+        
+        
+         rabbit={{ rabbit | jsonify }}
 
         // Stomp.js boilerplate
         var client = Stomp.client('ws://' + rabbit.url + ':15674/ws');
