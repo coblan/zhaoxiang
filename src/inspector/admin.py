@@ -15,7 +15,7 @@ class InspectorPage(TablePage):
     def get_label(self, prefer=None):
         return '监督员名单'
     
-    class InspectorTable(ModelTable):
+    class tableCls(ModelTable):
         model=Inspector
         exclude=['id']
         pop_edit_field='name'
@@ -76,8 +76,7 @@ class InspectorPage(TablePage):
             # return {
                 # 'scope': ','.join([unicode(x) for x in inst.scope.all()])
             # }
-        
-    tableCls=InspectorTable
+
     
 
 
