@@ -10,7 +10,7 @@ class RealTimeWaringPage(TablePage):
     class tableCls(ModelTable):
         model=RealtimeWarning
         exclude=['id']
-        fields_sort=['inspector','code','proc_status','proc_detail','reason','manager','start_time', 'end_time']
+        fields_sort=['inspector','code','proc_status','proc_detail','reason','manager','create_time']
         #pop_edit_field='inspector'
         def dict_row(self, inst):
             return {
