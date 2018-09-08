@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'key_region',
     'dianzi_weilan',
     'case_cmp',
+    'report'
 ]
 
 MIDDLEWARE_CLASSES = [

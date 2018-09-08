@@ -38,7 +38,11 @@ class PcMenu(BaseEngine):
              'submenu':[
                  {'label':'重点巡查区域','url':page('key_region.forcast')},
                  {'label':'重点案件统计','url':page('keyregion.caseStatistic')},
-                 
+                 ]},
+        {'label':'统计报表','icon':fa('fa-key'),
+             'submenu':[
+                 {'label':'热线报表','url':page('hotline_report')},
+        
                  ]},
         #{'label':'参数设置','url':page('kv'),'icon':fa('fa-map-o')},
         
