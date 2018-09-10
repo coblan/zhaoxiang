@@ -626,6 +626,7 @@ var baseInput = exports.baseInput = {
         }
     },
     date: {
+        // 被 com-field-date 替代
         props: ['row', 'head'],
         template: '<div><span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n                                <date v-else v-model="row[head.name]" :id="\'id_\'+head.name"\n                                    :placeholder="head.placeholder"></date>\n                               </div>'
     },
@@ -819,6 +820,10 @@ var field_single_chosen = _interopRequireWildcard(_field_single_chosen);
 var _field_select = __webpack_require__(36);
 
 var field_select = _interopRequireWildcard(_field_select);
+
+var _field_date = __webpack_require__(101);
+
+var field_date = _interopRequireWildcard(_field_date);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -3877,24 +3882,28 @@ var _filter_search_select = __webpack_require__(48);
 
 var filter_search_select = _interopRequireWildcard(_filter_search_select);
 
+var _filter_date = __webpack_require__(102);
+
+var filter_date = _interopRequireWildcard(_filter_date);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(91); /**
-                                      >5>front/table.rst>
-                                     
-                                      table的过滤器
-                                      ============
-                                      ::
-                                     
-                                      class SalaryFilter(RowFilter):
-                                      names=['is_checked']
-                                      range_fields=[{'name':'month','type':'month'}]
-                                      model=SalaryRecords
-                                     
-                                     
-                                      <-<
-                                      */
+/**
+ >5>front/table.rst>
 
+ table的过滤器
+ ============
+ ::
+
+ class SalaryFilter(RowFilter):
+ names=['is_checked']
+ range_fields=[{'name':'month','type':'month'}]
+ model=SalaryRecords
+
+
+ <-<
+ */
+__webpack_require__(91);
 
 Vue.component('com-filter', {
     props: ['heads', 'search_args'],
@@ -4697,6 +4706,34 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 __webpack_require__(19);
 __webpack_require__(18);
 __webpack_require__(20);
+
+/***/ }),
+/* 100 */,
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var field_date = {
+    props: ['row', 'head'],
+    template: '<div><span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n                                <date v-else v-model="row[head.name]" :id="\'id_\'+head.name"\n                                    :placeholder="head.placeholder"></date>\n                               </div>'
+};
+Vue.component('com-field-date', field_date);
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var com_date = {
+    props: ['head', 'search_args'],
+    template: '<com-field-date :head="head" :row="search_args"></com-field-date>\n    '
+};
+
+Vue.component('com-filter-date', com_date);
 
 /***/ })
 /******/ ]);

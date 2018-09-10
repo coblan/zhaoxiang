@@ -42,7 +42,7 @@ class PcMenu(BaseEngine):
         {'label':'统计报表','icon':fa('fa-key'),
              'submenu':[
                  {'label':'热线报表','url':page('hotline_report')},
-        
+                 {'label': '网格化报表', 'url': page('GridReport'),}
                  ]},
         #{'label':'参数设置','url':page('kv'),'icon':fa('fa-map-o')},
         

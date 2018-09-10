@@ -1,5 +1,5 @@
 from django.contrib import admin
-from helpers.director.shortcut import TablePage, SimTable, page_dc, director
+from helpers.director.shortcut import TablePage, SimTable, page_dc, director, RowFilter
 import requests
 from django.conf import settings
 import json
@@ -36,6 +36,45 @@ name_map = {
     '赵巷城管中队': '城管中队',
     '赵巷市场监督管理所': '市场监管所',
     '赵巷镇河长办': '河长办',
+}
+
+weixin = {
+    '北崧居委': ['任远青', '俞晓勍', '谭伟明', '江洁', '吴滢', '陶惠芬', '朱惠萍', '查莉蕾', '李洪喜', '胡卓琳', 
+                     '邹天宇', '陆伟峰', '史晓燕'],
+    '金葫芦二居': ['汪芳', '汪萍', '张丽华', '吕晶', '陆雅雅', '李欣薇'],
+    '大型社区': ['王佳伟', '沈旻欢', '翁剑锋', '朱健', '沈殷杰', '龚华', '曹斌', '毛斌康', '卫薛仁', '于澈', 
+                     '夏超', '殷天骄', '徐梦亮', '王舒平', '曹莲', '陆姚华', '张柳青', '俞晓勍', '施忆'],
+    '巷佳居委会': ['盛秀芳', '毛彩娟', '孙桂兰', '王秀萍', '吴宝娟', '谢玉芹', '徐宇', '闵广英', '陈建', '刘静', 
+                        '钱珏', '俞建红', '吴文英'],
+    '和睦村': ['陈超', '周雪清', '顾君涛', '徐忠伟', '王玲', '陈达军', '陆晓明', '周敏', '费建平', '徐国春', 
+                  '方联根', '范琼花', '顾梦佳'],
+    '金葫芦一居': ['李泽威', '吉丽华', '曹春阳', '王辉', '王国春', '沈秋芬', '周琛', '王雪林', '李芸', '陆蓓', 
+                        '孙海萍', '费凤娟', '瞿爱芳', ],
+    
+    '方夏村': ['冯叶鑫', '王嘉麟', '费洁', '方一彬', '刘丽', '宋磊', '陆燕', '钱漪青', '朱建萍', '龚平芳', '沈莺',
+                  '顾秋玲', '孟莉莉'],
+    '中步村': ['江万明', '蒋春奉', '姜根新', '伍福娟', '林方元', '邵红明', '王炳林', '伍永明', '陈强', '陈家栋', 
+                  '王礼', '伍莹楠', '蒋永峰', '赵扣红', '陶杰', '伍品权', '王惠民'],
+    '新镇居委': ['周荣明', '杨建华', '张丽娜', '李林芳', '周拥军', '毛永龙', '陆萍娟', '黄佳彬', 
+                        '叶敏', '吴义华', '潘星梅', '潘佩根', '吴雪芳'],
+    '崧泽村': ['徐东锋', '王健', '孙毅', '顾丽娜', '黄付弟', '校建华', '汪爱民', '张彩英', '朱兆崔', 
+                  '吴秋丰', '黄敏红', '刘绪娟', '丁章桂'],
+    '赵巷居委': ['曹春雷', '孙进锋', '汤晓琴', '周建军', '陈玉婷', '沈越', '卞圣芳', '姜金娣', '周惠兰',
+                        '费雪芳', '崔美芳', '唐九红', '李静'],
+}
+
+pda_map = {
+    '新镇居委': ['张永泉', '徐洁'],
+    '赵巷居委': ['俞凤雷', '汪建军'],
+    '崧泽村': ['周明', '徐卫东'],
+    '北崧居委': ['张彩军', '许雅俊'],
+    '沈泾塘村': ['范超群', '王坚'],
+    '和睦村': ['王陈佳', '瞿翠荣'],
+    '金葫芦一居': ['姜嗣杰', '杨豪杰'],
+    '金葫芦二居': ['崔文峰', '陈涛'],
+    '方夏村': ['张建峰', '唐晨'],
+    '中步村': ['万亮', '毛建林'],
+    '大型社区': ['毛伟强', '陈建华', '王伟'],
 }
 
 class Hotline(TablePage):
@@ -164,13 +203,100 @@ class Hotline(TablePage):
                 
             return out_list
             
+class GridReport(TablePage):
+    template = 'jb_admin/table.html'
+    def get_label(self): 
+        return '网格化统计'
+    
+    class tableCls(SimTable):
+        @classmethod
+        def clean_search_args(cls, search_args):
+            today = timezone.now()
+            def_crt = today.strftime('%Y-%m-%d')
+            search_args['data_time'] = search_args.get('data_time') or def_crt
+            return search_args  
+        
+        def get_heads(self): 
+            return [
+                {'name': 'three','label': '派件部门',}, 
+                {'name': 'count_all','label': '派件数',}, 
+                {'name': 'count_shi','label': '事件',}, 
+                {'name': 'count_bu','label': '部件',}, 
+                {'name': 'count_cun','label': '村居采集',}, 
+                {'name': 'count_wei','label': '微信上报',}, 
+                {'name': 'count_keeper','label': 'PDA上报',}, 
+            ]
+        
+        def get_operation(self): 
+            return [
+                {'fun': 'export_excel','editor': 'com-op-btn','label': '导出Excel','icon': 'fa-file-excel-o',}
+            ]          
+        
+        def get_rows(self): 
+            """
+            a1 [{'three': '北崧居委会', 'count_all': 2, 'count_bu': 2, 'count_shi': 0}
+            a2 [{'three': '崧泽村委会', 'count_cun': 15},
+            a3 [{'reporter': '孙桂兰', 'count_wei': 4},
+            a4 [{'upkeepername': '孙惠东', 'count_keeper': 34}
             
+            """
+            url = settings.SANGO_BRIDGE+'/rq'
+            data={
+                'fun':'zhaoxiang_grid_report',
+                'datestr': '2018-07-10',
+            }
+            
+            rt = requests.post(url,data=json.dumps(data), proxies = proxies)
+            dc = json.loads(rt.text)
+            row_dict = {}
+            
+            for row in dc.get('a1'):
+                row_dict[row.get('three')] = row
+            for row in dc.get('a2'):
+                name = row.get('three')
+                if name not in row_dict:
+                    row_dict[name] = row
+                else:
+                    row_dict[name].update(row)
+            
+            rows = [v for (k, v) in row_dict.items()]
+            
+            for row in rows:
+                row['three'] = name_map.get(row['three'], row['three'])
+                
+            report_dict = {}
+            for report in dc.get('a3'):
+                reporter_name = report['reporter'].replace(' ', '')
+                for k, v in weixin.items():
+                    if reporter_name in v:
+                        report_dict[k] = report_dict.get(k, 0) + report['count_wei']
+                        break
+            pda_dict = {}
+            for keeper in dc.get('a4'):
+                keeper_name = keeper['upkeepername'].replace(' ', '')
+                for k, v in pda_map.items():
+                    if keeper_name in v:
+                        pda_dict[k] = pda_dict.get(k, 0) + keeper['count_keeper']
+            
+            for row in rows:
+                row['count_wei'] = report_dict.get(row['three'], 0)
+                row['count_keeper'] = pda_dict.get(row['three'], 0)
+            return rows
+        
+        def getRowFilters(self): 
+            return [
+                {'name': 'data_time','label': '日期','editor': 'com-filter-date',}
+            ]
+        
+        
             
             
 director.update({
     'hotline_report': Hotline.tableCls,
+    'GridReport': GridReport.tableCls,
 })
 
 page_dc.update({
     'hotline_report': Hotline,
+    'GridReport': GridReport,
 })
