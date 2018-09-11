@@ -185,7 +185,7 @@ class Hotline(TablePage):
                 first_total = row.get('first_no', 0) + row.get('first_yes', 0)
                 first_total = first_total or 1
                 first_ratio = row.get('first_yes', 0) / first_total
-                row['first_score'] = 30.0 * row.get('first_ratio' , 0)
+                row['first_score'] = 30.0 * first_ratio
                 row['first_ratio'] = '%s%%' % round( first_ratio * 100)
                 
                 row['YuQiGongDan'] = 0
@@ -193,7 +193,7 @@ class Hotline(TablePage):
                 
                 row['solve_score'] = 20
                 manyi_total = row.get('man_yi_total', 0) * 1.0 or 1.0
-                row['man_yi_ratio'] = row.get('man_yi', 0) / manyi_total 
+                row['man_yi_ratio'] = float( row.get('man_yi', 0) )/ manyi_total 
                 row['man_yi_score'] = 40 * row.get('man_yi_ratio', 0)
                 row['total_score'] = row.get('shou_li_score') + row.get('first_score') + row.get('solve_score') + row.get('man_yi_score')
                 
