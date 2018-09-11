@@ -144,6 +144,8 @@ class Hotline(TablePage):
             """
             a1={'three': '崧泽村委会', 'shou_li': 9}, {'three': '综合协管大队', 'shou_li': 5}
             a2={'three': '崧泽村委会',  'first_yes': 3, 'first_no': 0, 'first_total': 3, 'first_ratio': 1.0, 'real_solve': 2, 'jie_solve': 6, 'total_solve': 8, 'real_solve_ratio': 0.25, 'jie_solve_ratio': 0.75, 'man_yi': 1.6, 'man_yi_total': 3, 'man_yi_ratio': 0.5333333333333333}
+            
+            a2={'THREE': '崧泽村委会', 'SOU_COUNT': 5, 'FIRST_YES': 2, 'FIRST_NO': 0, 'REAL_SOLVE': 1, 'JIE_SOLVE': 4, 'MAN_YI': Decimal('0.8'), 'MAN_YI_TOTAL': 2}
             """
             rt_dc = json.loads(rt.text)
             a1 = [{k.lower(): v for (k, v) in row.items() } for row in rt_dc['a1'] ]
@@ -179,19 +181,32 @@ class Hotline(TablePage):
             
             out_list = cun_list + other_list
             for row in out_list:
+                
+                first_total = row.get('first_no', 0) + row.get('first_yes', 0)
+                first_total = first_total or 1
+                first_ratio = row.get('first_yes', 0) / first_total
                 row['first_score'] = 30.0 * row.get('first_ratio' , 0)
-                row['first_ratio'] = '%s%%' % round( row.get('first_ratio', 0) * 100)
+                row['first_ratio'] = '%s%%' % round( first_ratio * 100)
                 
                 row['YuQiGongDan'] = 0
                 row['AnShiBanJie_ratio'] = '100%'
                 
                 row['solve_score'] = 20
+                manyi_total = row.get('man_yi_total', 0) * 1.0 or 1.0
+                row['man_yi_ratio'] = row.get('man_yi', 0) / manyi_total 
                 row['man_yi_score'] = 40 * row.get('man_yi_ratio', 0)
                 row['total_score'] = row.get('shou_li_score') + row.get('first_score') + row.get('solve_score') + row.get('man_yi_score')
                 
+                real_solve = row.get('real_solve', 0)
+                jie_solve = row.get('jie_solve', 0)
                 
-                row['real_solve_ratio'] = '%s%%' % round(row.get('real_solve_ratio', 0) * 100, 2)
-                row['jie_solve_ratio'] = '%s%%' % round(row.get('jie_solve_ratio', 0) * 100, 2)
+                solve_total = ( real_solve + jie_solve ) * 1.0 or 1.0
+                real_solve_ratio = real_solve / solve_total
+                jie_solve_ratio = jie_solve / solve_total
+                
+                row['real_solve_ratio'] = '%s%%' % round(real_solve_ratio * 100, 2)
+                row['jie_solve_ratio'] = '%s%%' % round(jie_solve_ratio * 100, 2)
+                
                 
                 row['first_score'] = round( row.get('first_score' , 0) , 2)
                 row['man_yi_ratio'] = '%s%%' % round(row.get('man_yi_ratio', 0) * 100, 2)
