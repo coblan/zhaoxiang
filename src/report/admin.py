@@ -146,8 +146,8 @@ class Hotline(TablePage):
             a2={'three': '崧泽村委会',  'first_yes': 3, 'first_no': 0, 'first_total': 3, 'first_ratio': 1.0, 'real_solve': 2, 'jie_solve': 6, 'total_solve': 8, 'real_solve_ratio': 0.25, 'jie_solve_ratio': 0.75, 'man_yi': 1.6, 'man_yi_total': 3, 'man_yi_ratio': 0.5333333333333333}
             """
             rt_dc = json.loads(rt.text)
-            a1 = rt_dc['a1']
-            a2 = rt_dc['a2']
+            a1 = {k.lower(): v for (k, v) in rt_dc['a1'].items() }
+            a2 = {k.lower(): v for (k, v) in rt_dc['a2'].items()}
             out_list = []
 
             for row2 in a2:
