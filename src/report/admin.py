@@ -258,7 +258,7 @@ class GridReport(TablePage):
             url = settings.SANGO_BRIDGE+'/rq'
             data={
                 'fun':'zhaoxiang_grid_report',
-                'datestr': '2018-07-10',
+                'datestr': self.search_args.get('data_time')
             }
             
             rt = requests.post(url,data=json.dumps(data), proxies = proxies)
