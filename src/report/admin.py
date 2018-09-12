@@ -265,9 +265,14 @@ class GridReport(TablePage):
             dc = json.loads(rt.text)
             row_dict = {}
             
-            for row in dc.get('a1'):
+            a1 = [{k.lower(): v for (k, v) in row.items() } for row in rt_dc['a1'] ]
+            a2 = [{k.lower(): v for (k, v) in row.items()} for row in rt_dc['a2'] ]  
+            a3 = [{k.lower(): v for (k, v) in row.items() } for row in rt_dc['a3'] ]
+            a4 = [{k.lower(): v for (k, v) in row.items()} for row in rt_dc['a4'] ]            
+            
+            for row in a1:
                 row_dict[row.get('three')] = row
-            for row in dc.get('a2'):
+            for row in a2:
                 name = row.get('three')
                 if name not in row_dict:
                     row_dict[name] = row
@@ -280,14 +285,14 @@ class GridReport(TablePage):
                 row['three'] = name_map.get(row['three'], row['three'])
                 
             report_dict = {}
-            for report in dc.get('a3'):
+            for report in a3:
                 reporter_name = report['reporter'].replace(' ', '')
                 for k, v in weixin.items():
                     if reporter_name in v:
                         report_dict[k] = report_dict.get(k, 0) + report['count_wei']
                         break
             pda_dict = {}
-            for keeper in dc.get('a4'):
+            for keeper in a4:
                 keeper_name = keeper['upkeepername'].replace(' ', '')
                 for k, v in pda_map.items():
                     if keeper_name in v:
