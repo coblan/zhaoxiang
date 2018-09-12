@@ -20,8 +20,10 @@ DATA_PROXY ={
 XUNCHA_HOST = "http://localhost:8001"
 
 #SANGO_BRIDGE='http://7.207.150.71:8000'
-SANGO_BRIDGE='http://12.110.185.17:8499'
-SANGO_BRIDGE='http://10.235.80.249:8000'
+SANGO_BRIDGE='http://12.110.185.17:8499'  # lt_server
+SANGO_BRIDGE='http://10.235.80.249:8000'  # window_jump
+SANGO_BRIDGE='http://10.231.18.23:8499'  # self_server
+
 
 DEV_STATUS='dev'
 RABBIT_SERVER = 'localhost'
