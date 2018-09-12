@@ -262,7 +262,7 @@ class GridReport(TablePage):
             }
             
             rt = requests.post(url,data=json.dumps(data), proxies = proxies)
-            dc = json.loads(rt.text)
+            rt_dc = json.loads(rt.text)
             row_dict = {}
             
             a1 = [{k.lower(): v for (k, v) in row.items() } for row in rt_dc['a1'] ]
