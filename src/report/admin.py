@@ -84,16 +84,16 @@ class Hotline(TablePage):
     
     class tableCls(SimTable):
         
-        @classmethod
-        def clean_search_args(cls, search_args):
-            today = timezone.now()
-            sp = timezone.timedelta(days=30)
-            last = today - sp
-            def_start = last.strftime('%Y-%m-%d')
-            def_end = today.strftime('%Y-%m-%d')
-            search_args['_start_data_time'] = search_args.get('_start_data_time') or def_start
-            search_args['_end_data_time'] = search_args.get('_end_data_time') or def_end
-            return search_args        
+        #@classmethod
+        #def clean_search_args(cls, search_args):
+            #today = timezone.now()
+            #sp = timezone.timedelta(days=30)
+            #last = today - sp
+            #def_start = last.strftime('%Y-%m-%d')
+            #def_end = today.strftime('%Y-%m-%d')
+            #search_args['_start_data_time'] = search_args.get('_start_data_time') or def_start
+            #search_args['_end_data_time'] = search_args.get('_end_data_time') or def_end
+            #return search_args        
         
         def get_heads(self): 
             return [
@@ -133,6 +133,9 @@ class Hotline(TablePage):
             ]        
         
         def get_rows(self): 
+            if not self.search_args.get('_start_data_time') or not self.search_args.get('_end_data_time'):
+                return []
+            
             url = settings.SANGO_BRIDGE+'/rq'
             data={
                 'fun':'zhaoxiang_hotline_report',
@@ -224,12 +227,12 @@ class GridReport(TablePage):
         return '网格化统计'
     
     class tableCls(SimTable):
-        @classmethod
-        def clean_search_args(cls, search_args):
-            today = timezone.now()
-            def_crt = today.strftime('%Y-%m-%d')
-            search_args['data_time'] = search_args.get('data_time') or def_crt
-            return search_args  
+        #@classmethod
+        #def clean_search_args(cls, search_args):
+            #today = timezone.now()
+            #def_crt = today.strftime('%Y-%m-%d')
+            #search_args['data_time'] = search_args.get('data_time') or def_crt
+            #return search_args  
         
         def get_heads(self): 
             return [
@@ -255,6 +258,9 @@ class GridReport(TablePage):
             a4 [{'upkeepername': '孙惠东', 'count_keeper': 34}
             
             """
+            if not self.search_args.get('data_time'):
+                return []
+            
             url = settings.SANGO_BRIDGE+'/rq'
             data={
                 'fun':'zhaoxiang_grid_report',
