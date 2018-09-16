@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-03 13:58+0800\n"
+"POT-Creation-Date: 2018-09-16 12:14+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,31 +18,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: .\helpers\authuser\forms.py:10
-msgid "second password"
-msgstr ""
-
-#: .\helpers\authuser\forms.py:19
+#: .\helpers\authuser\admin_regist.py:53 .\helpers\authuser\forms.py:24
 msgid "need password"
 msgstr ""
 
-#: .\helpers\authuser\forms.py:26
+#: .\helpers\authuser\admin_regist.py:60 .\helpers\authuser\forms.py:31
 msgid "two password should be same"
 msgstr ""
 
-#: .\helpers\authuser\forms.py:33
+#: .\helpers\authuser\admin_regist.py:67
+msgid "username already exist"
+msgstr ""
+
+#: .\helpers\authuser\admin_regist.py:78
+msgid "Validate Code error"
+msgstr ""
+
+#: .\helpers\authuser\forms.py:38
 msgid "username has been exist"
 msgstr ""
 
-#: .\helpers\authuser\forms.py:63
+#: .\helpers\authuser\forms.py:68
 msgid "user has been disabled"
 msgstr ""
 
-#: .\helpers\authuser\forms.py:67
+#: .\helpers\authuser\forms.py:72
 msgid "user exist,but password not match"
 msgstr ""
 
-#: .\helpers\authuser\forms.py:69
+#: .\helpers\authuser\forms.py:74
 msgid "user not exist"
 msgstr ""
 
