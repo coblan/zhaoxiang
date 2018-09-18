@@ -169,6 +169,8 @@ class Hotline(TablePage):
             cun_list = []
             other_list = []            
             for row in out_list:
+                if not row['three'] :
+                    continue
                 if '村委' in row['three'] or '居委' in row['three']:
                     cun_list.append(row)
                 else:
@@ -186,34 +188,49 @@ class Hotline(TablePage):
             for row in out_list:
                 
                 first_total = row.get('first_no', 0) + row.get('first_yes', 0)
-                first_total = first_total or 1
+                #first_total = first_total
                 first_ratio = row.get('first_yes', 0) / first_total
-                row['first_score'] = 30.0 * first_ratio
-                row['first_ratio'] = '%s%%' % round( first_ratio * 100)
+                
+                if not first_ratio:
+                    row['first_ratio'] = ''
+                    row['first_score'] = ''
+                else:
+                    row['first_score'] = 30.0 * first_ratio
+                    row['first_ratio'] = '%s%%' % round( first_ratio * 100)
                 
                 row['YuQiGongDan'] = 0
                 row['AnShiBanJie_ratio'] = '100%'
                 
                 row['solve_score'] = 20
-                manyi_total = row.get('man_yi_total', 0) * 1.0 or 1.0
-                row['man_yi_ratio'] = float( row.get('man_yi', 0) )/ manyi_total 
-                row['man_yi_score'] = 40 * row.get('man_yi_ratio', 0)
+              
                 row['total_score'] = row.get('shou_li_score') + row.get('first_score') + row.get('solve_score') + row.get('man_yi_score')
                 
                 real_solve = row.get('real_solve', 0)
                 jie_solve = row.get('jie_solve', 0)
                 
-                solve_total = ( real_solve + jie_solve ) * 1.0 or 1.0
-                real_solve_ratio = real_solve / solve_total
-                jie_solve_ratio = jie_solve / solve_total
-                
-                row['real_solve_ratio'] = '%s%%' % round(real_solve_ratio * 100, 2)
-                row['jie_solve_ratio'] = '%s%%' % round(jie_solve_ratio * 100, 2)
+                solve_total = ( real_solve + jie_solve ) * 1.0 
+                if solve_total:
+                    real_solve_ratio = real_solve / solve_total
+                    jie_solve_ratio = jie_solve / solve_total
+                    
+                    row['real_solve_ratio'] = '%s%%' % round(real_solve_ratio * 100, 2)
+                    row['jie_solve_ratio'] = '%s%%' % round(jie_solve_ratio * 100, 2)
+                else:
+                    row['real_solve_ratio'] = '' 
+                    row['jie_solve_ratio'] = '' 
+                    row['solve_score'] = ''
                 
                 
                 row['first_score'] = round( row.get('first_score' , 0) , 2)
-                row['man_yi_ratio'] = '%s%%' % round(row.get('man_yi_ratio', 0) * 100, 2)
-                row['man_yi_score'] =  round(row.get('man_yi_score', 0) , 2)
+                manyi_total = row.get('man_yi_total', 0) * 1.0 
+                if manyi_total:
+                    row['man_yi_ratio'] = float( row.get('man_yi', 0) )/ manyi_total 
+                    row['man_yi_score'] = 40 * row.get('man_yi_ratio', 0)                
+                    row['man_yi_ratio'] = '%s%%' % round(row.get('man_yi_ratio', 0) * 100, 2)
+                    row['man_yi_score'] =  round(row.get('man_yi_score', 0) , 2)
+                else:
+                    row['man_yi_ratio'] = '' 
+                    row['man_yi_score'] = ''       
                 
                 row['total_score'] =  round(row.get('total_score', 0) , 3)
                 
