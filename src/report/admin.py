@@ -190,6 +190,7 @@ class Hotline(TablePage):
                 first_total = row.get('first_no', 0) + row.get('first_yes', 0)
                 #first_total = first_total
                 if not first_total:
+        
                     row['first_ratio'] = ''
                     row['first_score'] = ''
                     first_score = 0
@@ -234,7 +235,7 @@ class Hotline(TablePage):
                     row['man_yi_ratio'] = ''
                     row['man_yi_score'] = ''   
                     
-                row['total_score'] = row.get('shou_li_score', 0) + first_ratio + solve_score + man_yi_score
+                row['total_score'] = row.get('shou_li_score', 0) + first_score + solve_score + man_yi_score
                 row['total_score'] =  round(row.get('total_score', 0) , 3)
                 
                 row['three'] = name_map.get(row['three'], row['three'])
