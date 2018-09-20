@@ -277,7 +277,7 @@ class GridReport(TablePage):
             a1 [{'three': '北崧居委会', 'count_all': 2, 'count_bu': 2, 'count_shi': 0}
             a2 [{'three': '崧泽村委会', 'count_cun': 15},
             a3 [{'reporter': '孙桂兰', 'count_wei': 4},
-            a4 [{'upkeepername': '孙惠东', 'count_keeper': 34}
+            a4 [{'keepername': '孙惠东', 'count_keeper': 34}
             
             """
             if not self.search_args.get('data_time'):
@@ -321,7 +321,7 @@ class GridReport(TablePage):
                         break
             pda_dict = {}
             for keeper in a4:
-                keeper_name = keeper['upkeepername'].replace(' ', '')
+                keeper_name = keeper['keepername'].replace(' ', '')
                 for k, v in pda_map.items():
                     if keeper_name in v:
                         pda_dict[k] = pda_dict.get(k, 0) + keeper['count_keeper']
