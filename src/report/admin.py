@@ -329,7 +329,7 @@ class GridReport(TablePage):
             for row in rows:
                 row['count_wei'] = weixin_dict.get(row['three'], 0)
                 row['count_keeper'] = pda_dict.get(row['three'], 0)
-            row_names = [row['tree'] for row in rows]
+            row_names = [row['three'] for row in rows]
             for k, v in weixin_dict.items():
                 if k not in row_names:
                     rows.append({
