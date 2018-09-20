@@ -312,12 +312,12 @@ class GridReport(TablePage):
             for row in rows:
                 row['three'] = name_map.get(row['three'], row['three'])
                 
-            report_dict = {}
+            weixin_dict = {}
             for report in a3:
                 reporter_name = report['reporter'].replace(' ', '')
                 for k, v in weixin.items():
                     if reporter_name in v:
-                        report_dict[k] = report_dict.get(k, 0) + report['count_wei']
+                        weixin_dict[k] = weixin_dict.get(k, 0) + report['count_wei']
                         break
             pda_dict = {}
             for keeper in a4:
@@ -327,8 +327,15 @@ class GridReport(TablePage):
                         pda_dict[k] = pda_dict.get(k, 0) + keeper['count_keeper']
             
             for row in rows:
-                row['count_wei'] = report_dict.get(row['three'], 0)
+                row['count_wei'] = weixin_dict.get(row['three'], 0)
                 row['count_keeper'] = pda_dict.get(row['three'], 0)
+            row_names = [row['tree'] for row in rows]
+            for k, v in weixin_dict.items():
+                if k not in row_names:
+                    rows.append({
+                        'three': k,
+                        'count_wei': v,
+                    })
             return rows
         
         def getRowFilters(self): 
