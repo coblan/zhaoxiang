@@ -306,8 +306,10 @@ class GridReport(TablePage):
             a4 = [{k.lower(): v for (k, v) in row.items()} for row in rt_dc['a4'] ]            
             
             for row in a1:
+                row['three'] = name_map.get(row['three'], row['three'])
                 row_dict[row.get('three')] = row
             for row in a2:
+                row['three'] = name_map.get(row['three'], row['three'])
                 name = row.get('three')
                 if name not in row_dict:
                     row_dict[name] = row
@@ -315,28 +317,24 @@ class GridReport(TablePage):
                     row_dict[name].update(row)
             
             rows = [v for (k, v) in row_dict.items()]
-            
-            for row in rows:
-                row['three'] = name_map.get(row['three'], row['three'])
-                
+               
             weixin_dict = {}
             for report in a3:
                 reporter_name = report['reporter'].replace(' ', '')
                 for k, v in weixin.items():
+                    three =  name_map.get(k, k)
                     if reporter_name in v:
-                        weixin_dict[k] = weixin_dict.get(k, 0) + report['count_wei']
+                        weixin_dict[three] = weixin_dict.get(three, 0) + report['count_wei']
                         break
             pda_dict = {}
             for keeper in a4:
                 keeper_name = keeper['keepername'].replace(' ', '')
                 for k, v in pda_map.items():
+                    three =  name_map.get(k, k)
                     if keeper_name in v:
-                        pda_dict[k] = pda_dict.get(k, 0) + keeper['count_keeper']
+                        pda_dict[three] = pda_dict.get(three, 0) + keeper['count_keeper']
             
             
-            #for row in rows:
-                #row['count_wei'] = weixin_dict.get(row['three'], 0)
-                #row['count_keeper'] = pda_dict.get(row['three'], 0)
             row_dict = {row['three']: row for row in rows}
             for k, v in weixin_dict.items():
                 if k not in row_dict:
