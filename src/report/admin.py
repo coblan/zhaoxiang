@@ -174,15 +174,17 @@ class Hotline(TablePage):
                         break
             out_list.extend(a1)
             
-            cun_list = [x.strip() for x in get_value('cunwei_names').split(';')]
-            other_list = [x.strip() for x in get_value('enterprise_names').split(';')]     
+            cun_names =  [x.strip() for x in get_value('cunwei_names').split(';')]
+            cun_list = []
+            other_names = [x.strip() for x in get_value('enterprise_names').split(';')]  
+            other_list = []
             for row in out_list:
                 if not row['three'] :
                     continue
                 #if '村委' in row['three'] or '居委' in row['three']:
-                if row['three'] in cun_list:
+                if row['three'] in cun_names:
                     cun_list.append(row)
-                elif row['three'] in other_list:
+                elif row['three'] in other_names:
                     other_list.append(row)
             
             cun_total = sum([row.get('shou_li', 0) for row in cun_list])
@@ -250,8 +252,8 @@ class Hotline(TablePage):
                 
                 name_map_str = get_value('hotline_name_map')
                 db_name_map = {}
-                for row in json.loads(name_map_str):
-                    db_name_map[row['org_name']] = row['new_name']
+                for item in json.loads(name_map_str):
+                    db_name_map[item['org_name']] = item['new_name']
                 
                 row['three'] = db_name_map.get(row['three'], row['three'])
                 
