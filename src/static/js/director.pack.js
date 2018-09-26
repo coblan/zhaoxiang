@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 101);
+/******/ 	return __webpack_require__(__webpack_require__.s = 102);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -647,6 +647,8 @@ var baseInput = exports.baseInput = {
 
 };
 
+window._baseInput = baseInput;
+
 /***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -654,39 +656,39 @@ var baseInput = exports.baseInput = {
 "use strict";
 
 
-var _ajax_fun = __webpack_require__(21);
+var _ajax_fun = __webpack_require__(22);
 
-var _file = __webpack_require__(26);
+var _file = __webpack_require__(27);
 
 var f = _interopRequireWildcard(_file);
 
-var _ckeditor = __webpack_require__(22);
+var _ckeditor = __webpack_require__(23);
 
 var ck = _interopRequireWildcard(_ckeditor);
 
-var _multi_sel = __webpack_require__(29);
+var _multi_sel = __webpack_require__(30);
 
 var multi = _interopRequireWildcard(_multi_sel);
 
-var _inputs = __webpack_require__(27);
+var _inputs = __webpack_require__(28);
 
 var inputs = _interopRequireWildcard(_inputs);
 
-var _link = __webpack_require__(28);
+var _link = __webpack_require__(29);
 
 var ln = _interopRequireWildcard(_link);
 
-var _com_form_btn = __webpack_require__(23);
+var _com_form_btn = __webpack_require__(24);
 
 var form_btn = _interopRequireWildcard(_com_form_btn);
 
-var _fields_base = __webpack_require__(25);
+var _fields_base = __webpack_require__(26);
 
-var _field_fun = __webpack_require__(24);
+var _field_fun = __webpack_require__(25);
 
-var _order = __webpack_require__(30);
+var _order = __webpack_require__(31);
 
-var _table_fields = __webpack_require__(31);
+var _table_fields = __webpack_require__(32);
 
 var _table_fields2 = _interopRequireDefault(_table_fields);
 
@@ -742,7 +744,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 //import {use_color} from '../dosome/color.js'
 //import {load_js,load_css} from '../dosome/pkg.js'
-__webpack_require__(82);
+__webpack_require__(83);
 //import * as fb from './field_base.js'
 //import * as js from './adapt.js'
 
@@ -757,7 +759,7 @@ var field = {
       layer.tips(msg, event.target);
     }
   },
-  template: '\n    \t\t<div :class=\'["form-group field",{"error":head.error}]\' v-if="head" style="position: relative;">\n                <label :for="\'id_\'+head.name"  class="control-label" v-if=\'head.label && head.label!=""\'>\n                    <span v-text="head.label"></span><span class="req_star" v-if=\'head.required\'>*</span>\n                </label>\n                <div class="field_input">\n                    <component :is=\'head.editor\'\n                        @field-event="$emit(\'field-event\',$event)"\n                        :row=\'row\'\n                        :head=\'head\'>\n                    </component>\n                </div>\n                <slot></slot>\n                <!--<i class="help-text" v-if="head.help_text" v-text="head.help_text"></i>-->\n                <span class="help-text clickable">\n                    <i style="color: #3780af;position: relative;"  v-if="head.help_text" @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n                </span>\n\n                 <!--<div class="msg" style="position: absolute;right: 5px;top: 1px;">-->\n\n                        <!--&lt;!&ndash;<i v-if="head.help_text" @click="show_msg(head.help_text,$event)" class="fa fa-shield" ></i>&ndash;&gt;-->\n\n                        <!--<span class="fa-stack error" v-if="head.error" @click="show_msg(head.error,$event)" style="font-size: 0.5em;">-->\n                              <!--<i class="fa fa-cloud fa-stack-2x" style="color: black"></i>-->\n                              <!--<i class="fa fa-close fa-stack-1x" style="color: red"></i>-->\n                        <!--</span>-->\n\n                        <!--&lt;!&ndash;<i v-if="head.error" @click="show_msg(head.error,$event)" class="fa fa-shield  error" ></i>&ndash;&gt;-->\n                        <!--&lt;!&ndash;<span class="help_text" v-text="head.help_text"></span>&ndash;&gt;-->\n                        <!--&lt;!&ndash;<span v-if="head.error_msg" class="error_msg error"  v-text=\'head.error_msg\'></span>&ndash;&gt;-->\n                 <!--</div>-->\n\t\t</div>\n\n\n\t'
+  template: '\n    \t\t<div :class=\'["form-group field",{"error":head.error}]\' v-if="head" style="position: relative;">\n                <label :for="\'id_\'+head.name"  class="control-label" v-if=\'head.label && head.label!=""\'>\n                    <span v-html="head.label"></span><span class="req_star" v-if=\'head.required\'>*</span>\n                </label>\n                <div class="field_input">\n                    <component :is=\'head.editor\'\n                        @field-event="$emit(\'field-event\',$event)"\n                        :row=\'row\'\n                        :head=\'head\'>\n                    </component>\n                </div>\n                <slot></slot>\n                <!--<i class="help-text" v-if="head.help_text" v-text="head.help_text"></i>-->\n                <span class="help-text clickable">\n                    <i style="color: #3780af;position: relative;"  v-if="head.help_text" @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n                </span>\n\n                 <!--<div class="msg" style="position: absolute;right: 5px;top: 1px;">-->\n\n                        <!--&lt;!&ndash;<i v-if="head.help_text" @click="show_msg(head.help_text,$event)" class="fa fa-shield" ></i>&ndash;&gt;-->\n\n                        <!--<span class="fa-stack error" v-if="head.error" @click="show_msg(head.error,$event)" style="font-size: 0.5em;">-->\n                              <!--<i class="fa fa-cloud fa-stack-2x" style="color: black"></i>-->\n                              <!--<i class="fa fa-close fa-stack-1x" style="color: red"></i>-->\n                        <!--</span>-->\n\n                        <!--&lt;!&ndash;<i v-if="head.error" @click="show_msg(head.error,$event)" class="fa fa-shield  error" ></i>&ndash;&gt;-->\n                        <!--&lt;!&ndash;<span class="help_text" v-text="head.help_text"></span>&ndash;&gt;-->\n                        <!--&lt;!&ndash;<span v-if="head.error_msg" class="error_msg error"  v-text=\'head.error_msg\'></span>&ndash;&gt;-->\n                 <!--</div>-->\n\t\t</div>\n\n\n\t'
 
 };
 
@@ -781,47 +783,47 @@ window.order_by_key = _order.order_by_key;
 "use strict";
 
 
-var _date = __webpack_require__(33);
+var _date = __webpack_require__(34);
 
 var date = _interopRequireWildcard(_date);
 
-var _file_uploader = __webpack_require__(39);
+var _file_uploader = __webpack_require__(40);
 
 var file_uploaer = _interopRequireWildcard(_file_uploader);
 
-var _multi_chosen = __webpack_require__(41);
+var _multi_chosen = __webpack_require__(42);
 
 var multi_chosen = _interopRequireWildcard(_multi_chosen);
 
-var _bool = __webpack_require__(32);
+var _bool = __webpack_require__(33);
 
 var field_bool = _interopRequireWildcard(_bool);
 
-var _int_bool = __webpack_require__(40);
+var _int_bool = __webpack_require__(41);
 
 var int_bool = _interopRequireWildcard(_int_bool);
 
-var _number = __webpack_require__(42);
+var _number = __webpack_require__(43);
 
 var number = _interopRequireWildcard(_number);
 
-var _field_blocktext = __webpack_require__(34);
+var _field_blocktext = __webpack_require__(35);
 
 var field_blocktext = _interopRequireWildcard(_field_blocktext);
 
-var _field_search_select = __webpack_require__(36);
+var _field_search_select = __webpack_require__(37);
 
 var field_search_select = _interopRequireWildcard(_field_search_select);
 
-var _field_single_chosen = __webpack_require__(38);
+var _field_single_chosen = __webpack_require__(39);
 
 var field_single_chosen = _interopRequireWildcard(_field_single_chosen);
 
-var _field_select = __webpack_require__(37);
+var _field_select = __webpack_require__(38);
 
 var field_select = _interopRequireWildcard(_field_select);
 
-var _field_date = __webpack_require__(35);
+var _field_date = __webpack_require__(36);
 
 var field_date = _interopRequireWildcard(_field_date);
 
@@ -834,38 +836,38 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 "use strict";
 
 
-var _com_table = __webpack_require__(43);
+var _com_table = __webpack_require__(44);
 
 var com_table = _interopRequireWildcard(_com_table);
 
-var _table_fun = __webpack_require__(57);
+var _table_fun = __webpack_require__(58);
 
 var table_fun = _interopRequireWildcard(_table_fun);
 
-var _table_filter = __webpack_require__(56);
+var _table_filter = __webpack_require__(57);
 
 var table_filter = _interopRequireWildcard(_table_filter);
 
-var _table_btn = __webpack_require__(55);
+var _table_btn = __webpack_require__(56);
 
 var table_btn = _interopRequireWildcard(_table_btn);
 
-var _pagenator = __webpack_require__(53);
+var _pagenator = __webpack_require__(54);
 
 var pagenator = _interopRequireWildcard(_pagenator);
 
-var _sort_mark = __webpack_require__(54);
+var _sort_mark = __webpack_require__(55);
 
 var sort_mark = _interopRequireWildcard(_sort_mark);
 
-var _first_col = __webpack_require__(52);
+var _first_col = __webpack_require__(53);
 
 var first_col = _interopRequireWildcard(_first_col);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+__webpack_require__(93);
 __webpack_require__(92);
-__webpack_require__(91);
 
 /***/ }),
 /* 6 */,
@@ -880,32 +882,7 @@ __webpack_require__(91);
 /* 15 */,
 /* 16 */,
 /* 17 */,
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(68);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./index.scss", function() {
-			var newContent = require("!!../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./index.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 18 */,
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -921,8 +898,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./tab_group.scss", function() {
-			var newContent = require("!!../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./tab_group.scss");
+		module.hot.accept("!!../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./index.scss", function() {
+			var newContent = require("!!../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./index.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -947,6 +924,32 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./tab_group.scss", function() {
+			var newContent = require("!!../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./tab_group.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(71);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
 		module.hot.accept("!!../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./vue.scss", function() {
 			var newContent = require("!!../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./vue.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
@@ -958,7 +961,7 @@ if(false) {
 }
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1074,7 +1077,7 @@ if (!window.__uploading_mark) {
 }
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1272,7 +1275,7 @@ var edit_level = {
 };
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1302,7 +1305,7 @@ Vue.component('com-form-btn', {
 });
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1434,7 +1437,7 @@ var field_fun = exports.field_fun = {
 window.field_fun = field_fun;
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1492,7 +1495,7 @@ var field_base = exports.field_base = {
 };
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1596,7 +1599,7 @@ img-uploador
 <<<<
 */
 
-__webpack_require__(83);
+__webpack_require__(84);
 
 var fl = {
     read: function read(file, callback) {
@@ -2031,7 +2034,7 @@ Vue.component('logo-input', {
 window.fl = fl;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2187,7 +2190,7 @@ var check_box = {
 Vue.component('com-check-box', check_box);
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2265,7 +2268,7 @@ popUrlListen:
 <-<
  */
 
-__webpack_require__(84);
+__webpack_require__(85);
 
 var ln = {
     history_handle: function history_handle(obj) {
@@ -2487,7 +2490,7 @@ var ln = {
 window.ln = ln;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2574,7 +2577,7 @@ Vue.component('tow-col-sel', {
 });
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2612,7 +2615,7 @@ function order_by_key(array, key) {
 }
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2620,7 +2623,7 @@ function order_by_key(array, key) {
 
 var _basic = __webpack_require__(2);
 
-__webpack_require__(85);
+__webpack_require__(86);
 
 var table_fields = {
     props: ['heads', 'row', 'inputWidth', 'labelWidth'],
@@ -2632,10 +2635,11 @@ var table_fields = {
     },
     components: _basic.baseInput
 };
+
 Vue.component('com-table-fields', table_fields);
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2657,7 +2661,7 @@ var field_bool = {
 Vue.component('com-field-bool', field_bool);
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2820,16 +2824,16 @@ Vue.component('datetime', {
 });
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(86);
+__webpack_require__(87);
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2842,7 +2846,7 @@ var field_date = {
 Vue.component('com-field-date', field_date);
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2884,7 +2888,7 @@ var search_select = {
 Vue.component('com-field-search-select', search_select);
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2981,13 +2985,13 @@ var sim_select = {
 Vue.component('com-field-select', sim_select);
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(87);
+__webpack_require__(88);
 
 var field_sigle_chosen = {
     props: ['row', 'head'],
@@ -3032,7 +3036,7 @@ var field_sigle_chosen = {
 Vue.component('com-field-single-chosen', field_sigle_chosen);
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3041,7 +3045,7 @@ Vue.component('com-field-single-chosen', field_sigle_chosen);
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-__webpack_require__(88);
+__webpack_require__(89);
 
 /*
 * config={
@@ -3213,7 +3217,7 @@ Vue.component('com-file-uploader', com_file_uploader);
 Vue.component('field-file-uploader', field_file_uploader);
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3247,13 +3251,13 @@ var field_bool = {
 Vue.component('com-field-int-bool', field_bool);
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(89);
+__webpack_require__(90);
 
 var multi_chosen = {
     props: ['value', 'options'],
@@ -3286,7 +3290,7 @@ var multi_chosen = {
 Vue.component('multi-chosen', multi_chosen);
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3301,7 +3305,7 @@ var number = {
 Vue.component('com-field-number', number);
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3398,7 +3402,7 @@ var com_table = {
 Vue.component('com-table', com_table);
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3439,7 +3443,7 @@ Vue.component('com-date-range-filter', com_date_range);
 //}
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3458,13 +3462,13 @@ var com_search = {
 Vue.component('com-search-filter', com_search);
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(90);
+__webpack_require__(91);
 
 var com_search = {
     props: ['head', 'search_args'],
@@ -3499,7 +3503,7 @@ var com_search = {
 Vue.component('com-search-select', com_search);
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3558,7 +3562,7 @@ function compare(temp1, temp2) {
 }
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3607,7 +3611,7 @@ var com_date_datetimefield_range = {
 Vue.component('com-date-datetimefield-range-filter', com_date_datetimefield_range);
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3621,7 +3625,7 @@ var com_date = {
 Vue.component('com-filter-date', com_date);
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3635,7 +3639,7 @@ var com_select = {
 Vue.component('com-filter-search-select', com_select);
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3706,7 +3710,7 @@ function compare(temp1, temp2) {
 }
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3737,7 +3741,7 @@ var first_col = {
 Vue.component('first-col', first_col);
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3775,7 +3779,7 @@ Vue.component('paginator', {
 });
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3855,7 +3859,7 @@ Vue.component('sort-mark', {
     } });
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3875,41 +3879,41 @@ var com_table_btn = {
 Vue.component('com-table-btn', com_table_btn);
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _com_search = __webpack_require__(45);
+var _com_search = __webpack_require__(46);
 
 var com_search = _interopRequireWildcard(_com_search);
 
-var _com_search_select = __webpack_require__(46);
+var _com_search_select = __webpack_require__(47);
 
 var com_search_select = _interopRequireWildcard(_com_search_select);
 
-var _com_select = __webpack_require__(47);
+var _com_select = __webpack_require__(48);
 
 var com_select = _interopRequireWildcard(_com_select);
 
-var _com_date_range = __webpack_require__(44);
+var _com_date_range = __webpack_require__(45);
 
 var com_date_range = _interopRequireWildcard(_com_date_range);
 
-var _related_select = __webpack_require__(51);
+var _related_select = __webpack_require__(52);
 
 var related_select = _interopRequireWildcard(_related_select);
 
-var _date_datetimefield_range = __webpack_require__(48);
+var _date_datetimefield_range = __webpack_require__(49);
 
 var date_datetimefield_range = _interopRequireWildcard(_date_datetimefield_range);
 
-var _filter_search_select = __webpack_require__(50);
+var _filter_search_select = __webpack_require__(51);
 
 var filter_search_select = _interopRequireWildcard(_filter_search_select);
 
-var _filter_date = __webpack_require__(49);
+var _filter_date = __webpack_require__(50);
 
 var filter_date = _interopRequireWildcard(_filter_date);
 
@@ -3930,7 +3934,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
  <-<
  */
-__webpack_require__(93);
+__webpack_require__(94);
 
 Vue.component('com-filter', {
     props: ['heads', 'search_args'],
@@ -4005,7 +4009,7 @@ var sim_filter_with_search = {
 Vue.component('sel-search-filter', sim_filter_with_search);
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4172,9 +4176,9 @@ var table_fun = exports.table_fun = {
 window.table_fun = table_fun;
 
 /***/ }),
-/* 58 */,
 /* 59 */,
-/* 60 */
+/* 60 */,
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4188,7 +4192,7 @@ exports.push([module.i, "@charset \"UTF-8\";\n/*\r\nclass的用法：\r\n=======
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4202,7 +4206,7 @@ exports.push([module.i, ".img-uploader input {\n  display: none !important; }\n\
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4216,7 +4220,7 @@ exports.push([module.i, "@charset \"UTF-8\";\n#_load_frame_wrap {\n  position: f
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4230,7 +4234,7 @@ exports.push([module.i, ".table-fields td.field-label {\n  padding-bottom: 1em;\
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4244,7 +4248,7 @@ exports.push([module.i, ".field_input textarea {\n  width: 400px;\n  height: 100
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4258,7 +4262,7 @@ exports.push([module.i, ".chosen-container-single a.chosen-single {\n  height: 3
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4272,7 +4276,7 @@ exports.push([module.i, ".file-uploader .item img {\n  max-width: 300px;\n  curs
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4286,7 +4290,7 @@ exports.push([module.i, "div.chosen-drop > ul.chosen-results > li.result-selecte
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4300,7 +4304,7 @@ exports.push([module.i, ".head-item {\n  display: inline-block; }\n  .head-item.
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4314,7 +4318,7 @@ exports.push([module.i, ".scss-comment {\n  content: 'director/scss/tab_group.sc
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4328,7 +4332,7 @@ exports.push([module.i, "[v-cloak] {\n  display: none; }\n", ""]);
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4342,7 +4346,7 @@ exports.push([module.i, ".search-select {\n  width: 200px; }\n  .search-select .
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4356,7 +4360,7 @@ exports.push([module.i, "table.fake-suit {\n  border: 1px solid #DDD;\n  border-
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4370,7 +4374,7 @@ exports.push([module.i, ".table-btn-group {\n  min-width: 9em; }\n", ""]);
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4384,39 +4388,13 @@ exports.push([module.i, ".filter-item {\n  margin-right: 0.5em; }\n\n.com-filter
 
 
 /***/ }),
-/* 75 */,
 /* 76 */,
 /* 77 */,
 /* 78 */,
 /* 79 */,
 /* 80 */,
 /* 81 */,
-/* 82 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(60);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./fields_panel.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./fields_panel.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 82 */,
 /* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4432,8 +4410,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./file.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./file.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./fields_panel.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./fields_panel.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4458,8 +4436,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./link.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./link.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./file.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./file.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4484,8 +4462,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_fields.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_fields.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./link.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./link.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4510,8 +4488,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./blocktext.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./blocktext.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_fields.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_fields.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4536,8 +4514,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_single_chosen.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_single_chosen.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./blocktext.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./blocktext.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4562,8 +4540,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./file_uploader.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./file_uploader.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_single_chosen.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_single_chosen.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4588,8 +4566,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./multi_chosen.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./multi_chosen.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./file_uploader.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./file_uploader.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4605,7 +4583,7 @@ if(false) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(71);
+var content = __webpack_require__(68);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -4614,8 +4592,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./com_search_select.scss", function() {
-			var newContent = require("!!../../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./com_search_select.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./multi_chosen.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./multi_chosen.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4640,8 +4618,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table.scss");
+		module.hot.accept("!!../../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./com_search_select.scss", function() {
+			var newContent = require("!!../../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./com_search_select.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4666,8 +4644,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_btn_group.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_btn_group.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4692,6 +4670,32 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_btn_group.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_btn_group.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(75);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
 		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_filter.scss", function() {
 			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_filter.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
@@ -4703,14 +4707,14 @@ if(false) {
 }
 
 /***/ }),
-/* 94 */,
 /* 95 */,
 /* 96 */,
 /* 97 */,
 /* 98 */,
 /* 99 */,
 /* 100 */,
-/* 101 */
+/* 101 */,
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4730,9 +4734,9 @@ var fields = _interopRequireWildcard(_main3);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(19);
-__webpack_require__(18);
 __webpack_require__(20);
+__webpack_require__(19);
+__webpack_require__(21);
 
 /***/ })
 /******/ ]);

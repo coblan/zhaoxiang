@@ -5,9 +5,10 @@ from django.conf import settings
 import json
 from django.utils import timezone
 from helpers.func.collection.ex import findone
-
+from . import admin_hotline_data
 proxies = getattr(settings,'DATA_PROXY',{})
 
+from helpers.director.kv import get_value
 # Register your models here.
 
 
@@ -173,14 +174,15 @@ class Hotline(TablePage):
                         break
             out_list.extend(a1)
             
-            cun_list = []
-            other_list = []            
+            cun_list = [x.strip() for x in get_value('cunwei_names').split(';')]
+            other_list = [x.strip() for x in get_value('enterprise_names').split(';')]     
             for row in out_list:
                 if not row['three'] :
                     continue
-                if '村委' in row['three'] or '居委' in row['three']:
+                #if '村委' in row['three'] or '居委' in row['three']:
+                if row['three'] in cun_list:
                     cun_list.append(row)
-                else:
+                elif row['three'] in other_list:
                     other_list.append(row)
             
             cun_total = sum([row.get('shou_li', 0) for row in cun_list])
@@ -245,7 +247,13 @@ class Hotline(TablePage):
                 row['total_score'] = row.get('shou_li_score', 0) + first_score + solve_score + man_yi_score
                 row['total_score'] =  round(row.get('total_score', 0) , 3)
                 
-                row['three'] = name_map.get(row['three'], row['three'])
+                
+                name_map_str = get_value('hotline_name_map')
+                db_name_map = {}
+                for row in json.loads(name_map_str):
+                    db_name_map[row['org_name']] = row['new_name']
+                
+                row['three'] = db_name_map.get(row['three'], row['three'])
                 
                 
             return out_list
