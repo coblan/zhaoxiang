@@ -190,7 +190,7 @@ class Hotline(TablePage):
             big_10 = []
             se_10 = []
             for row in other_list:
-                if row['sou_count'] > 10:
+                if row.get('sou_count', 0) > 10:
                     big_10.append(row)
                 else:
                     se_10.append(row)
