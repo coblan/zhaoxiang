@@ -47,7 +47,7 @@ weixin = {
     '金葫芦二居': ['汪芳', '汪萍', '张丽华', '吕晶', '陆雅雅', '李欣薇'],
     '大型社区': ['王佳伟', '沈旻欢', '翁剑锋', '朱健', '沈殷杰', '龚华', '毛斌康', '卫薛仁', '于澈', 
                      '夏超', '殷天骄', '徐梦亮', '王舒平', '曹莲', '陆姚华', '张柳青', '俞晓勍', 
-                     '施忆', '曹斌', ],
+                     '施忆', '曹斌', '周红青' ],
     '巷佳居委会': ['盛秀芳', '毛彩娟', '孙桂兰', '王秀萍', '吴宝娟', '谢玉芹', '徐宇', '闵广英', '陈建', '刘静', 
                         '钱珏', '俞建红', '吴文英'],
     '和睦村': ['陈超', '周雪清', '顾君涛', '徐忠伟', '王玲', '陈达军', '陆晓明', '周敏', '费建平', '徐国春', 
@@ -187,13 +187,27 @@ class Hotline(TablePage):
                 elif row['three'] in other_names:
                     other_list.append(row)
             
+            big_10 = []
+            se_10 = []
+            for row in other_list:
+                if row['sou_count'] > 10:
+                    big_10.append(row)
+                else:
+                    se_10.append(row)
+                    
             cun_total = sum([row.get('shou_li', 0) for row in cun_list])
-            other_total = sum([row.get('shou_li', 0) for row in other_list])
+            #other_total = sum([row.get('shou_li', 0) for row in other_list])
+            big_10_total =  sum([row.get('shou_li', 0) for row in big_10])
+            se_10_total =  sum([row.get('shou_li', 0) for row in se_10])
             
             for row in cun_list:
                 row['shou_li_score'] = round(5.0 * row.get('shou_li', 0) / cun_total, 3)
-            for row in other_list:
-                row['shou_li_score'] = round( 5.0 * row.get('shou_li', 0) / other_total, 3)
+            #for row in other_list:
+                #row['shou_li_score'] = round( 5.0 * row.get('shou_li', 0) / other_total, 3)
+            for row in big_10:
+                row['shou_li_score'] = round( 5.0 * row.get('shou_li', 0) / big_10_total, 3)  
+            for row in se_10:
+                row['shou_li_score'] = round( 5.0 * row.get('shou_li', 0) / se_10_total, 3)                
             
             out_list = cun_list + other_list
             for row in out_list:
