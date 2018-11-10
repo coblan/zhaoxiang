@@ -75,7 +75,8 @@ class ProgramerMenu(BaseEngine):
         {'label':'区域编辑','url':page('geoscope.blockgroup'),'icon':fa('fa-map-o')},
  
         {'label':'参数设置','url':page('kv'),'icon':fa('fa-map-o')},
-         {'label': '热线', 'url': page('HotlineData'),}
+         {'label': '热线', 'url': page('HotlineData'),}, 
+         {'label': '微信名单', 'url': page('weixin_data'),}
         
         
     ]  

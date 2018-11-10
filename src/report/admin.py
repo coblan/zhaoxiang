@@ -9,6 +9,7 @@ from . import admin_hotline_data
 proxies = getattr(settings,'DATA_PROXY',{})
 
 from helpers.director.kv import get_value
+from . import admin_weixin_data
 # Register your models here.
 
 
@@ -87,6 +88,7 @@ weixin = {
     '华沁筹备组': ['何雪芬', '刘琴', '殷天骄']
     
 }
+
 
 pda_map = {
     '新镇居委': ['张永泉', '徐洁'],
@@ -328,6 +330,12 @@ class GridReport(TablePage):
             a4 [{'keepername': '孙惠东', 'count_keeper': 34}
             
             """
+            
+            weixin_name_list = json.loads(get_value('weixin_name_list', '[]'))
+            weixin_name_dict = {}
+            for item in weixin_name_list:
+                weixin_name_dict[item['dpt_name']] = item['name_list']
+            
             if not self.search_args.get('data_time'):
                 return []
             
@@ -362,7 +370,7 @@ class GridReport(TablePage):
             weixin_dict = {}
             for report in a3:
                 reporter_name = report['reporter'].replace(' ', '')
-                for k, v in weixin.items():
+                for k, v in weixin_name_dict.items():
                     three =  name_map.get(k, k)
                     if reporter_name in v:
                         weixin_dict[three] = weixin_dict.get(three, 0) + report['count_wei']
