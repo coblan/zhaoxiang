@@ -27,6 +27,7 @@ class WeixinPage(FieldsPage):
         def save_form(self): 
             bb = self.kw.get('wexin_name_list')
             bb = bb.replace('，', ',')
+            bb = bb.replace(' ', '')
             set_value('wexin_name_list', bb)
 
 

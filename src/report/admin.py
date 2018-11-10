@@ -334,7 +334,7 @@ class GridReport(TablePage):
             weixin_name_list = json.loads(get_value('weixin_name_list', '[]'))
             weixin_name_dict = {}
             for item in weixin_name_list:
-                weixin_name_dict[item['dpt_name']] = item['name_list']
+                weixin_name_dict[item['dpt_name']] = item['name_list'].split(',')
             
             if not self.search_args.get('data_time'):
                 return []
