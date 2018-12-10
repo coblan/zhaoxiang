@@ -110,8 +110,14 @@ pda_map = {
 pad_name_list = json.loads(get_value('pad_name_list', '[]'))
 pda_map = {}
 for item in pad_name_list:
-    pda_map[item['dpt_name']] = item['name_list'].split(',')
-    
+    key = item['dpt_name']
+    # 代码中使用的pda_map key 是映射后的
+    key = name_map.get(key, key)
+    pda_map[key] = item['name_list'].split(',')
+
+
+
+
 
 class Hotline(TablePage):
     template = 'jb_admin/table.html'
