@@ -10,6 +10,8 @@ proxies = getattr(settings,'DATA_PROXY',{})
 
 from helpers.director.kv import get_value
 from . import admin_weixin_data
+from . import admin_pad_data
+
 # Register your models here.
 
 
@@ -103,6 +105,13 @@ pda_map = {
     '中步村': ['万亮', '毛建林'],
     '大型社区': ['毛伟强', '陈建华', '王伟'],
 }
+
+# 用数据库，替换源代码
+pad_name_list = json.loads(get_value('pad_name_list', '[]'))
+pda_map = {}
+for item in pad_name_list:
+    pda_map[item['dpt_name']] = item['name_list'].split(',')
+    
 
 class Hotline(TablePage):
     template = 'jb_admin/table.html'
@@ -378,6 +387,8 @@ class GridReport(TablePage):
             pda_dict = {}
             for keeper in a4:
                 keeper_name = keeper['keepername'].replace(' ', '')
+                # 
+                #  [1]
                 for k, v in pda_map.items():
                     three =  name_map.get(k, k)
                     if keeper_name in v:

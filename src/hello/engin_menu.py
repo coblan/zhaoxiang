@@ -76,7 +76,9 @@ class ProgramerMenu(BaseEngine):
  
         {'label':'参数设置','url':page('kv'),'icon':fa('fa-map-o')},
          {'label': '热线', 'url': page('HotlineData'),}, 
-         {'label': '微信名单', 'url': page('weixin_data'),}
+         {'label': '微信名单', 'url': page('weixin_data'),}, 
+         {'label': 'PDA名单', 'url': page('pad_name_list'),}
+         
         
         
     ]  
