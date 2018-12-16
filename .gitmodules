@@ -4,3 +4,6 @@
 [submodule "src/static/lib"]
 	path = src/static/lib
 	url = https://github.com/coblan/lib.git
+[submodule "src/shanghai_grid"]
+	path = src/shanghai_grid
+	url = git@github.com:coblan/shanghai_grid.git

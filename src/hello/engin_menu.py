@@ -55,11 +55,20 @@ class PcMenu(BaseEngine):
             ctx['table_fun_config'] ={
                 'detail_link': '详情', #'<i class="fa fa-info-circle" aria-hidden="true" title="查看详情"></i>'#,
             }
-        ctx['rabbit'] = {
-            'url': settings.RABBIT_SERVER,
-            'user': settings.RABBIT_USER,
-            'pswd': settings.RABBIT_PSWD,
-        }
+        ctx['named_ctx']=ctx.get('named_ctx',{})
+        ctx['named_ctx'].update({
+            'rabbit':{
+                'url': settings.RABBIT_SERVER,
+                'user': settings.RABBIT_USER,
+                'pswd': settings.RABBIT_PSWD,
+            }
+        })
+        #ctx['rabbit'] = {
+            #'url': settings.RABBIT_SERVER,
+            #'user': settings.RABBIT_USER,
+            #'pswd': settings.RABBIT_PSWD,
+        #}
+        ctx['extra_js'].append(ctx['js_config']['js_lib']['zhaoxiang'])
         return ctx      
 
 PcMenu.add_pages(page_dc)

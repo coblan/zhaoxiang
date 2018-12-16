@@ -41,14 +41,22 @@ INSTALLED_APPS = [
     'helpers.director',
     'helpers.case.jb_admin',
     'helpers.authuser',
-    
+    'helpers.case.site_frame',
     'hello',
-    'geoscope',
-    'geoinfo',
-    'inspector',
-    'key_region',
-    'dianzi_weilan',
-    'case_cmp',
+    
+    'shanghai_grid.geoscope',
+    'shanghai_grid.geoinfo',
+    'shanghai_grid.inspector',
+    'shanghai_grid.key_region',
+    'shanghai_grid.dianzi_weilan',
+    'shanghai_grid.case_cmp',
+    
+    #'geoscope',
+    #'geoinfo',
+    #'inspector',
+    #'key_region',
+    #'dianzi_weilan',
+    #'case_cmp',
     'report'
 ]
 
@@ -154,4 +162,10 @@ else:
 
 MEDIA_ROOT= os.path.join( os.path.dirname(BASE_DIR),'media')
 MEDIA_URL = '/media/'
+
+STREET_CODE = 1806  # 重固 1809
+DEPTCODE = 20601 
+
+XUNCHA_CODE = 14
+MAP_CENTER = [121.204071,31.149757]
 

@@ -6,9 +6,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
+/******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/ 		}
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -32,6 +32,9 @@
 /******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
 /******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
@@ -60,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,11 +73,13 @@
 "use strict";
 
 
-var _com_field_select_work_inspector = __webpack_require__(1);
+__webpack_require__(5);
 
-var case_cmp = _interopRequireWildcard(_com_field_select_work_inspector);
+var com_login_banner = {
+    template: ' <div class="com-login-banner">\n            <h3>\u6B22\u8FCE\u6CE8\u518C</h3>\n        </div>'
+};
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+Vue.component('com-login-banner', com_login_banner);
 
 /***/ }),
 /* 1 */
@@ -83,95 +88,28 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 "use strict";
 
 
-__webpack_require__(2);
+var _com_login_banner = __webpack_require__(0);
 
-var field_select_work_inspector = {
-    props: ['row', 'head'],
-    data: function data() {
-        return {
-            crt_group: null
-        };
-    },
-    template: '   <div>\n        <ul v-if=\'head.readonly\'><li v-for=\'value in row[head.name]\' v-text=\'get_label(value)\'></li></ul>\n        <div v-else>\n            <div style="width: 300px;padding: 1em 0;">\n                <span>\u4ECE\u76D1\u7763\u5458\u5206\u7EC4\uFF1A</span>\n                <select class="form-control" style="width:200px;display: inline-block;" v-model="crt_group">\n                    <option  :value="null">---</option>\n                    <option  v-for="group in head.groups" :value="group" v-text="group.label"></option>\n                </select>\n                <button @click="add_group()">\u6DFB\u52A0</button>\n            </div>\n\n            <div class="select-work-inspector"  style="position: relative;width: 600px">\n                <el-transfer\n                v-model="row[head.name]"\n                :titles="[\'\u53EF\u9009\u4EBA\u5458\', \'\u5DF2\u9009\u4EBA\u5458\']"\n                :data="options"></el-transfer>\n            </div>\n\n            <!--<multi-chosen  v-model=\'row[head.name]\' :id="\'id_\'+head.name"-->\n                <!--:options=\'head.options\'-->\n                <!--ref="select">-->\n            <!--</multi-chosen>-->\n        </div>\n    </div>',
-    computed: {
-        label: function label() {
-            return this.row['_' + this.head.name + '_label'];
-        },
-        options: function options() {
-            var op_list = ex.map(this.head.options, function (option) {
-                return { key: option.value, label: option.label };
-            });
-            op_list = ex.sortOrder(op_list, 'label');
-            return op_list;
-        }
-    },
-    methods: {
-        add_group: function add_group() {
-            if (this.crt_group) {
-                var self = this;
-                ex.each(self.crt_group.inspectors, function (inspector_pk) {
-                    if (!ex.isin(inspector_pk, self.row.inspector)) {
-                        self.row.inspector.push(inspector_pk);
-                    }
+var com_login_banner = _interopRequireWildcard(_com_login_banner);
 
-                    //alert(inspector_pk)
-                });
-                //var tow_col_sel = this.$refs.two_col_sel
-                //ex.each(tow_col_sel.can_select,function(item){
-                //    if(ex.isin(item.value,self.crt_group.inspectors)){
-                //        tow_col_sel.left_sel.push(item.value)
-                //    }
-                //})
-                //tow_col_sel.batch_add()
-            }
-        }
-    }
-};
-
-Vue.component('com-field-select-work-inspector', field_select_work_inspector);
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(3);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(5)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!./../../../../../../coblan/webcode/node_modules/.0.26.1@css-loader/index.js!./../../../../../../coblan/webcode/node_modules/.6.0.0@sass-loader/lib/loader.js!./com_field_select_work_inspector.scss", function() {
-			var newContent = require("!!./../../../../../../coblan/webcode/node_modules/.0.26.1@css-loader/index.js!./../../../../../../coblan/webcode/node_modules/.6.0.0@sass-loader/lib/loader.js!./com_field_select_work_inspector.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(4)();
+exports = module.exports = __webpack_require__(3)();
 // imports
 
 
 // module
-exports.push([module.i, ".el-transfer-panel {\n  z-index: 1000; }\n\n.select-work-inspector .el-transfer-panel__body, .select-work-inspector .el-transfer-panel__list {\n  height: 500px; }\n\n.select-work-inspector .el-transfer-panel__item {\n  margin: 0; }\n", ""]);
+exports.push([module.i, ".com-login-banner {\n  text-align: center;\n  padding: 2em; }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports) {
 
 /*
@@ -227,7 +165,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports) {
 
 /*
@@ -243,7 +181,7 @@ var stylesInDom = {},
 		};
 	},
 	isOldIE = memoize(function() {
-		return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+		return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
 	}),
 	getHeadElement = memoize(function () {
 		return document.head || document.getElementsByTagName("head")[0];
@@ -477,6 +415,32 @@ function updateLink(linkElement, obj) {
 		URL.revokeObjectURL(oldSrc);
 }
 
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(2);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./com_login_banner.scss", function() {
+			var newContent = require("!!../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./com_login_banner.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);
