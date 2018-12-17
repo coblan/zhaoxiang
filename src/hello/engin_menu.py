@@ -68,6 +68,7 @@ class PcMenu(BaseEngine):
             #'user': settings.RABBIT_USER,
             #'pswd': settings.RABBIT_PSWD,
         #}
+        ctx['extra_js']=ctx.get('extra_js',[])
         ctx['extra_js'].append(ctx['js_config']['js_lib']['zhaoxiang'])
         return ctx      
 
