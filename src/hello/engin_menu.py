@@ -39,6 +39,14 @@ class PcMenu(BaseEngine):
                  {'label':'重点巡查区域','url':page('key_region.forcast')},
                  {'label':'重点案件统计','url':page('keyregion.caseStatistic')},
                  ]},
+        
+        {'label':'V2新增功能','icon':fa('fa-key'),
+         'submenu':[
+                {'label': '微信名单', 'url': page('weixin_data'),}, 
+                {'label': 'PDA名单', 'url': page('pad_name_list'),},
+                {'label':'围栏区域绘制','url':page('draw_block')}
+         ]},
+        
         {'label':'统计报表','icon':fa('fa-key'),
              'submenu':[
                  {'label':'热线报表','url':page('hotline_report')},

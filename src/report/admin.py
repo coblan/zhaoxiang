@@ -187,10 +187,13 @@ class Hotline(TablePage):
             
             rt = requests.post(url,data=json.dumps(data), proxies = proxies)
             """
-            a1={'three': '崧泽村委会', 'shou_li': 9}, {'three': '综合协管大队', 'shou_li': 5}
-            a2={'three': '崧泽村委会',  'first_yes': 3, 'first_no': 0, 'first_total': 3, 'first_ratio': 1.0, 'real_solve': 2, 'jie_solve': 6, 'total_solve': 8, 'real_solve_ratio': 0.25, 'jie_solve_ratio': 0.75, 'man_yi': 1.6, 'man_yi_total': 3, 'man_yi_ratio': 0.5333333333333333}
+            a1=[{'three': '特色居住区第一居委筹备组', 'shou_li': 1}, {'three': '物业管理', 'shou_li': 2} , ...
+            a2=[{'man_yi_total': 0, 'first_no': 0, 'jie_solve': 1, 'real_solve': 0, 'three': '崧泽村委会', 'man_yi': 0, 'first_yes': 0, 'sou_count': 1},...
             
-            a2={'THREE': '崧泽村委会', 'SOU_COUNT': 5, 'FIRST_YES': 2, 'FIRST_NO': 0, 'REAL_SOLVE': 1, 'JIE_SOLVE': 4, 'MAN_YI': Decimal('0.8'), 'MAN_YI_TOTAL': 2}
+            #a1={'three': '崧泽村委会', 'shou_li': 9}, {'three': '综合协管大队', 'shou_li': 5}
+            #a2={'three': '崧泽村委会',  'first_yes': 3, 'first_no': 0, 'first_total': 3, 'first_ratio': 1.0, 'real_solve': 2, 'jie_solve': 6, 'total_solve': 8, 'real_solve_ratio': 0.25, 'jie_solve_ratio': 0.75, 'man_yi': 1.6, 'man_yi_total': 3, 'man_yi_ratio': 0.5333333333333333}
+            
+            #a2={'THREE': '崧泽村委会', 'SOU_COUNT': 5, 'FIRST_YES': 2, 'FIRST_NO': 0, 'REAL_SOLVE': 1, 'JIE_SOLVE': 4, 'MAN_YI': Decimal('0.8'), 'MAN_YI_TOTAL': 2}
             """
             rt_dc = json.loads(rt.text)
             a1 = [{k.lower(): v for (k, v) in row.items() } for row in rt_dc['a1'] ]
